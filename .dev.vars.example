@@ -1,0 +1,3 @@
+# Copie para .dev.vars (ignorado pelo git). Só o necessário para testar o pagamento online local.
+ASAAS_API_KEY=
+ASAAS_WEBHOOK_TOKEN=

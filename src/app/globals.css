@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+/* Cores tiradas do logo do Paz Kids em Ação (as letras e os balões) e do contorno escuro do desenho.
+   Cor forte é para ação e detalhe; fundo de seção fica no papel ou no creme. */
+@theme {
+  --color-tinta: #1b1633;
+  --color-tinta-2: #4a4566;
+  --color-papel: #fffbf5;
+  --color-creme: #fff3d6;
+  --color-linha: #ebe4d8;
+  --color-roxo: #7b2fa0;
+  --color-rosa: #d81b8f;
+  --color-laranja: #e8620c;
+  --color-vermelho: #c8102e;
+  --color-verde: #23a332;
+  --color-azul: #0a84c2;
+  --color-amarelo: #ffc614;
+  --color-ceu: #dff3ff;
+
+  --font-titulo: var(--font-fredoka), ui-rounded, system-ui, sans-serif;
+  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+  --font-mao: var(--font-caveat-brush), cursive;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--color-papel);
+  color: var(--color-tinta);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-amarelo);
+  color: var(--color-tinta);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-titulo);
+  text-wrap: balance;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-xl px-5 font-titulo text-[16px] font-semibold whitespace-nowrap transition-[transform,background-color,border-color,opacity] duration-150 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-azul active:translate-y-px disabled:pointer-events-none disabled:opacity-50;
+  }
+  /* Botão principal com a "sombra dura" do contorno do logo, em vez de sombra difusa. */
+  .btn-primario {
+    @apply bg-roxo text-white shadow-[0_3px_0_var(--color-tinta)] hover:bg-roxo/90 active:shadow-[0_1px_0_var(--color-tinta)];
+  }
+  .btn-escuro {
+    @apply bg-tinta text-white hover:bg-tinta/85;
+  }
+  .btn-claro {
+    @apply border border-linha bg-white text-tinta hover:border-tinta/30;
+  }
+  .btn-sm {
+    @apply h-9 rounded-lg px-3.5 text-sm;
+  }
+
+  .campo {
+    @apply block w-full rounded-lg border border-linha bg-white px-3.5 py-2.5 text-[15px] text-tinta placeholder:text-tinta-2/50 transition-colors outline-none focus:border-roxo/50 focus:ring-4 focus:ring-roxo/10;
+  }
+  .rotulo {
+    @apply mb-1.5 block text-sm font-semibold text-tinta;
+  }
+  .chamada {
+    @apply font-titulo text-xs font-semibold tracking-[0.16em] text-tinta-2 uppercase;
+  }
+  .cartao {
+    @apply rounded-2xl border border-linha bg-white;
+  }
+}
+
+
+.tkd-calendar .rdp-root {
+  --rdp-accent-color: var(--color-roxo);
+  --rdp-accent-background-color: #7b2fa012;
+  --rdp-day-height: 36px;
+  --rdp-day-width: 36px;
+  --rdp-day_button-height: 34px;
+  --rdp-day_button-width: 34px;
+  --rdp-today-color: var(--color-roxo);
+  font-size: 14px;
+}
+.tkd-calendar .rdp-month_caption {
+  font-family: var(--font-titulo);
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

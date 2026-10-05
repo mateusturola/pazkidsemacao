@@ -1,0 +1,49 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "pazkidsemacao",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "observability": { "enabled": true },
+
+  // Só os domínios próprios atendem. O *.workers.dev e as URLs de preview ficam desligados:
+  // o painel é protegido pelo Cloudflare Access no subdomínio, e uma segunda porta de entrada
+  // seria um caminho para contorná-lo.
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    { "pattern": "pazkidsemacao.com", "custom_domain": true },
+    { "pattern": "www.pazkidsemacao.com", "custom_domain": true },
+    // Painel. O middleware serve só o painel neste endereço, e o Access fica na frente dele inteiro.
+    { "pattern": "painel.pazkidsemacao.com", "custom_domain": true }
+  ],
+
+  "vars": {
+    "SITE_URL": "https://pazkidsemacao.com",
+    "PAINEL_URL": "https://painel.pazkidsemacao.com",
+    // Primeiro admin. Já entra cadastrado pela migration; aqui serve de identidade no `next dev`.
+    "ADMIN_EMAIL": "turolamateus@gmail.com",
+    // Cloudflare Access (Zero Trust): domínio da equipe e o AUD da aplicação que protege o painel.
+    // Não são segredos: servem para validar a assinatura do login, não para gerá-la.
+    // Vazios, o painel fica trancado (403).
+    "ACCESS_TEAM_DOMAIN": "",
+    "ACCESS_AUD": "",
+    // "sandbox" ou "production". Trocar para produção exige trocar junto o secret ASAAS_API_KEY.
+    "ASAAS_ENV": "sandbox"
+  },
+  // Secrets (wrangler secret put): ASAAS_API_KEY, ASAAS_WEBHOOK_TOKEN.
+
+  // Fotos e avatares das crianças. Privado: nada sai dele sem passar pelo Worker.
+  "r2_buckets": [{ "binding": "FILES", "bucket_name": "pazkidsemacao-arquivos" }],
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "pazkidsemacao",
+      // Trocar pelo id que o `wrangler d1 create pazkidsemacao` devolver.
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ]
+}
