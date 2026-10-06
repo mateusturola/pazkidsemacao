@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { SITE } from "@/content/site";
 
+// UTM para o site da The Kingdom Digital saber que a visita veio do crédito no rodapé.
+const CREDITO_URL = "https://thekingdomdigital.online/?utm_source=pazkidsemacao.com&utm_medium=referral&utm_campaign=desenvolvido-por";
+
 /** Rodapé em verde escuro: o logo da campanha vai na versão negativa e o da agência na branca. */
 export function Rodape({ variante }: { variante: "institucional" | "campanha" }) {
   return (
@@ -50,7 +53,7 @@ export function Rodape({ variante }: { variante: "institucional" | "campanha" })
           <p>
             © {new Date().getFullYear()} {SITE.nome} · Paz Kids · Paz Church
           </p>
-          <a href="https://thekingdomdigital.online" target="_blank" rel="noopener" className="flex items-center gap-3 opacity-80 transition-opacity hover:opacity-100">
+          <a href={CREDITO_URL} target="_blank" rel="noopener" className="flex items-center gap-3 opacity-80 transition-opacity hover:opacity-100">
             <span>Desenvolvido por</span>
             <Image src="/brand/thekingdomdigital-branco.webp" alt="The Kingdom Digital" width={440} height={160} className="h-8 w-auto" />
           </a>
