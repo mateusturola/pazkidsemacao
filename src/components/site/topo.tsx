@@ -17,6 +17,7 @@ export function Topo({
   cta,
   sobreFoto = false,
   fundoClaro = false,
+  logoDepoisDe,
 }: {
   variante: "institucional" | "campanha";
   links: Link_[];
@@ -25,10 +26,25 @@ export function Topo({
   sobreFoto?: boolean;
   /** Começa transparente, com texto escuro, sobre um fundo claro (o amarelo do topo). */
   fundoClaro?: boolean;
+  /**
+   * id do logo grande do topo da página. Enquanto ele está na tela, o logo do cabeçalho fica
+   * escondido (a marca não aparece duas vezes) e entra quando o grande sai.
+   */
+  logoDepoisDe?: string;
 }) {
   const transparente = sobreFoto || fundoClaro;
   const [rolou, setRolou] = useState(!transparente);
   const [aberto, setAberto] = useState(false);
+  const [mostrarLogo, setMostrarLogo] = useState(!logoDepoisDe);
+
+  useEffect(() => {
+    const alvo = logoDepoisDe ? document.getElementById(logoDepoisDe) : null;
+    if (!alvo) return setMostrarLogo(true);
+    // Margem do tamanho do cabeçalho: o logo grande "passa por baixo" dele antes de trocar.
+    const io = new IntersectionObserver(([e]) => setMostrarLogo(!e.isIntersecting), { rootMargin: "-72px 0px 0px 0px" });
+    io.observe(alvo);
+    return () => io.disconnect();
+  }, [logoDepoisDe]);
 
   useEffect(() => {
     if (!transparente) return;
@@ -44,7 +60,13 @@ export function Topo({
   return (
     <header className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${claro ? "bg-creme/95 shadow-[0_1px_0_var(--color-linha)] backdrop-blur" : "bg-transparent"}`}>
       <div className="mx-auto flex h-[72px] max-w-7xl items-center gap-6 px-4 sm:px-8">
-        <Link href={variante === "campanha" ? "#topo" : "/"} className="shrink-0" aria-label="Início">
+        <Link
+          href={variante === "campanha" ? "#topo" : "/"}
+          aria-label="Início"
+          aria-hidden={!mostrarLogo || undefined}
+          tabIndex={mostrarLogo ? undefined : -1}
+          className={`shrink-0 transition-[opacity,transform] duration-300 ${mostrarLogo ? "opacity-100" : "pointer-events-none -translate-y-2 opacity-0"}`}
+        >
           {variante === "campanha" ? (
             <Image src="/natal/logo/paz-kids-horizontal-colorida.svg" alt="Paz Kids em Ação · Campanha de Natal" width={180} height={60} priority className="h-12 w-auto" />
           ) : (

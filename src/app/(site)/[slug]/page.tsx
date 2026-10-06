@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!c || c.status === "rascunho") return {};
   const descricao = `${c.nome} do Paz Kids em Ação em Heliópolis, São Paulo: escolha uma criança e monte uma sacolinha com roupa, calçado e presente, ou doe online.`;
   return {
-    title: `${c.nome} · Adote uma sacolinha`,
+    title: `${c.nome} · Apadrinhe uma criança`,
     description: descricao,
     alternates: { canonical: `/${c.slug}` },
     openGraph: { title: `${c.nome} · Paz Kids em Ação`, description: descricao, images: [{ url: "/natal/og-natal.jpg", width: 1200, height: 630 }] },
@@ -74,6 +74,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
       <JsonLd dados={ldCampanha(campanha, lista.length)} />
       <Topo
         variante="campanha"
+        logoDepoisDe="logo-topo"
         links={[
           { href: "#como-funciona", label: "Como funciona" },
           { href: "#criancas", label: "Crianças" },
@@ -91,11 +92,20 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
         <img src="/natal/simbolos/forma-amarela-2.svg" alt="" className="forma -bottom-40 -left-40 w-[380px] sm:w-[480px]" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-14 sm:px-8 sm:py-20 lg:grid-cols-[1.05fr_1fr]">
           <div>
-            <p className="chamada text-verde">Campanha de Natal · {new Date().getFullYear()}</p>
-            <h1 className="mt-5 text-[clamp(2.8rem,6.6vw,5.4rem)] leading-[0.98] font-bold text-verde">
+            {/* A marca em destaque: o logo do cabeçalho só aparece quando este sai da tela. */}
+            <Image
+              id="logo-topo"
+              src="/natal/logo/paz-kids-vertical-colorida.svg"
+              alt="Paz Kids em Ação · Campanha de Natal"
+              width={367}
+              height={456}
+              priority
+              className="h-48 w-auto sm:h-60"
+            />
+            <h1 className="mt-8 text-[clamp(2.4rem,5.2vw,4.4rem)] leading-[0.98] font-bold text-verde">
               Mais que presentes, é <span className="pincelada">esperança</span>.
             </h1>
-            <p className="mt-5 font-mao text-[clamp(1.8rem,3.4vw,2.6rem)] leading-tight text-vermelho">Adote uma sacolinha!</p>
+            <p className="mt-5 font-mao text-[clamp(1.8rem,3.4vw,2.6rem)] leading-tight text-vermelho">Apadrinhe uma criança!</p>
             {campanha.descricao && <p className="mt-5 max-w-xl text-lg whitespace-pre-line text-tinta-2">{campanha.descricao}</p>}
 
             {p.total > 0 && (
@@ -155,13 +165,6 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
             <img src="/natal/simbolos/estrela.svg" alt="" className="absolute -top-6 -left-4 size-14" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/natal/simbolos/brilho.svg" alt="" className="absolute top-10 -left-9 size-8" />
-            <Image
-              src="/natal/logo/paz-kids-simbolo-colorida.svg"
-              alt=""
-              width={120}
-              height={120}
-              className="absolute -bottom-6 -left-4 size-24 rounded-3xl bg-creme p-3 sm:size-28"
-            />
           </div>
         </div>
       </section>

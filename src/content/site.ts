@@ -6,8 +6,9 @@ export const SITE = {
   lema: "Alcançando além das quatro paredes",
   url: "https://pazkidsemacao.com",
   descricao:
-    "Projeto social e missionário do Paz Kids, da Igreja da Paz, que leva o amor de Cristo, educação, apoio emocional e recursos básicos para crianças de Heliópolis e de outras comunidades da Grande São Paulo.",
-  igreja: "Igreja da Paz · Heliópolis, São Paulo",
+    "Projeto social e missionário do Paz Kids, da Paz Church, que leva o amor de Cristo, educação, apoio emocional e recursos básicos para crianças de Heliópolis e de outras comunidades da Grande São Paulo.",
+  // O projeto atua em Heliópolis, mas a igreja não fica lá: é a Paz Church São Paulo.
+  igreja: "Paz Church São Paulo",
   // Contato oficial do manual da marca; também é o "responder para" dos e-mails.
   email: "heliopolis@paz.church",
   pix: { tipo: "CNPJ", chave: "26.407.664/0001-63", copiar: "26407664000163" },
@@ -53,7 +54,7 @@ export const SOBRE = {
 export const PERGUNTAS = [
   {
     p: "O que é o Paz Kids em Ação?",
-    r: "É o braço missionário e social do Paz Kids, o ministério infantil da Igreja da Paz. O projeto leva o amor de Cristo, educação, apoio emocional e recursos básicos para crianças de comunidades, fora das quatro paredes da igreja.",
+    r: "É o braço missionário e social do Paz Kids, o ministério infantil da Paz Church. O projeto leva o amor de Cristo, educação, apoio emocional e recursos básicos para crianças de comunidades, fora das quatro paredes da igreja.",
   },
   {
     p: "Onde o Paz Kids em Ação atua?",
@@ -73,6 +74,6 @@ export const PERGUNTAS = [
   },
   {
     p: "O Paz Kids em Ação é ligado a alguma igreja?",
-    r: "Sim. É uma iniciativa do Paz Kids, o ministério infantil da Igreja da Paz em Heliópolis, São Paulo.",
+    r: "Sim. É uma iniciativa do Paz Kids, o ministério infantil da Paz Church São Paulo. As ações acontecem em Heliópolis e em outras comunidades da Grande São Paulo.",
   },
 ];

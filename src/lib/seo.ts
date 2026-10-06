@@ -19,7 +19,8 @@ export const TERMOS = [
   "apadrinhamento de crianças no Natal",
   "sacolinha de Natal",
   "Paz Kids",
-  "Igreja da Paz Heliópolis",
+  "Paz Church São Paulo",
+  "Paz Church",
 ];
 
 const organizacao = {
@@ -39,7 +40,7 @@ const organizacao = {
     { "@type": "Place", name: "Heliópolis, São Paulo, SP" },
     { "@type": "AdministrativeArea", name: "Grande São Paulo" },
   ],
-  parentOrganization: { "@type": "Church", name: "Igreja da Paz", alternateName: "Paz Church", address: { "@type": "PostalAddress", addressLocality: "São Paulo", addressRegion: "SP", addressCountry: "BR" } },
+  parentOrganization: { "@type": "Church", name: "Paz Church São Paulo", alternateName: "Paz Church", url: "https://paz.church", address: { "@type": "PostalAddress", addressLocality: "São Paulo", addressRegion: "SP", addressCountry: "BR" } },
   knowsAbout: TERMOS,
   sameAs: SITE.redes.map((r) => r.url),
   potentialAction: { "@type": "DonateAction", name: "Doar pelo Pix", description: `Pix ${SITE.pix.tipo} ${SITE.pix.chave}`, recipient: { "@id": `${SITE.url}/#organizacao` } },
@@ -81,11 +82,11 @@ export function ldCampanha(c: Campanha, criancasAguardando: number) {
       eventAttendanceMode: "https://schema.org/MixedEventAttendanceMode",
       isAccessibleForFree: true,
       location: [
-        { "@type": "Place", name: "Paz Kids · Igreja da Paz Heliópolis", address: { "@type": "PostalAddress", addressLocality: "São Paulo", addressRegion: "SP", addressCountry: "BR" } },
+        { "@type": "Place", name: "Paz Kids · Paz Church São Paulo", address: { "@type": "PostalAddress", addressLocality: "São Paulo", addressRegion: "SP", addressCountry: "BR" } },
         { "@type": "VirtualLocation", url },
       ],
       organizer: { "@id": `${SITE.url}/#organizacao`, "@type": "NGO", name: SITE.nome, url: SITE.url },
-      potentialAction: { "@type": "DonateAction", name: "Adotar uma sacolinha", target: url, recipient: { "@type": "NGO", name: SITE.nome } },
+      potentialAction: { "@type": "DonateAction", name: "Apadrinhar uma criança", target: url, recipient: { "@type": "NGO", name: SITE.nome } },
       ...(criancasAguardando ? { remainingAttendeeCapacity: criancasAguardando } : {}),
     },
     {

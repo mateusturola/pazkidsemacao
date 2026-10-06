@@ -48,7 +48,7 @@ export function Rodape({ variante }: { variante: "institucional" | "campanha" })
       <div className="border-t border-creme/10">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-6 text-sm text-creme/55 sm:px-8">
           <p>
-            © {new Date().getFullYear()} {SITE.nome} · Paz Kids · Igreja da Paz
+            © {new Date().getFullYear()} {SITE.nome} · Paz Kids · Paz Church
           </p>
           <a href="https://thekingdomdigital.online" target="_blank" rel="noopener" className="flex items-center gap-3 opacity-80 transition-opacity hover:opacity-100">
             <span>Desenvolvido por</span>

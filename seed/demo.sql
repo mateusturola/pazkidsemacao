@@ -7,7 +7,7 @@ UPDATE campanhas SET status = 'ativa', valor_sacolinha = 15000, max_parcelas = 3
   data_inicio = '2026-10-15', data_fim = '2026-12-20' WHERE slug = 'natal';
 
 INSERT INTO pontos_coleta (nome, endereco, horarios) VALUES
-  ('Recepção do Paz Kids · Igreja da Paz Heliópolis', 'Endereço a confirmar pela equipe', 'Horários a confirmar pela equipe');
+  ('Recepção do Paz Kids · Paz Church São Paulo', 'Endereço a confirmar pela equipe', 'Horários a confirmar pela equipe');
 
 INSERT INTO criancas (nome, data_nascimento, sexo, tamanho_camiseta, tamanho_calca, tamanho_calcado, sugestao_presente, gostos, autorizacao_imagem, id_externo) VALUES
   ('Ana Clara', '2018-03-14', 'F', '8', '8', '30', 'Boneca', 'Desenhar e dançar', 0, 'demo-1'),

@@ -128,7 +128,7 @@ function montar(tipo: Tipo, d: Dados) {
 
   if (tipo === "agradecimento") {
     if (balcao) {
-      assunto = `Obrigado por adotar ${n > 1 ? `${n} sacolinhas` : "uma sacolinha"}, ${d.padrinho.nome.split(" ")[0]}!`;
+      assunto = `Obrigado por apadrinhar ${n > 1 ? `${n} crianças` : "uma criança"}, ${d.padrinho.nome.split(" ")[0]}!`;
       frase = "Mais que presentes, é esperança.";
       corpo = `<p>Oi, ${primeiro}! ${n > 1 ? `${lista} já estão reservados` : `${lista} já está reservada`} para você. Agora é com você: monte a sacolinha com carinho e entregue até <strong>${prazo}</strong>.</p>
 ${blocoEntrega(d, prazo)}
@@ -145,7 +145,7 @@ ${blocoCriancas(d)}
   } else if (tipo === "lembrete" || tipo === "lembrete_final") {
     const amanha = tipo === "lembrete_final";
     assunto = amanha ? `Amanhã é o último dia para entregar a sacolinha` : `Faltam poucos dias para entregar a sacolinha`;
-    frase = amanha ? "Falta pouco!" : "Adote uma sacolinha!";
+    frase = amanha ? "Falta pouco!" : "Apadrinhe uma criança!";
     corpo = `<p>Oi, ${primeiro}! Passando para lembrar: ${n > 1 ? `as sacolinhas de ${lista} precisam` : `a sacolinha de ${lista} precisa`} chegar até <strong>${prazo}</strong>${amanha ? ", amanhã" : ""}.</p>
 ${blocoEntrega(d, prazo)}
 ${blocoCriancas(d)}

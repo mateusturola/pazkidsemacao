@@ -27,6 +27,7 @@ export default async function Inicio() {
       <Topo
         variante="institucional"
         fundoClaro
+        logoDepoisDe="logo-topo"
         links={[
           { href: "#quem-somos", label: "Quem somos" },
           { href: "#nossa-historia", label: "História" },
@@ -40,8 +41,18 @@ export default async function Inicio() {
       <section className="relative overflow-hidden bg-amarelo pt-[72px]" style={{ "--cor-pincelada": "#ffffff" } as React.CSSProperties}>
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-8 sm:py-20 lg:grid-cols-[1.05fr_1fr]">
           <div>
-            <p className="font-mao text-2xl text-verde sm:text-3xl">Heliópolis, São Paulo</p>
-            <h1 className="mt-3 text-[clamp(2.8rem,7vw,5.8rem)] leading-[0.95] font-bold text-verde">
+            {/* A marca em destaque: o logo do cabeçalho só aparece quando este sai da tela. */}
+            <Image
+              id="logo-topo"
+              src="/brand/pazkids-em-acao-480.webp"
+              alt="Paz Kids em Ação"
+              width={480}
+              height={572}
+              priority
+              className="h-44 w-auto drop-shadow-[0_5px_0_rgba(27,22,51,0.18)] sm:h-56"
+            />
+            <p className="mt-6 font-mao text-2xl text-verde sm:text-3xl">Heliópolis, São Paulo</p>
+            <h1 className="mt-2 text-[clamp(2.6rem,6vw,5rem)] leading-[0.95] font-bold text-verde">
               Alcançando além das <span className="pincelada">quatro paredes</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg text-verde/85 sm:text-xl">
@@ -50,7 +61,7 @@ export default async function Inicio() {
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Link href={principal ? `/${principal.slug}` : "#como-ajudar"} className="btn btn-acao h-14 px-7 text-lg">
-                {principal ? "Adote uma sacolinha de Natal" : "Quero ajudar"}
+                {principal ? "Apadrinhe uma criança no Natal" : "Quero ajudar"}
               </Link>
               <Link href="#quem-somos" className="btn h-14 border-2 border-verde/25 px-7 text-lg text-verde hover:border-verde">
                 Conheça o projeto
@@ -66,7 +77,6 @@ export default async function Inicio() {
               priority
               className="aspect-[4/3] w-full rounded-[32px] object-cover shadow-[0_8px_0_var(--color-verde)]"
             />
-            <Image src="/brand/pazkids-em-acao-200.webp" alt="" width={200} height={238} className="absolute -bottom-8 -left-4 h-28 w-auto -rotate-6 sm:-left-8 sm:h-36" />
           </div>
         </div>
       </section>
@@ -84,7 +94,7 @@ export default async function Inicio() {
             </p>
             <p className="mt-6 max-w-xl text-lg text-tinta-2">
               {SOBRE.oQueE} Levamos a Palavra, brincadeira, lanche, abraço e recursos básicos para crianças da comunidade. É o Paz Kids,
-              ministério infantil da Igreja da Paz, fora das quatro paredes.
+              ministério infantil da Paz Church, fora das quatro paredes.
             </p>
           </div>
           <figure className="relative" data-revelar style={atraso(120)}>

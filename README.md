@@ -1,6 +1,6 @@
 # Paz Kids em Ação: site e painel
 
-Site das campanhas do Paz Kids em Ação (Igreja da Paz, Heliópolis) e painel da equipe, num Worker da
+Site das campanhas do Paz Kids em Ação (Paz Church São Paulo; ações em Heliópolis) e painel da equipe, num Worker da
 Cloudflare com D1 e R2.
 
 - **`pazkidsemacao.com`**: página do projeto (quem somos, missão, campanhas abertas, Pix).
@@ -62,7 +62,7 @@ Depois de publicar:
 2. **Bing Webmaster Tools** (bing.com/webmasters): importar do Search Console. O Bing alimenta o ChatGPT e o Copilot.
 3. **Perfil da Empresa no Google** (business.google.com): cadastrar "Paz Kids em Ação" como
    organização sem fins lucrativos em Heliópolis, com o site. É o que aparece no Maps e nas buscas locais.
-4. Pôr o link do site na bio do Instagram e no site da Igreja da Paz: link de sites conhecidos é o que mais pesa.
+4. Pôr o link do site na bio do Instagram e no site da Paz Church: link de sites conhecidos é o que mais pesa.
 
 ## Rodando local
 

@@ -62,6 +62,12 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
 - `PAGAMENTO_MODO=demo` simula o pagamento; só `"asaas"` cobra. A rota de simulação recusa tudo fora do demo.
 - `seed/demo.sql` é só para demonstração.
 
+## Linguagem
+
+- "Apadrinhar" e "apadrinhe uma criança". Nunca "adotar", "adote" ou "adoção": é o termo que a equipe usa.
+- A igreja é a **Paz Church** (Paz Church São Paulo). O projeto atua em Heliópolis, mas não existe
+  Paz Church em Heliópolis: nunca escreva "igreja de Heliópolis" nem "Igreja da Paz".
+
 ## Código
 
 Comentário explica **por que**, não o que. Escreva em português, como o resto do código.

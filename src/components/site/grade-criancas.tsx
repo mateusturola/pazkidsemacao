@@ -35,6 +35,8 @@ export function chaveCarrinho(slug: string) {
 // Etiqueta kraft com o canto cortado, como a etiqueta da sacolinha no manual da marca.
 const ETIQUETA = "polygon(16% 0, 84% 0, 100% 9%, 100% 100%, 0 100%, 0 9%)";
 
+// Com centenas de crianças, a lista vem de 12 em 12 e, no celular, em duas etiquetas compactas por
+// linha (uma por linha viraria rolagem sem fim).
 const POR_VEZ = 12;
 
 const sem = (t: string) =>
@@ -191,25 +193,29 @@ export function GradeCriancas({ slug, criancas, aberta }: { slug: string; crianc
       {filtradas.length === 0 ? (
         <p className="mt-10 text-lg text-tinta-2">Nenhuma criança com esse filtro agora.</p>
       ) : (
-        <ul className="mt-10 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <ul className="mt-8 grid grid-cols-2 gap-x-3 gap-y-6 sm:mt-10 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 xl:grid-cols-4">
           {visiveis.map((c) => {
             const escolhida = escolhidas.includes(c.id);
             return (
               <li key={c.id} className={`relative transition-transform duration-300 ${escolhida ? "-rotate-1" : "hover:-translate-y-1"}`}>
                 <div
-                  className="relative flex h-full flex-col items-center px-6 pt-12 pb-6 text-center"
+                  className="relative flex h-full flex-col items-center px-3 pt-9 pb-4 text-center sm:px-6 sm:pt-12 sm:pb-6"
                   style={{
                     clipPath: ETIQUETA,
                     background: "radial-gradient(rgba(120,85,40,.07) 1px, transparent 1.4px) 0 0/7px 7px, var(--color-kraft)",
                   }}
                 >
-                  <span className="absolute top-4 left-1/2 size-5 -translate-x-1/2 rounded-full bg-papel shadow-[inset_0_1px_2px_rgba(0,0,0,.25)]" />
+                  <span className="absolute top-3 left-1/2 size-4 -translate-x-1/2 sm:top-4 sm:size-5 rounded-full bg-papel shadow-[inset_0_1px_2px_rgba(0,0,0,.25)]" />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={c.imagem} alt="" loading="lazy" className="size-28 rounded-full border-4 border-papel object-cover" />
-                  <p className="chamada mt-5 text-verde/70">Para:</p>
-                  <h3 className="font-mao text-[2.6rem] leading-none text-verde">{c.nome}</h3>
-                  <p className="mt-1 font-bold text-verde/80">{[c.sexo === "F" ? "Menina" : c.sexo === "M" ? "Menino" : null, c.idadeTexto].filter(Boolean).join(" · ")}</p>
-                  <dl className="mt-5 grid w-full grid-cols-3 gap-2">
+                  <img src={c.imagem} alt="" loading="lazy" className="size-16 rounded-full border-4 border-papel object-cover sm:size-28" />
+                  <p className="chamada mt-3 text-[10px] text-verde/70 sm:mt-5 sm:text-[12px]">Para:</p>
+                  <h3 className="font-mao text-[1.9rem] leading-none text-verde sm:text-[2.6rem]">{c.nome}</h3>
+                  <p className="mt-1 text-xs font-bold text-verde/80 sm:text-base">{[c.sexo === "F" ? "Menina" : c.sexo === "M" ? "Menino" : null, c.idadeTexto].filter(Boolean).join(" · ")}</p>
+                  <p className="mt-2 text-xs font-bold text-tinta sm:hidden">
+                    {c.camiseta || "—"} · {c.calca || "—"} · {c.calcado || "—"}
+                    <span className="block text-[10px] font-extrabold tracking-wider text-tinta-2 uppercase">camiseta · calça · calçado</span>
+                  </p>
+                  <dl className="mt-5 hidden w-full grid-cols-3 gap-2 sm:grid">
                     {[
                       ["Camiseta", c.camiseta],
                       ["Calça", c.calca],
@@ -222,7 +228,7 @@ export function GradeCriancas({ slug, criancas, aberta }: { slug: string; crianc
                     ))}
                   </dl>
                   {(c.sugestao || c.gostos) && (
-                    <div className="mt-4 w-full space-y-1 text-left text-[15px] text-tinta">
+                    <div className="mt-4 hidden w-full space-y-1 text-left text-[15px] text-tinta sm:block">
                       {c.sugestao && (
                         <p>
                           <span className="font-extrabold text-verde">Ideia de presente:</span> {c.sugestao}
@@ -241,14 +247,14 @@ export function GradeCriancas({ slug, criancas, aberta }: { slug: string; crianc
                       type="button"
                       onClick={() => alternar(c.id)}
                       aria-pressed={escolhida}
-                      className={`btn mt-6 w-full ${escolhida ? "bg-verde text-creme hover:bg-verde-2" : "btn-acao"}`}
+                      className={`btn mt-4 h-10 w-full px-2 text-sm sm:mt-6 sm:h-12 sm:px-6 sm:text-[17px] ${escolhida ? "bg-verde text-creme hover:bg-verde-2" : "btn-acao"}`}
                     >
                       {escolhida ? (
                         <>
-                          <IconeCheck className="size-5" /> Na sua sacolinha
+                          <IconeCheck className="size-4 sm:size-5" /> Escolhida
                         </>
                       ) : (
-                        "Quero adotar"
+                        "Apadrinhar"
                       )}
                     </button>
                   )}
