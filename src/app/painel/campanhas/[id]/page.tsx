@@ -8,7 +8,7 @@ import { ConfirmButton } from "@/components/ui/confirm-button";
 import { SubmitButton } from "@/components/ui/submit-button";
 import type { StatusParticipacao } from "@/db/schema";
 import { STATUS_PARTICIPACAO } from "@/db/schema";
-import { asaasConfigured } from "@/lib/asaas";
+import { modoPagamento, pagamentoOnlineDisponivel } from "@/lib/pagamento";
 import { usuarioAtual } from "@/lib/auth";
 import { CANAL_LABEL, resumoCampanha, STATUS_CAMPANHA_LABEL, STATUS_LABEL } from "@/lib/campanhas";
 import { idadeTexto } from "@/lib/criancas";
@@ -56,7 +56,8 @@ export default async function CampanhaPage({ params, searchParams }: { params: P
   const avisos: string[] = [];
   if (c.status === "rascunho") avisos.push("A campanha está em rascunho: ainda não aparece no site.");
   if (!c.valorSacolinha) avisos.push("Sem valor da sacolinha: o site não oferece o pagamento online, só montar e entregar.");
-  else if (!asaasConfigured()) avisos.push("O Asaas não está configurado: o pagamento online fica escondido até a chave ser cadastrada.");
+  else if (!pagamentoOnlineDisponivel()) avisos.push("O Asaas não está configurado: o pagamento online fica escondido até a chave ser cadastrada.");
+  else if (modoPagamento() === "demo") avisos.push("Pagamento online em modo demonstração: o fluxo funciona inteiro, mas ninguém é cobrado.");
   if (!c.prazoEntrega) avisos.push("Sem data limite de entrega: o site não oferece montar e entregar no balcão.");
   if (!Number(pontosAtivos?.n)) avisos.push("Nenhum ponto de coleta ativo: cadastre os balcões em Pontos de coleta.");
   if (resumo.total === 0) avisos.push("Nenhuma criança na campanha ainda. Adicione abaixo.");
@@ -164,7 +165,7 @@ export default async function CampanhaPage({ params, searchParams }: { params: P
                 {linhas.map(({ p, c: cr, modalidade }) => (
                   <tr key={p.id}>
                     <td className="px-4 py-2.5">
-                      <Link href={`/criancas/${cr.id}`} className="flex items-center gap-3 font-semibold hover:text-roxo">
+                      <Link href={`/criancas/${cr.id}`} className="flex items-center gap-3 font-semibold hover:text-verde">
                         <FotoCrianca id={cr.id} versao={cr.fotoKey ?? cr.avatarKey} />
                         <span>
                           {cr.nome}
@@ -183,14 +184,14 @@ export default async function CampanhaPage({ params, searchParams }: { params: P
                     <td className="px-4 py-2.5 text-tinta-2">
                       {p.padrinhoNome ?? "—"}
                       {p.pedidoId && (
-                        <Link href={`/pedidos/${p.pedidoId}`} className="block text-xs text-roxo hover:underline">
+                        <Link href={`/pedidos/${p.pedidoId}`} className="block text-xs text-verde hover:underline">
                           Pedido #{p.pedidoId}
                         </Link>
                       )}
                     </td>
                     <td className="px-4 py-2.5 text-tinta-2">{p.canal ? CANAL_LABEL[p.canal] : "—"}</td>
                     <td className="px-4 py-2.5 text-right whitespace-nowrap">
-                      <Link href={`/campanhas/${id}/p/${p.id}`} className="text-roxo hover:underline">
+                      <Link href={`/campanhas/${id}/p/${p.id}`} className="text-verde hover:underline">
                         Registrar
                       </Link>
                       {p.status === "disponivel" && (
@@ -222,12 +223,12 @@ export default async function CampanhaPage({ params, searchParams }: { params: P
               </SubmitButton>
             </form>
             <details className="mt-4">
-              <summary className="cursor-pointer text-sm text-roxo">Escolher uma a uma</summary>
+              <summary className="cursor-pointer text-sm text-verde">Escolher uma a uma</summary>
               <form action={adicionarCriancas.bind(null, id)} className="mt-3">
                 <div className="grid max-h-80 gap-1 overflow-y-auto sm:grid-cols-2 lg:grid-cols-3">
                   {foraDaCampanha.map((cr) => (
                     <label key={cr.id} className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm hover:bg-creme/50">
-                      <input type="checkbox" name="crianca" value={cr.id} className="size-4 accent-roxo" />
+                      <input type="checkbox" name="crianca" value={cr.id} className="size-4 accent-verde" />
                       {cr.nome}
                       {cr.dataNascimento && <span className="text-tinta-2">· {idadeTexto(cr.dataNascimento)}</span>}
                     </label>

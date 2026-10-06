@@ -48,12 +48,12 @@ export default async function PontosPage() {
                   {!p.ativo && <span className="ml-2 rounded-md bg-tinta/10 px-2 py-0.5 text-xs">Inativo</span>}
                   <span className="block text-sm text-tinta-2">{p.endereco}</span>
                 </span>
-                <span className="text-sm text-roxo">Editar</span>
+                <span className="text-sm text-verde">Editar</span>
               </summary>
               <ActionForm action={salvarPonto.bind(null, p.id)} className="mt-4 grid gap-3">
                 <Campos p={p} />
                 <label className="flex items-center gap-2 text-sm">
-                  <input type="checkbox" name="ativo" value="1" defaultChecked={p.ativo} className="size-4 accent-roxo" />
+                  <input type="checkbox" name="ativo" value="1" defaultChecked={p.ativo} className="size-4 accent-verde" />
                   Ativo (aparece no site)
                 </label>
                 <div>

@@ -1,21 +1,22 @@
 @import "tailwindcss";
 
-/* Cores tiradas do logo do Paz Kids em Ação (as letras e os balões) e do contorno escuro do desenho.
-   Cor forte é para ação e detalhe; fundo de seção fica no papel ou no creme. */
+/* Paleta do manual da marca (Campanha de Natal, v1.0). Verde e creme são a base; amarelo e vermelho
+   são destaque, com moderação (45% verde · 30% creme · 15% amarelo · 10% vermelho). Texto amarelo
+   só sobre o verde. */
 @theme {
-  --color-tinta: #1b1633;
-  --color-tinta-2: #4a4566;
-  --color-papel: #fffbf5;
-  --color-creme: #fff3d6;
-  --color-linha: #ebe4d8;
-  --color-roxo: #7b2fa0;
-  --color-rosa: #d81b8f;
-  --color-laranja: #e8620c;
-  --color-vermelho: #c8102e;
-  --color-verde: #23a332;
-  --color-azul: #0a84c2;
-  --color-amarelo: #ffc614;
-  --color-ceu: #dff3ff;
+  --color-verde: #1e4b36;
+  --color-verde-2: #2a6249;
+  --color-verde-escuro: #143426;
+  --color-creme: #f4efe3;
+  --color-papel: #fbf8f1;
+  --color-amarelo: #f5b629;
+  --color-vermelho: #d64a2b;
+  --color-kraft: #dcc29a;
+  --color-tinta: #1f2a24;
+  --color-tinta-2: #56635c;
+  --color-linha: #e2dac8;
+  /* Só para avisos do painel. */
+  --color-laranja: #a8650a;
 
   --font-titulo: var(--font-fredoka), ui-rounded, system-ui, sans-serif;
   --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
@@ -24,6 +25,7 @@
 
 html {
   -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -35,57 +37,95 @@ body {
 
 ::selection {
   background: var(--color-amarelo);
-  color: var(--color-tinta);
+  color: var(--color-verde-escuro);
 }
 
-h1,
-h2,
-h3 {
-  font-family: var(--font-titulo);
-  text-wrap: balance;
+/* Na camada base: assim uma classe utilitária (font-mao num h3, por exemplo) vence. */
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-titulo);
+    text-wrap: balance;
+  }
 }
 
 @layer components {
   .btn {
-    @apply inline-flex h-11 items-center justify-center gap-2 rounded-xl px-5 font-titulo text-[16px] font-semibold whitespace-nowrap transition-[transform,background-color,border-color,opacity] duration-150 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-azul active:translate-y-px disabled:pointer-events-none disabled:opacity-50;
+    @apply inline-flex h-12 items-center justify-center gap-2 rounded-xl px-6 font-titulo text-[17px] font-semibold whitespace-nowrap transition-[transform,background-color,border-color,color] duration-150 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-amarelo active:translate-y-px disabled:pointer-events-none disabled:opacity-50;
   }
-  /* Botão principal com a "sombra dura" do contorno do logo, em vez de sombra difusa. */
+  /* Ação principal: o vermelho do laço. */
+  .btn-acao {
+    @apply bg-vermelho text-white hover:bg-[#c03f22];
+  }
   .btn-primario {
-    @apply bg-roxo text-white shadow-[0_3px_0_var(--color-tinta)] hover:bg-roxo/90 active:shadow-[0_1px_0_var(--color-tinta)];
+    @apply bg-verde text-creme hover:bg-verde-2;
   }
   .btn-escuro {
     @apply bg-tinta text-white hover:bg-tinta/85;
   }
   .btn-claro {
-    @apply border border-linha bg-white text-tinta hover:border-tinta/30;
+    @apply border border-linha bg-white text-tinta hover:border-verde/40;
+  }
+  .btn-contorno-claro {
+    @apply border-2 border-creme/70 text-creme hover:border-creme hover:bg-creme/10;
   }
   .btn-sm {
     @apply h-9 rounded-lg px-3.5 text-sm;
   }
 
   .campo {
-    @apply block w-full rounded-lg border border-linha bg-white px-3.5 py-2.5 text-[15px] text-tinta placeholder:text-tinta-2/50 transition-colors outline-none focus:border-roxo/50 focus:ring-4 focus:ring-roxo/10;
+    @apply block w-full rounded-xl border border-linha bg-white px-4 py-3 text-[16px] text-tinta placeholder:text-tinta-2/50 transition-colors outline-none focus:border-verde/50 focus:ring-4 focus:ring-verde/10;
   }
   .rotulo {
-    @apply mb-1.5 block text-sm font-semibold text-tinta;
+    @apply mb-1.5 block text-sm font-bold text-tinta;
   }
+  /* Rótulo curto do manual: Nunito ExtraBold, caixa alta, espaçamento largo. */
   .chamada {
-    @apply font-titulo text-xs font-semibold tracking-[0.16em] text-tinta-2 uppercase;
+    @apply font-sans text-[12px] font-extrabold tracking-[0.22em] uppercase;
   }
   .cartao {
     @apply rounded-2xl border border-linha bg-white;
   }
 }
 
+/* Pincelada amarela do manual: sublinha uma palavra ou frase curta, nunca um parágrafo. */
+.pincelada {
+  position: relative;
+  white-space: nowrap;
+  z-index: 0;
+}
+.pincelada::after {
+  content: "";
+  position: absolute;
+  left: -0.06em;
+  right: -0.06em;
+  bottom: -0.12em;
+  height: 0.32em;
+  background: url("/natal/simbolos/pincelada.svg") center / 100% 100% no-repeat;
+  z-index: -1;
+}
+
+/* Formas orgânicas: sempre grandes e cortadas pela borda da seção. */
+.forma {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+}
+/* O conteúdo da seção sempre por cima das formas (o fade de entrada cria camadas próprias). */
+.forma ~ :not(.forma) {
+  position: relative;
+  z-index: 1;
+}
 
 .tkd-calendar .rdp-root {
-  --rdp-accent-color: var(--color-roxo);
-  --rdp-accent-background-color: #7b2fa012;
+  --rdp-accent-color: var(--color-verde);
+  --rdp-accent-background-color: #1e4b3612;
   --rdp-day-height: 36px;
   --rdp-day-width: 36px;
   --rdp-day_button-height: 34px;
   --rdp-day_button-width: 34px;
-  --rdp-today-color: var(--color-roxo);
+  --rdp-today-color: var(--color-vermelho);
   font-size: 14px;
 }
 .tkd-calendar .rdp-month_caption {
@@ -94,7 +134,28 @@ h3 {
   text-transform: capitalize;
 }
 
+/* Aparecer ao rolar. Sem JS, tudo já aparece: a classe .js só entra quando o script roda. */
+.js [data-revelar] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--atraso, 0ms);
+}
+.js [data-revelar].visivel {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .js [data-revelar] {
+    opacity: 1;
+    transform: none;
+  }
   *,
   *::before,
   *::after {

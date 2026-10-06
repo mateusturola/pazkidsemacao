@@ -45,7 +45,7 @@ export default async function AuditoriaPage() {
                 <td className="px-4 py-2">
                   {l.acao} ·{" "}
                   {l.entidadeId && LINK[l.entidade] ? (
-                    <a href={LINK[l.entidade](l.entidadeId)} className="text-roxo hover:underline">
+                    <a href={LINK[l.entidade](l.entidadeId)} className="text-verde hover:underline">
                       {ENTIDADE[l.entidade] ?? l.entidade} {l.entidadeId}
                     </a>
                   ) : (

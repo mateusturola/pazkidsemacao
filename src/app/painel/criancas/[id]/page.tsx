@@ -97,7 +97,7 @@ export default async function CriancaPage({ params }: { params: Promise<{ id: st
               <ul className="mt-3 divide-y divide-linha text-sm">
                 {historico.map(({ p, campanha, campanhaId }) => (
                   <li key={p.id} className="py-2">
-                    <Link href={`/campanhas/${campanhaId}`} className="font-semibold hover:text-roxo">
+                    <Link href={`/campanhas/${campanhaId}`} className="font-semibold hover:text-verde">
                       {campanha}
                     </Link>
                     <span className="block text-tinta-2">

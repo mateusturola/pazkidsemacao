@@ -45,7 +45,7 @@ export default async function UsuariosPage() {
                     {u.papel === "admin" ? "Admin" : "Voluntário"}
                     {!ultimoAdmin && u.email !== eu.email && (
                       <form action={mudarPapel.bind(null, u.email, u.papel === "admin" ? "voluntario" : "admin")} className="inline">
-                        <button className="ml-2 text-xs text-roxo hover:underline">{u.papel === "admin" ? "tornar voluntário" : "tornar admin"}</button>
+                        <button className="ml-2 text-xs text-verde hover:underline">{u.papel === "admin" ? "tornar voluntário" : "tornar admin"}</button>
                       </form>
                     )}
                   </td>

@@ -5,6 +5,7 @@ import { deletePayment } from "@/lib/asaas";
 import { auditar } from "@/lib/auditoria";
 import { todayIso } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
+import { enviarDepois } from "@/lib/email";
 
 const { participacoes, pedidos, pedidoItens, padrinhos, criancas } = schema;
 
@@ -57,7 +58,7 @@ export async function liberarExpiradas() {
   // Apaga a cobrança para ninguém pagar por uma criança que já voltou para a lista. Se o pagamento
   // chegar mesmo assim, confirmarPagamento tenta reservar de novo e avisa a equipe se não der.
   for (const v of vencidos) {
-    if (v.asaasPaymentId) depois(() => deletePayment(v.asaasPaymentId!));
+    if (v.asaasPaymentId && !v.asaasPaymentId.startsWith("demo_")) depois(() => deletePayment(v.asaasPaymentId!));
     depois(() => auditar("sistema", "reserva expirou", "pedido", v.id));
   }
 }
@@ -134,6 +135,7 @@ export async function confirmarPagamento(pedidoId: number, autor: string) {
 
   await db.update(pedidos).set({ status: "pago", pagoEm: new Date(), pendencia }).where(eq(pedidos.id, pedido.id));
   await auditar(autor, "pagamento confirmado", "pedido", pedido.id);
+  enviarDepois(pedido.id, "agradecimento");
 }
 
 /** Cancela o pedido e devolve ao site as crianças que ainda estavam só reservadas por ele. */
@@ -165,6 +167,7 @@ export async function marcarEntregue(pedidoId: number, autor: string) {
       .where(and(eq(participacoes.pedidoId, pedidoId), inArray(participacoes.status, ["reservada", "apadrinhada"]))),
   ]);
   await auditar(autor, "sacolinha entregue", "pedido", pedidoId);
+  enviarDepois(pedidoId, "entregue");
 }
 
 export { LIBERADA };

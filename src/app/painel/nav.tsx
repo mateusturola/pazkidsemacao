@@ -10,6 +10,7 @@ const ITENS = [
   { href: "/campanhas", label: "Campanhas", ativo: (p: string) => p.includes("/campanhas") },
   { href: "/pedidos", label: "Pedidos", ativo: (p: string) => p.includes("/pedidos") },
   { href: "/pontos", label: "Pontos de coleta", ativo: (p: string) => p.includes("/pontos") },
+  { href: "/emails", label: "E-mails", ativo: (p: string) => p.includes("/emails") },
 ];
 const ADMIN = [
   { href: "/usuarios", label: "Usuários", ativo: (p: string) => p.includes("/usuarios") },

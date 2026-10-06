@@ -5,7 +5,10 @@ import { accountInfo, asaasConfigured, asaasEnv, findWebhook } from "@/lib/asaas
 import { requireAdmin } from "@/lib/auth";
 import { env } from "@/lib/env";
 import { formatBRL } from "@/lib/money";
-import { configurarWebhook } from "./actions";
+import { instagramConfigurado, postsInstagram } from "@/lib/instagram";
+import { modoPagamento } from "@/lib/pagamento";
+import { emailConfigurado } from "@/lib/email";
+import { atualizarInstagramAgora, configurarWebhook } from "./actions";
 
 export const metadata: Metadata = { title: "Configurações" };
 
@@ -23,6 +26,7 @@ async function statusAsaas() {
 export default async function ConfiguracoesPage() {
   await requireAdmin();
   const s = await statusAsaas();
+  const [igOk, posts] = await Promise.all([instagramConfigurado(), postsInstagram()]);
   return (
     <div className="max-w-3xl space-y-6">
       <h1 className="text-3xl font-semibold">Configurações</h1>
@@ -61,6 +65,40 @@ export default async function ConfiguracoesPage() {
               </SubmitButton>
             </ActionForm>
           </>
+        )}
+      </section>
+
+      <section className="cartao p-5">
+        <h2 className="text-lg font-semibold">Pagamento online</h2>
+        <p className="mt-1 text-sm text-tinta-2">
+          {modoPagamento() === "demo"
+            ? "Modo demonstração (PAGAMENTO_MODO=demo): o fluxo funciona inteiro com uma tela de pagamento simulada, e ninguém é cobrado."
+            : "Cobrança de verdade pelo Asaas (PAGAMENTO_MODO=asaas)."}
+        </p>
+      </section>
+
+      <section className="cartao p-5">
+        <h2 className="text-lg font-semibold">E-mails</h2>
+        <p className="mt-1 text-sm text-tinta-2">
+          {emailConfigurado()
+            ? "Envio ativo pelo Resend. Veja cada e-mail em E-mails."
+            : "Modo demonstração: os e-mails aparecem em E-mails, mas não são enviados (falta RESEND_API_KEY ou EMAIL_REMETENTE)."}
+        </p>
+      </section>
+
+      <section className="cartao p-5">
+        <h2 className="text-lg font-semibold">Instagram</h2>
+        <p className="mt-1 text-sm text-tinta-2">
+          {igOk
+            ? `Conectado. ${posts.length} post(s) no site; atualiza sozinho todo dia.`
+            : "Sem token: o site mostra fotos das ações no lugar dos posts. Cadastre o secret INSTAGRAM_TOKEN (veja o README)."}
+        </p>
+        {igOk && (
+          <ActionForm action={atualizarInstagramAgora} className="mt-3 space-y-2">
+            <SubmitButton className="btn btn-claro btn-sm" pendingText="Buscando…">
+              Atualizar agora
+            </SubmitButton>
+          </ActionForm>
         )}
       </section>
 

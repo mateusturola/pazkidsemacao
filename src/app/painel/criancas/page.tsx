@@ -75,7 +75,7 @@ export default async function CriancasPage({ searchParams }: { searchParams: Pro
               {lista.map((c) => (
                 <tr key={c.id} className="hover:bg-creme/40">
                   <td className="px-4 py-2.5">
-                    <Link href={`/criancas/${c.id}`} className="flex items-center gap-3 font-semibold hover:text-roxo">
+                    <Link href={`/criancas/${c.id}`} className="flex items-center gap-3 font-semibold hover:text-verde">
                       <FotoCrianca id={c.id} versao={c.fotoKey ?? c.avatarKey} />
                       <span>
                         {c.nome}

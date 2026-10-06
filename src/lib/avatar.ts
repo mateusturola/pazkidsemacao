@@ -6,8 +6,8 @@ import { lorelei } from "@dicebear/collection";
 // semente na hora de salvar, então o que vai para o R2 nunca é um SVG vindo do navegador.
 // Estilo "lorelei": licença CC0, sem exigência de crédito.
 
-// Tons claros das cores do logo, para o traço preto do desenho continuar legível.
-const FUNDOS = ["ffe08a", "bfe9ff", "f8c6e6", "c9f0cc", "e3cdf0", "ffd1b3"];
+// Tons claros da paleta do manual, para o traço escuro do desenho continuar legível.
+const FUNDOS = ["f4efe3", "fbe3a8", "f3c9bc", "cfe0d5", "f7d77e"];
 
 export function avatarSvg(seed: string) {
   return createAvatar(lorelei, { seed, backgroundColor: FUNDOS, backgroundType: ["solid"] }).toString();

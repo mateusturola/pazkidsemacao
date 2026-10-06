@@ -3,13 +3,15 @@
 import { eq, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { asaasConfigured, createPayment, upsertCustomer } from "@/lib/asaas";
+import { createPayment, upsertCustomer } from "@/lib/asaas";
 import { auditar } from "@/lib/auditoria";
 import { campanhaPorSlug } from "@/lib/campanhas";
+import { enviarDepois } from "@/lib/email";
 import { nomePublico } from "@/lib/criancas";
 import { todayIso } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
 import { cancelarPedido, liberarExpiradas, reservar } from "@/lib/reservas";
+import { modoPagamento, pagamentoOnlineDisponivel } from "@/lib/pagamento";
 import { MAX_POR_PEDIDO } from "@/lib/regras";
 import { novoToken } from "@/lib/token";
 
@@ -58,7 +60,7 @@ export async function finalizarPedido(slug: string, ids: number[], _: Estado, fo
   let pontoColetaId: number | null = null;
 
   if (modalidade === "pagamento_online") {
-    if (!campanha.valorSacolinha || !asaasConfigured()) return { erro: "O pagamento online não está disponível nesta campanha." };
+    if (!campanha.valorSacolinha || !pagamentoOnlineDisponivel()) return { erro: "O pagamento online não está disponível nesta campanha." };
     cpf = t("cpf").replace(/\D/g, "");
     if (!cpfValido(cpf)) return { erro: "CPF inválido. Ele é exigido para gerar a cobrança." };
     forma = t("forma") === "cartao" ? "cartao" : "pix";
@@ -124,37 +126,47 @@ export async function finalizarPedido(slug: string, ids: number[], _: Estado, fo
   }
 
   if (modalidade === "pagamento_online") {
-    try {
-      const customer = await upsertCustomer(existente?.asaasCustomerId ?? null, {
-        name: nome,
-        cpfCnpj: cpf!,
-        email,
-        phone: telefone,
-        externalReference: `padrinho:${padrinhoId}`,
-      });
-      if (customer !== existente?.asaasCustomerId) await db.update(padrinhos).set({ asaasCustomerId: customer }).where(eq(padrinhos.id, padrinhoId));
-      const pagamento = await createPayment({
-        customer,
-        valueCents: valor!,
-        dueDate: todayIso(),
-        description: `${campanha.nome}: ${criancaIds.length} sacolinha(s) · Paz Kids em Ação`,
-        billingType: forma === "cartao" ? "CREDIT_CARD" : "PIX",
-        installments: parcelas,
-        externalReference: `pedido:${pedido.id}`,
-      });
+    if (modoPagamento() === "demo") {
+      // Mesmo caminho do Asaas, com a tela de pagamento simulada do próprio site no lugar da fatura.
       await db
         .update(pedidos)
-        .set({ asaasPaymentId: pagamento.id, asaasInvoiceUrl: pagamento.invoiceUrl ?? null })
+        .set({ asaasPaymentId: `demo_${pedido.id}`, asaasInvoiceUrl: `/pedido/${token}/pagar` })
         .where(eq(pedidos.id, pedido.id));
-    } catch (err) {
-      console.error("asaas", err);
-      await cancelarPedido(pedido.id, "site");
-      revalidatePath(`/${slug}`);
-      return { erro: "Não conseguimos gerar a cobrança agora. Tente de novo em alguns minutos ou escolha montar e entregar a sacolinha." };
+    } else {
+      try {
+        const customer = await upsertCustomer(existente?.asaasCustomerId ?? null, {
+          name: nome,
+          cpfCnpj: cpf!,
+          email,
+          phone: telefone,
+          externalReference: `padrinho:${padrinhoId}`,
+        });
+        if (customer !== existente?.asaasCustomerId) await db.update(padrinhos).set({ asaasCustomerId: customer }).where(eq(padrinhos.id, padrinhoId));
+        const pagamento = await createPayment({
+          customer,
+          valueCents: valor!,
+          dueDate: todayIso(),
+          description: `${campanha.nome}: ${criancaIds.length} sacolinha(s) · Paz Kids em Ação`,
+          billingType: forma === "cartao" ? "CREDIT_CARD" : "PIX",
+          installments: parcelas,
+          externalReference: `pedido:${pedido.id}`,
+        });
+        await db
+          .update(pedidos)
+          .set({ asaasPaymentId: pagamento.id, asaasInvoiceUrl: pagamento.invoiceUrl ?? null })
+          .where(eq(pedidos.id, pedido.id));
+      } catch (err) {
+        console.error("asaas", err);
+        await cancelarPedido(pedido.id, "site");
+        revalidatePath(`/${slug}`);
+        return { erro: "Não conseguimos gerar a cobrança agora. Tente de novo em alguns minutos ou escolha montar e entregar a sacolinha." };
+      }
     }
   }
 
   await auditar("site", "pedido criado", "pedido", pedido.id, { modalidade, criancas: criancaIds.length });
+  // No pagamento online, o agradecimento sai quando o pagamento confirma (confirmarPagamento).
+  if (modalidade === "entrega_balcao") enviarDepois(pedido.id, "agradecimento");
   revalidatePath(`/${slug}`);
   revalidatePath("/");
   redirect(`/pedido/${token}`);

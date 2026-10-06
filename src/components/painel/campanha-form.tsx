@@ -18,7 +18,7 @@ export function CampanhaForm({ action, campanha, botao }: { action: Action; camp
         </label>
         <label className="block">
           <span className="rotulo">Endereço no site</span>
-          <div className="flex items-center rounded-lg border border-linha bg-white focus-within:border-roxo/50 focus-within:ring-4 focus-within:ring-roxo/10">
+          <div className="flex items-center rounded-lg border border-linha bg-white focus-within:border-verde/50 focus-within:ring-4 focus-within:ring-verde/10">
             <span className="pl-3.5 text-sm text-tinta-2">pazkidsemacao.com/</span>
             <input name="slug" defaultValue={c?.slug} placeholder="natal" className="w-full bg-transparent py-2.5 pr-3.5 text-[15px] outline-none" />
           </div>

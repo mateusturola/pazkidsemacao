@@ -1,49 +1,58 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SITE } from "@/content/site";
-import { FaixaCores } from "./faixa-cores";
 
-export function Rodape() {
+/** Rodapé em verde escuro: o logo da campanha vai na versão negativa e o da agência na branca. */
+export function Rodape({ variante }: { variante: "institucional" | "campanha" }) {
   return (
-    <footer className="bg-tinta text-white/80">
-      <FaixaCores />
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-[1.3fr_1fr_1fr]">
+    <footer className="relative overflow-hidden bg-verde-escuro text-creme/80">
+      <div className="mx-auto grid max-w-7xl gap-12 px-4 pt-16 pb-12 sm:px-8 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
-          <Image src="/brand/pazkids-em-acao-200.webp" alt="Paz Kids em Ação" width={200} height={238} className="h-24 w-auto" />
-          <p className="mt-4 max-w-xs text-sm">{SITE.descricao}</p>
-          <p className="mt-2 text-sm text-white/60">{SITE.igreja}</p>
+          {variante === "campanha" ? (
+            <Image src="/natal/logo/paz-kids-vertical-negativa-colorida-sem-fundo.svg" alt="Paz Kids em Ação · Campanha de Natal" width={150} height={186} className="h-32 w-auto" />
+          ) : (
+            <Image src="/brand/pazkids-em-acao-200.webp" alt="Paz Kids em Ação" width={200} height={238} className="h-28 w-auto" />
+          )}
+          <p className="mt-5 max-w-sm">{SITE.descricao}</p>
+          <p className="mt-3 font-mao text-2xl text-amarelo">Juntos fazemos a diferença.</p>
         </div>
         <div>
-          <p className="font-titulo text-lg font-semibold text-white">Acompanhe</p>
-          <ul className="mt-3 space-y-2 text-sm">
+          <p className="chamada text-amarelo">Acompanhe</p>
+          <ul className="mt-4 space-y-2.5">
             {SITE.redes.map((r) => (
               <li key={r.nome}>
                 <a href={r.url} target="_blank" rel="noopener" className="hover:text-white">
-                  {r.nome} <span className="text-white/50">{r.usuario}</span>
+                  {r.nome} <span className="text-creme/50">{r.usuario}</span>
                 </a>
               </li>
             ))}
+            <li>
+              <a href={`mailto:${SITE.email}`} className="hover:text-white">
+                {SITE.email}
+              </a>
+            </li>
           </ul>
         </div>
         <div>
-          <p className="font-titulo text-lg font-semibold text-white">Doe por Pix</p>
-          <p className="mt-3 text-sm">
-            {SITE.pix.tipo}: <span className="font-semibold text-white">{SITE.pix.chave}</span>
+          <p className="chamada text-amarelo">Doe por Pix</p>
+          <p className="mt-4">{SITE.pix.tipo}</p>
+          <p className="font-titulo text-xl font-semibold text-white">{SITE.pix.chave}</p>
+          <p className="mt-6">
+            <Link href="/" className="hover:text-white">
+              Paz Kids em Ação
+            </Link>{" "}
+            · {SITE.igreja}
           </p>
-          <Link href="/#doe" className="mt-2 inline-block text-sm text-amarelo hover:underline">
-            Copiar a chave
-          </Link>
         </div>
       </div>
-      <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-5 text-xs text-white/55 sm:px-6">
+      <div className="border-t border-creme/10">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-6 text-sm text-creme/55 sm:px-8">
           <p>
             © {new Date().getFullYear()} {SITE.nome} · Paz Kids · Igreja da Paz
           </p>
-          {/* Fundo escuro: o logo da agência vai na versão toda branca. */}
-          <a href="https://thekingdomdigital.online" target="_blank" rel="noopener" className="flex items-center gap-2.5 opacity-80 transition-opacity hover:opacity-100">
+          <a href="https://thekingdomdigital.online" target="_blank" rel="noopener" className="flex items-center gap-3 opacity-80 transition-opacity hover:opacity-100">
             <span>Desenvolvido por</span>
-            <Image src="/brand/thekingdomdigital-branco.webp" alt="The Kingdom Digital" width={440} height={160} className="h-7 w-auto" />
+            <Image src="/brand/thekingdomdigital-branco.webp" alt="The Kingdom Digital" width={440} height={160} className="h-8 w-auto" />
           </a>
         </div>
       </div>

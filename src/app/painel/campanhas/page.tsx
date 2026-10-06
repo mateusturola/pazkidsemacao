@@ -39,7 +39,7 @@ export default async function CampanhasPage() {
                 <StatusBadge status={c.status} label={STATUS_CAMPANHA_LABEL[c.status]} />
               </div>
               <div className="mt-4 h-2 overflow-hidden rounded-full bg-creme">
-                <div className="h-full rounded-full bg-roxo" style={{ width: `${p.total ? (p.comPadrinho / p.total) * 100 : 0}%` }} />
+                <div className="h-full rounded-full bg-verde" style={{ width: `${p.total ? (p.comPadrinho / p.total) * 100 : 0}%` }} />
               </div>
               <p className="mt-2 text-sm text-tinta-2">
                 {p.comPadrinho} de {p.total} crianças com padrinho

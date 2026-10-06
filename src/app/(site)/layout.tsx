@@ -1,14 +1,11 @@
-import { Cabecalho } from "@/components/site/cabecalho";
-import { Rodape } from "@/components/site/rodape";
-import { campanhasAtivas } from "@/lib/campanhas";
+import { Revelar } from "@/components/site/revelar";
 
-export default async function SiteLayout({ children }: { children: React.ReactNode }) {
-  const [principal] = await campanhasAtivas();
+// Cada página monta o próprio topo e rodapé: o site institucional e a campanha têm marcas diferentes.
+export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Cabecalho campanha={principal ? { slug: principal.slug, nome: principal.nome } : null} />
-      <main>{children}</main>
-      <Rodape />
+      {children}
+      <Revelar />
     </>
   );
 }

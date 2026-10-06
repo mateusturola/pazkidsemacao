@@ -43,7 +43,7 @@ export function FinalizarForm({
     <form action={formAction} className="space-y-8">
       {online && balcao && (
         <fieldset>
-          <legend className="font-titulo text-xl font-semibold">Como você vai ajudar?</legend>
+          <legend className="font-titulo text-2xl font-semibold text-verde">Como você vai ajudar?</legend>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <Opcao nome="modalidade" valor="pagamento_online" atual={modalidade} onChange={setModalidade} titulo={`Pagar online · ${valorTotal}`}>
               Pix ou cartão. A equipe compra e monta a sacolinha.
@@ -57,7 +57,7 @@ export function FinalizarForm({
       {!(online && balcao) && <input type="hidden" name="modalidade" value={modalidade} />}
 
       <fieldset className="grid gap-4 sm:grid-cols-2">
-        <legend className="mb-3 font-titulo text-xl font-semibold">Seus dados</legend>
+        <legend className="mb-3 font-titulo text-2xl font-semibold text-verde">Seus dados</legend>
         <label className="block sm:col-span-2">
           <span className="rotulo">Nome completo</span>
           <input name="nome" required autoComplete="name" className="campo" />
@@ -81,7 +81,7 @@ export function FinalizarForm({
 
       {modalidade === "pagamento_online" ? (
         <fieldset>
-          <legend className="font-titulo text-xl font-semibold">Pagamento · {valorTotal}</legend>
+          <legend className="font-titulo text-2xl font-semibold text-verde">Pagamento · {valorTotal}</legend>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <Opcao nome="forma" valor="pix" atual={forma} onChange={setForma} titulo="Pix">
               Aprovação na hora.
@@ -108,11 +108,11 @@ export function FinalizarForm({
         </fieldset>
       ) : (
         <fieldset>
-          <legend className="font-titulo text-xl font-semibold">Onde você vai entregar?</legend>
+          <legend className="font-titulo text-2xl font-semibold text-verde">Onde você vai entregar?</legend>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {pontos.map((p) => (
-              <label key={p.id} className="cartao flex cursor-pointer gap-3 p-4 has-[:checked]:border-roxo has-[:checked]:shadow-[0_0_0_2px_var(--color-roxo)]">
-                <input type="radio" name="ponto" value={p.id} required className="mt-1 size-4 accent-roxo" defaultChecked={pontos.length === 1} />
+              <label key={p.id} className="cartao flex cursor-pointer gap-3 p-4 has-[:checked]:border-verde has-[:checked]:shadow-[0_0_0_2px_var(--color-verde)]">
+                <input type="radio" name="ponto" value={p.id} required className="mt-1 size-4 accent-verde" defaultChecked={pontos.length === 1} />
                 <span>
                   <span className="block font-semibold">{p.nome}</span>
                   {p.endereco && <span className="block text-sm whitespace-pre-line text-tinta-2">{p.endereco}</span>}
@@ -126,7 +126,7 @@ export function FinalizarForm({
       )}
 
       <label className="flex items-start gap-3 text-sm">
-        <input type="checkbox" name="aceite" value="1" required className="mt-0.5 size-4 accent-roxo" />
+        <input type="checkbox" name="aceite" value="1" required className="mt-0.5 size-4 accent-verde" />
         <span>Autorizo o Paz Kids em Ação a usar meus dados só para esta campanha: confirmar o apadrinhamento e falar comigo sobre a entrega.</span>
       </label>
 
@@ -136,7 +136,7 @@ export function FinalizarForm({
         </p>
       )}
 
-      <button className="btn btn-primario h-12 w-full px-8 sm:w-auto" disabled={pending}>
+      <button className="btn btn-acao h-14 w-full px-8 text-lg sm:w-auto" disabled={pending}>
         {pending ? "Reservando…" : modalidade === "pagamento_online" ? "Reservar e ir para o pagamento" : "Reservar as crianças"}
       </button>
     </form>
@@ -145,8 +145,8 @@ export function FinalizarForm({
 
 function Opcao({ nome, valor, atual, onChange, titulo, children }: { nome: string; valor: string; atual: string; onChange: (v: string) => void; titulo: string; children: React.ReactNode }) {
   return (
-    <label className={`cartao flex cursor-pointer gap-3 p-4 ${atual === valor ? "border-roxo shadow-[0_0_0_2px_var(--color-roxo)]" : ""}`}>
-      <input type="radio" name={nome} value={valor} checked={atual === valor} onChange={() => onChange(valor)} className="mt-1 size-4 accent-roxo" />
+    <label className={`cartao flex cursor-pointer gap-3 p-4 ${atual === valor ? "border-verde shadow-[0_0_0_2px_var(--color-verde)]" : ""}`}>
+      <input type="radio" name={nome} value={valor} checked={atual === valor} onChange={() => onChange(valor)} className="mt-1 size-4 accent-verde" />
       <span>
         <span className="block font-semibold">{titulo}</span>
         <span className="block text-sm text-tinta-2">{children}</span>

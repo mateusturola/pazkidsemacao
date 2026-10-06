@@ -11,6 +11,7 @@ import { MODALIDADE_LABEL, STATUS_LABEL, STATUS_PEDIDO_LABEL } from "@/lib/campa
 import { formatDateTime, formatIsoDate, todayIso } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
 import { formatBRL } from "@/lib/money";
+import { STATUS_EMAIL, TIPO_EMAIL } from "@/lib/email-labels";
 import { cancelar, entregue, pagamentoManual, salvarObservacoes } from "../actions";
 
 export const metadata: Metadata = { title: "Pedido" };
@@ -37,7 +38,7 @@ export default async function PedidoPage({ params }: { params: Promise<{ id: str
   if (!linha) notFound();
   const { p, padrinho, campanha, ponto } = linha;
 
-  const [itens, historico] = await Promise.all([
+  const [itens, historico, emails] = await Promise.all([
     db
       .select({ c: criancas, status: participacoes.status, pedidoDaParticipacao: participacoes.pedidoId })
       .from(pedidoItens)
@@ -49,6 +50,7 @@ export default async function PedidoPage({ params }: { params: Promise<{ id: str
       .from(logAuditoria)
       .where(and(eq(logAuditoria.entidade, "pedido"), eq(logAuditoria.entidadeId, String(id))))
       .orderBy(desc(logAuditoria.criadoEm)),
+    db.select().from(schema.emailsEnviados).where(eq(schema.emailsEnviados.pedidoId, id)).orderBy(desc(schema.emailsEnviados.criadoEm)),
   ]);
 
   const atrasado = p.status === "aguardando_entrega" && p.prazoEntrega && p.prazoEntrega < todayIso();
@@ -64,7 +66,7 @@ export default async function PedidoPage({ params }: { params: Promise<{ id: str
         <StatusBadge status={p.status} label={STATUS_PEDIDO_LABEL[p.status]} />
       </div>
       <p className="mt-1 text-tinta-2">
-        <Link href={`/campanhas/${campanha.id}`} className="hover:text-roxo">
+        <Link href={`/campanhas/${campanha.id}`} className="hover:text-verde">
           {campanha.nome}
         </Link>{" "}
         · {MODALIDADE_LABEL[p.modalidade]} · feito em {formatDateTime(p.criadoEm)}
@@ -118,7 +120,7 @@ export default async function PedidoPage({ params }: { params: Promise<{ id: str
                     <dt className="w-28 shrink-0 text-tinta-2">Asaas</dt>
                     <dd>
                       {p.asaasInvoiceUrl ? (
-                        <a href={p.asaasInvoiceUrl} target="_blank" rel="noopener" className="text-roxo hover:underline">
+                        <a href={p.asaasInvoiceUrl} target="_blank" rel="noopener" className="text-verde hover:underline">
                           {p.asaasPaymentId}
                         </a>
                       ) : (
@@ -145,7 +147,7 @@ export default async function PedidoPage({ params }: { params: Promise<{ id: str
           {itens.map(({ c, status, pedidoDaParticipacao }) => (
             <li key={c.id} className="flex flex-wrap items-center gap-3 py-2.5 text-sm">
               <FotoCrianca id={c.id} versao={c.fotoKey ?? c.avatarKey} />
-              <Link href={`/criancas/${c.id}`} className="font-semibold hover:text-roxo">
+              <Link href={`/criancas/${c.id}`} className="font-semibold hover:text-verde">
                 {c.nome}
               </Link>
               <span className="text-tinta-2">
@@ -193,13 +195,30 @@ export default async function PedidoPage({ params }: { params: Promise<{ id: str
           <textarea name="observacoes" rows={3} defaultValue={p.observacoes ?? ""} className="campo" />
           {p.pendencia && (
             <label className="flex items-center gap-2 text-sm">
-              <input type="checkbox" name="resolvida" value="1" className="size-4 accent-roxo" />
+              <input type="checkbox" name="resolvida" value="1" className="size-4 accent-verde" />
               Pendência resolvida
             </label>
           )}
           <SubmitButton className="btn btn-claro btn-sm">Salvar</SubmitButton>
         </ActionForm>
       </section>
+
+      {emails.length > 0 && (
+        <section className="cartao mt-6 p-5">
+          <h2 className="text-lg font-semibold">E-mails ao padrinho</h2>
+          <ul className="mt-3 divide-y divide-linha text-sm">
+            {emails.map((e) => (
+              <li key={e.id} className="flex flex-wrap gap-3 py-2">
+                <Link href={`/emails/${e.id}`} className="font-semibold hover:text-verde">
+                  {TIPO_EMAIL[e.tipo]}
+                </Link>
+                <span className={STATUS_EMAIL[e.status].cor}>{STATUS_EMAIL[e.status].label}</span>
+                <span className="ml-auto text-tinta-2">{formatDateTime(e.criadoEm)}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {historico.length > 0 && (
         <section className="mt-6">

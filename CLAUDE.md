@@ -42,10 +42,22 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
 
 ## Visual
 
-- Cores e fontes da marca em `src/app/globals.css` (Fredoka, Nunito, Caveat Brush só em detalhe).
-- Sem glow, sem degradê em texto, sem ícone decorativo inventado, sem dado inventado no site.
+- Manual da marca da campanha (Drive › CAMPANHA DE NATAL › Marca): verde #1E4B36 e creme #F4EFE3 de
+  base, amarelo #F5B629 e vermelho #D64A2B de destaque. Texto amarelo só sobre o verde.
+- Fredoka nos títulos, Nunito no texto, Caveat Brush só em frase de destaque (uma por bloco).
+- Pincelada amarela (`.pincelada`) sublinha uma palavra, nunca um parágrafo. Formas orgânicas sempre
+  grandes e cortadas pela borda. Ícones de traço arredondado em verde; a estrela é o único preenchido.
+- Logo da campanha: o original de `public/natal/logo`, nunca redigitado nem recolorido; colorido só em
+  fundo claro, negativo no verde. O site institucional usa o logo do Paz Kids em Ação (balões).
+- Sem glow, sem degradê em texto, sem dado inventado no site. Imagem de IA só como clima da campanha;
+  foto de criança atendida é real e com autorização.
 - Data se escolhe no `DatePicker`, nunca em `<input type="date">`.
 - Rodapé: "Desenvolvido por" com o logo da The Kingdom Digital, na versão branca (o fundo é escuro).
+
+## Demonstração
+
+- `PAGAMENTO_MODO=demo` simula o pagamento; só `"asaas"` cobra. A rota de simulação recusa tudo fora do demo.
+- `seed/demo.sql` é só para demonstração.
 
 ## Código
 

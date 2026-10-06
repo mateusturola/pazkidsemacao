@@ -49,7 +49,7 @@ export default async function PainelInicio() {
       <section className="mt-8">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold">Campanhas</h2>
-          <Link href="/campanhas" className="text-sm text-roxo hover:underline">
+          <Link href="/campanhas" className="text-sm text-verde hover:underline">
             Ver todas
           </Link>
         </div>
@@ -66,7 +66,7 @@ export default async function PainelInicio() {
                     <StatusBadge status={c.status} label={STATUS_CAMPANHA_LABEL[c.status]} />
                   </div>
                   <div className="mt-3 h-2 overflow-hidden rounded-full bg-creme">
-                    <div className="h-full rounded-full bg-roxo" style={{ width: `${p.total ? (p.comPadrinho / p.total) * 100 : 0}%` }} />
+                    <div className="h-full rounded-full bg-verde" style={{ width: `${p.total ? (p.comPadrinho / p.total) * 100 : 0}%` }} />
                   </div>
                   <p className="mt-2 text-sm text-tinta-2">
                     {p.comPadrinho} de {p.total} crianças com padrinho
@@ -81,7 +81,7 @@ export default async function PainelInicio() {
       <section className="mt-10">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold">Últimos pedidos</h2>
-          <Link href="/pedidos" className="text-sm text-roxo hover:underline">
+          <Link href="/pedidos" className="text-sm text-verde hover:underline">
             Ver todos
           </Link>
         </div>

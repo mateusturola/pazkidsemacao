@@ -191,3 +191,50 @@ export type PontoColeta = typeof pontosColeta.$inferSelect;
 export type UsuarioPainel = typeof usuariosPainel.$inferSelect;
 export type StatusParticipacao = (typeof STATUS_PARTICIPACAO)[number];
 export type Canal = (typeof CANAIS)[number];
+
+export const TIPOS_EMAIL = ["agradecimento", "lembrete", "lembrete_final", "entregue"] as const;
+
+export const emailsEnviados = sqliteTable(
+  "emails_enviados",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    pedidoId: integer("pedido_id")
+      .notNull()
+      .references(() => pedidos.id),
+    tipo: text("tipo", { enum: TIPOS_EMAIL }).notNull(),
+    para: text("para").notNull(),
+    assunto: text("assunto").notNull(),
+    // Guardado inteiro: a equipe vê no painel exatamente o que o padrinho recebeu.
+    html: text("html").notNull(),
+    // "demo": gerado mas não enviado (sem Resend configurado). "erro": o provedor recusou.
+    status: text("status", { enum: ["enviado", "demo", "erro"] }).notNull(),
+    erro: text("erro"),
+    criadoEm: integer("criado_em", { mode: "timestamp_ms" }).notNull().default(agora),
+  },
+  // Um e-mail de cada tipo por pedido: o cron diário pode rodar de novo sem mandar lembrete repetido.
+  (t) => [uniqueIndex("emails_pedido_tipo_uq").on(t.pedidoId, t.tipo)],
+);
+
+export type EmailEnviado = typeof emailsEnviados.$inferSelect;
+
+/** Últimos posts do Instagram, copiados pelo cron: a imagem do Instagram expira, a do R2 não. */
+export const instagramPosts = sqliteTable(
+  "instagram_posts",
+  {
+    id: text("id").primaryKey(),
+    permalink: text("permalink").notNull(),
+    legenda: text("legenda"),
+    tipo: text("tipo").notNull(),
+    imagemKey: text("imagem_key").notNull(),
+    publicadoEm: integer("publicado_em", { mode: "timestamp_ms" }).notNull(),
+    atualizadoEm: integer("atualizado_em", { mode: "timestamp_ms" }).notNull().default(agora),
+  },
+  (t) => [index("instagram_publicado_idx").on(t.publicadoEm)],
+);
+
+/** Valores que o próprio sistema atualiza (o token do Instagram renovado, por exemplo). */
+export const configuracoes = sqliteTable("configuracoes", {
+  chave: text("chave").primaryKey(),
+  valor: text("valor").notNull(),
+  atualizadoEm: integer("atualizado_em", { mode: "timestamp_ms" }).notNull().default(agora),
+});

@@ -44,7 +44,7 @@ export default async function ParticipacaoPage({ params }: { params: Promise<{ i
       {p.pedidoId && (
         <p className="mt-4 rounded-xl bg-creme p-3 text-sm">
           Esta criança está ligada ao{" "}
-          <Link href={`/pedidos/${p.pedidoId}`} className="font-semibold text-roxo underline underline-offset-2">
+          <Link href={`/pedidos/${p.pedidoId}`} className="font-semibold text-verde underline underline-offset-2">
             pedido #{p.pedidoId}
           </Link>
           . Para entregas e pagamentos, prefira agir pelo pedido; aqui é para correções.

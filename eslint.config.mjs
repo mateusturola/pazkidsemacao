@@ -22,6 +22,8 @@ const eslintConfig = [
       ".open-next/**",
       ".wrangler/**",
       ".next-build/**",
+      // Entrada do Worker: importa o build gerado, que não existe antes do build.
+      "worker.ts",
     ],
   },
 ];

@@ -1,11 +1,13 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "pazkidsemacao",
-  "main": ".open-next/worker.js",
+  "main": "worker.ts",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
   "observability": { "enabled": true },
+  // Lembretes de entrega por e-mail, todo dia às 9h de Brasília (12h UTC).
+  "triggers": { "crons": ["0 12 * * *"] },
 
   // Só os domínios próprios atendem. O *.workers.dev e as URLs de preview ficam desligados:
   // o painel é protegido pelo Cloudflare Access no subdomínio, e uma segunda porta de entrada
@@ -30,9 +32,15 @@
     "ACCESS_TEAM_DOMAIN": "",
     "ACCESS_AUD": "",
     // "sandbox" ou "production". Trocar para produção exige trocar junto o secret ASAAS_API_KEY.
-    "ASAAS_ENV": "sandbox"
+    "ASAAS_ENV": "sandbox",
+    // "demo": o pagamento online funciona de ponta a ponta com uma tela de pagamento simulada, sem
+    // cobrar ninguém. "asaas": cobrança de verdade. Trocar para "asaas" exige a chave do Asaas.
+    "PAGAMENTO_MODO": "demo",
+    // Remetente dos e-mails. O domínio precisa estar verificado no Resend; sem RESEND_API_KEY, os
+    // e-mails ficam só no painel (modo demonstração).
+    "EMAIL_REMETENTE": "Paz Kids em Ação <natal@pazkidsemacao.com>"
   },
-  // Secrets (wrangler secret put): ASAAS_API_KEY, ASAAS_WEBHOOK_TOKEN.
+  // Secrets (wrangler secret put): ASAAS_API_KEY, ASAAS_WEBHOOK_TOKEN, RESEND_API_KEY, CRON_SECRET.
 
   // Fotos e avatares das crianças. Privado: nada sai dele sem passar pelo Worker.
   "r2_buckets": [{ "binding": "FILES", "bucket_name": "pazkidsemacao-arquivos" }],

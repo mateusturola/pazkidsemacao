@@ -8,7 +8,12 @@ type Vars =
   | "ACCESS_AUD"
   | "ASAAS_API_KEY"
   | "ASAAS_ENV"
-  | "ASAAS_WEBHOOK_TOKEN";
+  | "ASAAS_WEBHOOK_TOKEN"
+  | "PAGAMENTO_MODO"
+  | "RESEND_API_KEY"
+  | "EMAIL_REMETENTE"
+  | "CRON_SECRET"
+  | "INSTAGRAM_TOKEN";
 
 // No Worker em produção as variáveis chegam em process.env; no `next dev` os secrets do
 // .dev.vars só existem no contexto do Cloudflare. Ler dos dois cobre os dois ambientes.

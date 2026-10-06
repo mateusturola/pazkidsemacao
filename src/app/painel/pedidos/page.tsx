@@ -80,7 +80,7 @@ export default async function PedidosPage({ searchParams }: { searchParams: Prom
                 return (
                   <tr key={p.id} className="hover:bg-creme/40">
                     <td className="px-4 py-2.5">
-                      <Link href={`/pedidos/${p.id}`} className="font-semibold hover:text-roxo">
+                      <Link href={`/pedidos/${p.id}`} className="font-semibold hover:text-verde">
                         #{p.id} · {criancas} criança(s)
                       </Link>
                       <span className="block text-xs text-tinta-2">{campanha}</span>

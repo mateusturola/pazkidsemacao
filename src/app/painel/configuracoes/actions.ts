@@ -5,6 +5,7 @@ import { saveWebhook } from "@/lib/asaas";
 import { auditar } from "@/lib/auditoria";
 import { requireAdmin } from "@/lib/auth";
 import { env } from "@/lib/env";
+import { atualizarInstagram } from "@/lib/instagram";
 
 export async function configurarWebhook(): Promise<string | null> {
   const u = await requireAdmin();
@@ -18,4 +19,13 @@ export async function configurarWebhook(): Promise<string | null> {
   await auditar(u.email, "configurou webhook do Asaas", "configuracao", null);
   revalidatePath("/painel/configuracoes");
   return "Salvo.";
+}
+
+export async function atualizarInstagramAgora(): Promise<string | null> {
+  const u = await requireAdmin();
+  const r = await atualizarInstagram();
+  await auditar(u.email, "atualizou Instagram", "configuracao", null, r);
+  revalidatePath("/painel/configuracoes");
+  revalidatePath("/");
+  return r.ok ? `${"posts" in r ? r.posts : 0} post(s) atualizados.` : `Não foi possível: ${"motivo" in r ? r.motivo : ""}`;
 }

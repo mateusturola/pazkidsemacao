@@ -14,13 +14,56 @@ Cloudflare com D1 e R2.
 - **`painel.pazkidsemacao.com`**: painel (crianças, campanhas, pedidos, pontos de coleta, usuários,
   importação de planilha, avatar, relatórios e auditoria).
 
-Next.js 15 (App Router, server actions) · Tailwind 4 · Drizzle · Cloudflare D1 + R2 · OpenNext · Asaas.
+Next.js 15 (App Router, server actions) · Tailwind 4 · Drizzle · Cloudflare D1 + R2 · OpenNext · Asaas · Resend.
+
+A página do Natal segue o manual da marca da campanha (verde, creme, amarelo e vermelho; Fredoka,
+Nunito e Caveat Brush; formas orgânicas e pincelada). Logos e símbolos de apoio estão em
+`public/natal/`; fotos em `public/img/` (`acao-*` são reais, `ia-*` são as imagens geradas por IA do manual).
+
+## Modo demonstração
+
+Para a equipe ver tudo funcionando antes de ter conta no Asaas e crianças reais:
+
+- `PAGAMENTO_MODO = "demo"` (wrangler.jsonc): o pagamento online usa uma tela de pagamento simulada
+  (Pix com QR Code e cartão) que confirma o pedido como o webhook do Asaas faria. Ninguém é cobrado.
+  Para valer, mude para `"asaas"` e cadastre a chave.
+- `seed/demo.sql`: 12 crianças fictícias, valor e prazo de exemplo, um ponto de coleta. Só para o
+  ambiente de demonstração; nunca no banco com crianças reais.
+- Sem token do Instagram, a seção de posts mostra fotos das ações.
+
+## E-mails
+
+Pelo Resend (`RESEND_API_KEY` + `EMAIL_REMETENTE`, domínio verificado no Resend). Cada pedido recebe:
+agradecimento (no online, quando o pagamento confirma), lembrete 3 dias antes e na véspera do prazo do
+balcão, e aviso quando a sacolinha chega. Tudo fica registrado em **Painel › E-mails**, com a prévia
+de cada um. Sem a chave, os e-mails são montados e registrados como "demonstração", sem envio.
+
+Os lembretes saem pelo cron do Worker (`triggers.crons`, 9h de Brasília), que chama `/api/cron` com o
+secret `CRON_SECRET`; o mesmo cron atualiza os posts do Instagram (`docs/instagram-mensagem.md`).
+
+## Google e IAs
+
+- Dados estruturados (schema.org): organização (NGO) com área de atuação, igreja, redes e doação;
+  perguntas frequentes (FAQPage); campanha como Event com DonateAction. Em `src/lib/seo.ts`.
+- `/llms.txt`: resumo do projeto e das campanhas abertas em Markdown, para ChatGPT, Claude, Perplexity e Gemini.
+- `robots.txt` libera buscadores e robôs de IA; só fecha pedido, imagem de criança, API e painel.
+- Imagens de compartilhamento: `public/og-home.jpg` e `public/natal/og-natal.jpg`.
+
+Depois de publicar:
+
+1. **Google Search Console** (search.google.com/search-console): adicionar a propriedade de domínio
+   `pazkidsemacao.com`, verificar pelo DNS (a Cloudflare tem o atalho) e enviar `https://pazkidsemacao.com/sitemap.xml`.
+2. **Bing Webmaster Tools** (bing.com/webmasters): importar do Search Console. O Bing alimenta o ChatGPT e o Copilot.
+3. **Perfil da Empresa no Google** (business.google.com): cadastrar "Paz Kids em Ação" como
+   organização sem fins lucrativos em Heliópolis, com o site. É o que aparece no Maps e nas buscas locais.
+4. Pôr o link do site na bio do Instagram e no site da Igreja da Paz: link de sites conhecidos é o que mais pesa.
 
 ## Rodando local
 
 ```bash
 npm install
 npm run db:migrate:local      # cria o D1 local (com o primeiro admin e a campanha de Natal em rascunho)
+npx wrangler d1 execute pazkidsemacao --local --file=seed/demo.sql   # opcional: crianças de demonstração
 npm run dev                   # site em http://localhost:3000, painel em http://painel.localhost:3000
 ```
 
@@ -48,7 +91,11 @@ painel já exige o Access; para simular o subdomínio: `npx wrangler dev --host 
    ```bash
    npx wrangler secret put ASAAS_API_KEY          # chave da conta (sandbox ou produção, conforme ASAAS_ENV)
    npx wrangler secret put ASAAS_WEBHOOK_TOKEN    # texto longo aleatório, inventado por você
+   npx wrangler secret put RESEND_API_KEY         # e-mails
+   npx wrangler secret put CRON_SECRET            # texto longo aleatório (rotina diária)
+   npx wrangler secret put INSTAGRAM_TOKEN        # opcional, veja docs/instagram-mensagem.md
    ```
+   Com o Asaas pronto, mude `PAGAMENTO_MODO` para `"asaas"` no `wrangler.jsonc`.
    Depois do deploy, em *Painel → Configurações*, clique em **Cadastrar webhook**.
 4. **Deploy**: `npm run deploy` (aplica as migrations, builda e publica). Precisa de
    `CLOUDFLARE_API_TOKEN` e `CLOUDFLARE_ACCOUNT_ID`, ou `npx wrangler login`. Os domínios do
