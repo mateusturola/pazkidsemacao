@@ -29,8 +29,8 @@
     // Cloudflare Access (Zero Trust): domínio da equipe e o AUD da aplicação que protege o painel.
     // Não são segredos: servem para validar a assinatura do login, não para gerá-la.
     // Vazios, o painel fica trancado (403).
-    "ACCESS_TEAM_DOMAIN": "",
-    "ACCESS_AUD": "",
+    "ACCESS_TEAM_DOMAIN": "https://divine-scene-c36c.cloudflareaccess.com",
+    "ACCESS_AUD": "944dd94e9f681caf159ca82337323f7a5531ddf587169d3ca45214d83ba0be0d",
     // "sandbox" ou "production". Trocar para produção exige trocar junto o secret ASAAS_API_KEY.
     "ASAAS_ENV": "sandbox",
     // "demo": o pagamento online funciona de ponta a ponta com uma tela de pagamento simulada, sem
@@ -50,7 +50,7 @@
       "binding": "DB",
       "database_name": "pazkidsemacao",
       // Trocar pelo id que o `wrangler d1 create pazkidsemacao` devolver.
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "822ffed2-ad6b-453e-968d-70beb5211fab",
       "migrations_dir": "migrations"
     }
   ]
