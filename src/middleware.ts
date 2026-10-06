@@ -50,4 +50,4 @@ export async function middleware(req: NextRequest) {
 }
 
 // Arquivos estáticos não passam pelo middleware.
-export const config = { matcher: ["/((?!_next/static|_next/image|brand/|icon.png|apple-icon.png).*)"] };
+export const config = { matcher: ["/((?!_next/static|_next/image|brand/|modelos/|icon.png|apple-icon.png).*)"] };

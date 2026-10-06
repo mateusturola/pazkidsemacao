@@ -135,7 +135,8 @@ export function Importador({ campanhas, importar }: { campanhas: { id: number; n
       const cab = linhas[0].map(textoCelula);
       const auto: Partial<Record<Campo, number>> = {};
       for (const c of CAMPOS) {
-        const i = cab.findIndex((h) => c.nomes.includes(norm(h)));
+        // O rótulo da própria tela também vale: é o cabeçalho da planilha modelo.
+        const i = cab.findIndex((h) => c.nomes.includes(norm(h)) || norm(c.label) === norm(h));
         if (i >= 0 && !Object.values(auto).includes(i)) auto[c.campo] = i;
       }
       setArquivo(file.name);
@@ -209,6 +210,9 @@ export function Importador({ campanhas, importar }: { campanhas: { id: number; n
           A primeira linha precisa ser o cabeçalho (nome das colunas). Quem já existe (mesmo código, ou mesmo nome e nascimento) é atualizado, não duplicado.
           Célula vazia não apaga o que já está no painel.
         </p>
+        <a href="/modelos/planilha-criancas.xlsx" download className="btn btn-claro btn-sm mt-4">
+          Baixar planilha modelo
+        </a>
         {erro && <p className="mt-2 text-sm text-vermelho">{erro}</p>}
       </div>
 
