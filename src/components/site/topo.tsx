@@ -16,24 +16,31 @@ export function Topo({
   links,
   cta,
   sobreFoto = false,
+  fundoClaro = false,
 }: {
   variante: "institucional" | "campanha";
   links: Link_[];
   cta?: Link_ | null;
+  /** Começa transparente, com texto branco, sobre uma foto escura. */
   sobreFoto?: boolean;
+  /** Começa transparente, com texto escuro, sobre um fundo claro (o amarelo do topo). */
+  fundoClaro?: boolean;
 }) {
-  const [rolou, setRolou] = useState(!sobreFoto);
+  const transparente = sobreFoto || fundoClaro;
+  const [rolou, setRolou] = useState(!transparente);
   const [aberto, setAberto] = useState(false);
 
   useEffect(() => {
-    if (!sobreFoto) return;
+    if (!transparente) return;
     const marcar = () => setRolou(window.scrollY > 40);
     marcar();
     window.addEventListener("scroll", marcar, { passive: true });
     return () => window.removeEventListener("scroll", marcar);
-  }, [sobreFoto]);
+  }, [transparente]);
 
   const claro = rolou || aberto;
+  // Texto escuro quando o fundo é claro: barra já sólida, ou transparente sobre o amarelo.
+  const textoEscuro = claro || fundoClaro;
   return (
     <header className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${claro ? "bg-creme/95 shadow-[0_1px_0_var(--color-linha)] backdrop-blur" : "bg-transparent"}`}>
       <div className="mx-auto flex h-[72px] max-w-7xl items-center gap-6 px-4 sm:px-8">
@@ -46,7 +53,7 @@ export function Topo({
         </Link>
         <nav className="ml-auto hidden items-center gap-1 md:flex">
           {links.map((l) => (
-            <Link key={l.href} href={l.href} className={`rounded-lg px-3 py-2 text-[15px] font-bold transition-colors ${claro ? "text-tinta-2 hover:text-verde" : "text-white/85 hover:text-white"}`}>
+            <Link key={l.href} href={l.href} className={`rounded-lg px-3 py-2 text-[15px] font-bold transition-colors ${textoEscuro ? "text-tinta-2 hover:text-verde" : "text-white/85 hover:text-white"}`}>
               {l.label}
             </Link>
           ))}
@@ -58,7 +65,7 @@ export function Topo({
         </nav>
         <button
           type="button"
-          className={`ml-auto rounded-lg px-3 py-2 font-titulo font-semibold md:hidden ${claro ? "text-verde" : "text-white"}`}
+          className={`ml-auto rounded-lg px-3 py-2 font-titulo font-semibold md:hidden ${textoEscuro ? "text-verde" : "text-white"}`}
           aria-expanded={aberto}
           onClick={() => setAberto((a) => !a)}
         >

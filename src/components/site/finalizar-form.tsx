@@ -137,7 +137,7 @@ export function FinalizarForm({
       )}
 
       <button className="btn btn-acao h-14 w-full px-8 text-lg sm:w-auto" disabled={pending}>
-        {pending ? "Reservando…" : modalidade === "pagamento_online" ? "Reservar e ir para o pagamento" : "Reservar as crianças"}
+        {pending ? "Um instante…" : modalidade === "pagamento_online" ? "Ir para o pagamento" : "Confirmar apadrinhamento"}
       </button>
     </form>
   );

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/content/site";
+import { campanhaAberta } from "@/lib/campanhas";
 import { getDb, schema } from "@/lib/db";
 import { ne } from "drizzle-orm";
 
@@ -11,8 +12,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: SITE.url, changeFrequency: "weekly", priority: 1, lastModified: new Date() },
     ...campanhas.map((c) => ({
       url: `${SITE.url}/${c.slug}`,
-      changeFrequency: (c.status === "ativa" ? "daily" : "yearly") as "daily" | "yearly",
-      priority: c.status === "ativa" ? 0.9 : 0.4,
+      changeFrequency: (campanhaAberta(c) ? "daily" : "yearly") as "daily" | "yearly",
+      priority: campanhaAberta(c) ? 0.9 : 0.4,
       lastModified: new Date(),
     })),
     { url: `${SITE.url}/llms.txt`, changeFrequency: "weekly", priority: 0.3 },

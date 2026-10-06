@@ -5,7 +5,7 @@ import { and, asc, eq, inArray } from "drizzle-orm";
 import { FinalizarForm } from "@/components/site/finalizar-form";
 import { Rodape } from "@/components/site/rodape";
 import { Topo } from "@/components/site/topo";
-import { campanhaPorSlug, criancasDaCampanha } from "@/lib/campanhas";
+import { campanhaAberta, campanhaPorSlug, criancasDaCampanha } from "@/lib/campanhas";
 import { idadeTexto, nomePublico } from "@/lib/criancas";
 import { formatIsoDate, todayIso } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
@@ -45,8 +45,9 @@ export default async function FinalizarPage({ params, searchParams }: { params: 
       ).map(nomePublico)
     : [];
 
-  const online = Boolean(campanha.status === "ativa" && campanha.valorSacolinha && pagamentoOnlineDisponivel());
-  const balcao = Boolean(campanha.status === "ativa" && campanha.prazoEntrega && campanha.prazoEntrega >= todayIso() && pontos.length);
+  const aberta = campanhaAberta(campanha);
+  const online = Boolean(aberta && campanha.valorSacolinha && pagamentoOnlineDisponivel());
+  const balcao = Boolean(aberta && campanha.prazoEntrega && campanha.prazoEntrega >= todayIso() && pontos.length);
 
   return (
     <>

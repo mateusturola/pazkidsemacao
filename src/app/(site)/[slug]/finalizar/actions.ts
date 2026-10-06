@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createPayment, upsertCustomer } from "@/lib/asaas";
 import { auditar } from "@/lib/auditoria";
-import { campanhaPorSlug } from "@/lib/campanhas";
+import { campanhaAberta, campanhaPorSlug } from "@/lib/campanhas";
 import { enviarDepois } from "@/lib/email";
 import { nomePublico } from "@/lib/criancas";
 import { todayIso } from "@/lib/dates";
@@ -51,7 +51,7 @@ export async function finalizarPedido(slug: string, ids: number[], _: Estado, fo
 
   await liberarExpiradas();
   const campanha = await campanhaPorSlug(slug);
-  if (!campanha || campanha.status !== "ativa") return { erro: "Esta campanha não está recebendo padrinhos." };
+  if (!campanha || !campanhaAberta(campanha)) return { erro: "Esta campanha não está recebendo padrinhos." };
 
   const db = getDb();
   let cpf: string | null = null;
@@ -125,7 +125,10 @@ export async function finalizarPedido(slug: string, ids: number[], _: Estado, fo
     };
   }
 
+  // Para onde o doador vai depois de confirmar: no online, direto para a tela de pagamento.
+  let destino = `/pedido/${token}`;
   if (modalidade === "pagamento_online") {
+    destino = `/pedido/${token}/pagar`;
     if (modoPagamento() === "demo") {
       // Mesmo caminho do Asaas, com a tela de pagamento simulada do próprio site no lugar da fatura.
       await db
@@ -155,6 +158,7 @@ export async function finalizarPedido(slug: string, ids: number[], _: Estado, fo
           .update(pedidos)
           .set({ asaasPaymentId: pagamento.id, asaasInvoiceUrl: pagamento.invoiceUrl ?? null })
           .where(eq(pedidos.id, pedido.id));
+        if (pagamento.invoiceUrl) destino = pagamento.invoiceUrl;
       } catch (err) {
         console.error("asaas", err);
         await cancelarPedido(pedido.id, "site");
@@ -169,5 +173,5 @@ export async function finalizarPedido(slug: string, ids: number[], _: Estado, fo
   if (modalidade === "entrega_balcao") enviarDepois(pedido.id, "agradecimento");
   revalidatePath(`/${slug}`);
   revalidatePath("/");
-  redirect(`/pedido/${token}`);
+  redirect(destino);
 }

@@ -89,7 +89,8 @@ body {
   }
 }
 
-/* Pincelada amarela do manual: sublinha uma palavra ou frase curta, nunca um parágrafo. */
+/* Pincelada do manual: sublinha uma palavra ou frase curta, nunca um parágrafo. A cor vem de
+   --cor-pincelada (amarelo por padrão; branco sobre fundo amarelo). */
 .pincelada {
   position: relative;
   white-space: nowrap;
@@ -102,8 +103,49 @@ body {
   right: -0.06em;
   bottom: -0.12em;
   height: 0.32em;
-  background: url("/natal/simbolos/pincelada.svg") center / 100% 100% no-repeat;
+  background: var(--cor-pincelada, var(--color-amarelo));
+  -webkit-mask: url("/natal/simbolos/pincelada.svg") center / 100% 100% no-repeat;
+  mask: url("/natal/simbolos/pincelada.svg") center / 100% 100% no-repeat;
   z-index: -1;
+}
+
+/* Site do Paz Kids em Ação: o amarelo do dia a dia do projeto é a cor principal, com a tinta escura
+   do Paz Kids no texto e nos fundos fortes. A campanha de Natal mantém a própria marca (verde e
+   creme): dentro deste tema, um bloco da campanha usa .tema-natal para voltar às cores dela. */
+.tema-paz {
+  --color-verde: #1b1633;
+  --color-verde-2: #2c2550;
+  --color-verde-escuro: #14102a;
+  --color-amarelo: #ffc20e;
+  --color-creme: #fff4cc;
+  --color-papel: #fffbef;
+  --color-vermelho: #e3262f;
+  --color-tinta: #1b1633;
+  --color-tinta-2: #4f4a66;
+  --color-linha: #efe3bd;
+}
+.tema-paz .btn-acao {
+  background: var(--color-tinta);
+  color: var(--color-amarelo);
+}
+.tema-paz .btn-acao:hover {
+  background: var(--color-verde-2);
+}
+.tema-natal {
+  --color-verde: #1e4b36;
+  --color-verde-2: #2a6249;
+  --color-verde-escuro: #143426;
+  --color-amarelo: #f5b629;
+  --color-creme: #f4efe3;
+  --color-papel: #fbf8f1;
+  --color-vermelho: #d64a2b;
+  --color-tinta: #1f2a24;
+  --color-tinta-2: #56635c;
+  --color-linha: #e2dac8;
+}
+.tema-natal .btn-acao {
+  background: var(--color-vermelho);
+  color: #fff;
 }
 
 /* Formas orgânicas: sempre grandes e cortadas pela borda da seção. */

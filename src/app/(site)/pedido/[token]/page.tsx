@@ -7,6 +7,7 @@ import { Rodape } from "@/components/site/rodape";
 import { Topo } from "@/components/site/topo";
 import { CopyButton } from "@/components/ui/copy-button";
 import { SITE } from "@/content/site";
+import { campanhaAberta } from "@/lib/campanhas";
 import { idadeTexto, nomePublico } from "@/lib/criancas";
 import { formatIsoDate } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
@@ -141,7 +142,7 @@ export default async function PedidoPage({ params }: { params: Promise<{ token: 
                   ? "O pagamento não foi confirmado a tempo e as crianças voltaram para a lista. Se você pagou, fale com a equipe: nada se perde."
                   : "Este pedido foi cancelado e as crianças voltaram para a lista."}
               </p>
-              {campanha.status === "ativa" && (
+              {campanhaAberta(campanha) && (
                 <Link href={`/${campanha.slug}#criancas`} className="btn btn-acao mt-6">
                   Escolher de novo
                 </Link>

@@ -27,9 +27,15 @@ Para a equipe ver tudo funcionando antes de ter conta no Asaas e crianças reais
 - `PAGAMENTO_MODO = "demo"` (wrangler.jsonc): o pagamento online usa uma tela de pagamento simulada
   (Pix com QR Code e cartão) que confirma o pedido como o webhook do Asaas faria. Ninguém é cobrado.
   Para valer, mude para `"asaas"` e cadastre a chave.
-- `seed/demo.sql`: 12 crianças fictícias, valor e prazo de exemplo, um ponto de coleta. Só para o
-  ambiente de demonstração; nunca no banco com crianças reais.
+- `seed/demo.sql` + `seed/demo-300.sql`: 300 crianças fictícias (só primeiro nome e avatar), valor e
+  prazo de exemplo, um ponto de coleta. Só para demonstração; nunca no banco com crianças reais.
 - Sem token do Instagram, a seção de posts mostra fotos das ações.
+
+## Fim da campanha
+
+A campanha sai sozinha da página inicial e para de aceitar padrinhos quando passa a **data de fim**
+(ou quando a situação muda para Encerrada no painel). A página dela continua no ar como agradecimento,
+com quantas crianças ganharam a sacolinha.
 
 ## E-mails
 
@@ -63,7 +69,8 @@ Depois de publicar:
 ```bash
 npm install
 npm run db:migrate:local      # cria o D1 local (com o primeiro admin e a campanha de Natal em rascunho)
-npx wrangler d1 execute pazkidsemacao --local --file=seed/demo.sql   # opcional: crianças de demonstração
+npx wrangler d1 execute pazkidsemacao --local --file=seed/demo.sql       # opcional: demonstração
+npx wrangler d1 execute pazkidsemacao --local --file=seed/demo-300.sql   # opcional: escala de 300 crianças
 npm run dev                   # site em http://localhost:3000, painel em http://painel.localhost:3000
 ```
 

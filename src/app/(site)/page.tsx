@@ -22,11 +22,11 @@ export default async function Inicio() {
   const p = principal ? (progresso.get(principal.id) ?? { total: 0, comPadrinho: 0 }) : null;
 
   return (
-    <>
+    <div className="tema-paz">
       <JsonLd dados={ldInicio()} />
       <Topo
         variante="institucional"
-        sobreFoto
+        fundoClaro
         links={[
           { href: "#quem-somos", label: "Quem somos" },
           { href: "#nossa-historia", label: "História" },
@@ -36,26 +36,37 @@ export default async function Inicio() {
         cta={principal ? { href: `/${principal.slug}`, label: principal.nome } : { href: "#como-ajudar", label: "Quero ajudar" }}
       />
 
-      {/* Topo: uma foto real de ação. */}
-      <section className="relative isolate flex min-h-[92svh] items-end overflow-hidden bg-verde-escuro">
-        <Image src="/img/acao-alegria.webp" alt="Crianças sentadas na quadra, rindo e erguendo os braços durante uma ação do Paz Kids em Ação em Heliópolis" fill priority sizes="100vw" className="-z-10 object-cover" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-verde-escuro via-verde-escuro/55 to-verde-escuro/10" />
-        <div className="mx-auto w-full max-w-7xl px-4 pt-32 pb-16 sm:px-8 sm:pb-24">
-          <p className="font-mao text-2xl text-amarelo sm:text-3xl">Heliópolis, São Paulo</p>
-          <h1 className="mt-3 max-w-4xl text-[clamp(2.8rem,7.5vw,6.2rem)] leading-[0.95] font-bold text-creme">
-            Alcançando além das <span className="pincelada">quatro paredes</span>
-          </h1>
-          <p className="mt-6 max-w-xl text-lg text-creme/90 sm:text-xl">
-            O Paz Kids em Ação leva o amor de Cristo, educação e cuidado para as crianças de Heliópolis e de outras comunidades da Grande São
-            Paulo, lá onde elas estão.
-          </p>
-          <div className="mt-9 flex flex-wrap gap-3">
-            <Link href={principal ? `/${principal.slug}` : "#como-ajudar"} className="btn btn-acao h-14 px-7 text-lg">
-              {principal ? "Adote uma sacolinha de Natal" : "Quero ajudar"}
-            </Link>
-            <Link href="#quem-somos" className="btn btn-contorno-claro h-14 px-7 text-lg">
-              Conheça o projeto
-            </Link>
+      {/* Topo: o amarelo do Paz Kids e uma foto real de ação. */}
+      <section className="relative overflow-hidden bg-amarelo pt-[72px]" style={{ "--cor-pincelada": "#ffffff" } as React.CSSProperties}>
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-8 sm:py-20 lg:grid-cols-[1.05fr_1fr]">
+          <div>
+            <p className="font-mao text-2xl text-verde sm:text-3xl">Heliópolis, São Paulo</p>
+            <h1 className="mt-3 text-[clamp(2.8rem,7vw,5.8rem)] leading-[0.95] font-bold text-verde">
+              Alcançando além das <span className="pincelada">quatro paredes</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-lg text-verde/85 sm:text-xl">
+              O Paz Kids em Ação leva o amor de Cristo, educação e cuidado para as crianças de Heliópolis e de outras comunidades da Grande São
+              Paulo, lá onde elas estão.
+            </p>
+            <div className="mt-9 flex flex-wrap gap-3">
+              <Link href={principal ? `/${principal.slug}` : "#como-ajudar"} className="btn btn-acao h-14 px-7 text-lg">
+                {principal ? "Adote uma sacolinha de Natal" : "Quero ajudar"}
+              </Link>
+              <Link href="#quem-somos" className="btn h-14 border-2 border-verde/25 px-7 text-lg text-verde hover:border-verde">
+                Conheça o projeto
+              </Link>
+            </div>
+          </div>
+          <div className="relative">
+            <Image
+              src="/img/acao-alegria.webp"
+              alt="Crianças sentadas na quadra, rindo e erguendo os braços durante uma ação do Paz Kids em Ação em Heliópolis"
+              width={1800}
+              height={1200}
+              priority
+              className="aspect-[4/3] w-full rounded-[32px] object-cover shadow-[0_8px_0_var(--color-verde)]"
+            />
+            <Image src="/brand/pazkids-em-acao-200.webp" alt="" width={200} height={238} className="absolute -bottom-8 -left-4 h-28 w-auto -rotate-6 sm:-left-8 sm:h-36" />
           </div>
         </div>
       </section>
@@ -109,7 +120,7 @@ export default async function Inicio() {
       {/* História. */}
       <section id="nossa-historia" className="relative scroll-mt-16 overflow-hidden bg-verde py-24 text-creme sm:py-32">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/natal/simbolos/forma-vermelha.svg" alt="" className="forma -top-32 -left-28 w-[340px]" />
+        <img src="/natal/simbolos/forma-amarela-2.svg" alt="" className="forma -top-36 -left-32 w-[340px]" />
         <div className="relative mx-auto grid max-w-7xl gap-14 px-4 sm:px-8 lg:grid-cols-2">
           <div data-revelar>
             <p className="chamada text-amarelo">Nossa história</p>
@@ -161,7 +172,7 @@ export default async function Inicio() {
 
       {/* Campanha aberta, já na marca dela. */}
       {principal && p && (
-        <section className="relative overflow-hidden bg-verde-escuro text-creme">
+        <section className="tema-natal relative overflow-hidden bg-verde-escuro text-creme">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/natal/simbolos/forma-amarela-2.svg" alt="" className="forma -right-36 -bottom-40 w-[420px]" />
           <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 sm:px-8 lg:grid-cols-[1fr_1.1fr]">
@@ -280,7 +291,7 @@ export default async function Inicio() {
       </section>
 
       <Rodape variante="institucional" />
-    </>
+    </div>
   );
 }
 

@@ -1,5 +1,5 @@
 import "server-only";
-import { and, asc, desc, eq, inArray, lt, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, inArray, isNull, lt, or, sql } from "drizzle-orm";
 import { todayIso } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
 import type { Canal, StatusParticipacao } from "@/db/schema";
@@ -70,8 +70,20 @@ export async function progressoCampanhas(ids: number[]) {
   return mapa;
 }
 
+/**
+ * Campanha recebendo padrinhos: ativa no painel e dentro da data de fim. Passou da data, ela sai
+ * sozinha da página inicial e para de aceitar pedidos, sem ninguém precisar lembrar de encerrar.
+ */
+export function campanhaAberta(c: { status: string; dataFim: string | null }) {
+  return c.status === "ativa" && (!c.dataFim || c.dataFim >= todayIso());
+}
+
 export async function campanhasAtivas() {
-  return getDb().select().from(campanhas).where(eq(campanhas.status, "ativa")).orderBy(desc(campanhas.criadoEm));
+  return getDb()
+    .select()
+    .from(campanhas)
+    .where(and(eq(campanhas.status, "ativa"), or(isNull(campanhas.dataFim), gte(campanhas.dataFim, todayIso()))))
+    .orderBy(desc(campanhas.criadoEm));
 }
 
 /** Só o que o site pode mostrar de cada criança: nada de sobrenome, responsável ou contato. */

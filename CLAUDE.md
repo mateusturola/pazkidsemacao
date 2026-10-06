@@ -17,7 +17,8 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
 
 - Quem decide quem leva a criança é o UPDATE condicional em `reservar` (`src/lib/reservas.ts`):
   só troca `disponivel` por `reservada`. Não troque por "lê e depois grava".
-- Não há cron: `liberarExpiradas()` roda antes de mostrar ou reservar crianças.
+- `liberarExpiradas()` roda antes de mostrar ou reservar crianças (o cron diário é só para e-mails e Instagram).
+- Campanha aberta = ativa e dentro da data de fim (`campanhaAberta`). Use sempre a função, nunca só o status.
 - Pagamento online reserva por 30 minutos; balcão reserva até o prazo da campanha e só a equipe libera.
 
 ## Segurança
@@ -42,6 +43,8 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
 
 ## Visual
 
+- Site institucional do Paz Kids em Ação: o amarelo do projeto é a cor principal, com a tinta escura
+  do Paz Kids (classe `.tema-paz`). A campanha de Natal tem marca própria (`.tema-natal`, padrão).
 - Manual da marca da campanha (Drive › CAMPANHA DE NATAL › Marca): verde #1E4B36 e creme #F4EFE3 de
   base, amarelo #F5B629 e vermelho #D64A2B de destaque. Texto amarelo só sobre o verde.
 - Fredoka nos títulos, Nunito no texto, Caveat Brush só em frase de destaque (uma por bloco).

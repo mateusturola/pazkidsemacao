@@ -10,7 +10,7 @@ import { Rodape } from "@/components/site/rodape";
 import { Topo } from "@/components/site/topo";
 import { CopyButton } from "@/components/ui/copy-button";
 import { SITE } from "@/content/site";
-import { campanhaPorSlug, criancasDaCampanha, itensSacolinha, progressoCampanhas } from "@/lib/campanhas";
+import { campanhaAberta, campanhaPorSlug, criancasDaCampanha, itensSacolinha, progressoCampanhas } from "@/lib/campanhas";
 import { idade, idadeTexto, nomePublico } from "@/lib/criancas";
 import { formatIsoDate } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function CampanhaPage({ params }: { params: Promise<{ slug: string }> }) {
   const campanha = await campanhaPorSlug((await params).slug);
   if (!campanha || campanha.status === "rascunho") notFound();
-  const aberta = campanha.status === "ativa";
+  const aberta = campanhaAberta(campanha);
 
   await liberarExpiradas();
   const [lista, progresso, pontos] = await Promise.all([
@@ -128,9 +128,17 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
                 </Link>
               </div>
             ) : (
-              <p className="mt-8 inline-block rounded-xl bg-verde px-5 py-3 font-titulo text-lg text-creme">
-                Campanha encerrada. Obrigado a todos que ajudaram!
-              </p>
+              <div className="mt-8 max-w-lg rounded-2xl bg-verde p-6 text-creme">
+                <p className="chamada text-amarelo">Campanha encerrada</p>
+                <p className="mt-2 font-titulo text-2xl font-semibold">
+                  {p.comPadrinho > 0
+                    ? `Neste Natal, ${p.comPadrinho} ${p.comPadrinho === 1 ? "criança ganhou" : "crianças ganharam"} uma sacolinha. Obrigado a cada padrinho!`
+                    : "Obrigado a todos que ajudaram!"}
+                </p>
+                <Link href="/" className="btn btn-acao mt-5">
+                  Conheça o Paz Kids em Ação
+                </Link>
+              </div>
             )}
           </div>
 
@@ -214,24 +222,18 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
         </section>
       )}
 
-      {/* As crianças. */}
+      {/* As crianças. Encerrada a campanha, a lista sai: o agradecimento fica no topo. */}
+      {aberta && (
       <section id="criancas" className="relative scroll-mt-20 overflow-hidden bg-creme py-20 pb-36 sm:py-28 sm:pb-40">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-8">
           <div className="max-w-2xl">
-            <p className="chamada text-vermelho">{aberta ? "Esperando um padrinho" : "Crianças"}</p>
+            <p className="chamada text-vermelho">Esperando um padrinho</p>
             <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">
-              {aberta ? (
-                <>
-                  Escolha quem você vai <span className="pincelada">presentear</span>
-                </>
-              ) : (
-                "Obrigado!"
-              )}
+              Escolha quem você vai <span className="pincelada">presentear</span>
             </h2>
-            {aberta && <p className="mt-4 text-lg text-tinta-2">Cada etiqueta é uma criança de verdade, esperando o Natal.</p>}
+            <p className="mt-4 text-lg text-tinta-2">Cada etiqueta é uma criança de verdade, esperando o Natal.</p>
           </div>
-          {aberta &&
-            (lista.length === 0 ? (
+          {lista.length === 0 ? (
               <p className="mt-8 max-w-xl text-lg text-tinta-2">
                 {p.total > 0
                   ? "Todas as crianças desta campanha já têm padrinho. Obrigado! Você ainda pode ajudar com qualquer valor pelo Pix."
@@ -242,9 +244,10 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
                 <GradeCriancas slug={campanha.slug} criancas={cards} aberta={online || balcao} />
                 {!(online || balcao) && <p className="mt-8 text-lg text-tinta-2">As inscrições de padrinhos abrem em breve.</p>}
               </div>
-            ))}
+            )}
         </div>
       </section>
+      )}
 
       {/* Duas formas de ajudar. */}
       {aberta && (online || balcao) && (
