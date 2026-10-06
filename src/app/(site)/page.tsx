@@ -241,7 +241,7 @@ export default async function Inicio() {
             <Ajuda
               icone={<IconePix className="size-7" />}
               titulo="Doe qualquer valor"
-              texto={`Pix ${SITE.pix.tipo} ${SITE.pix.chave}. A doação vira lanche, material e presente para as crianças.`}
+              texto={`Chave Pix: ${SITE.pix.chave}. A doação vira lanche, material e presente para as crianças.`}
               acao={<CopyButton value={SITE.pix.copiar} label="Copiar chave Pix" className="btn btn-primario" />}
             />
             <Ajuda

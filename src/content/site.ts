@@ -11,7 +11,8 @@ export const SITE = {
   igreja: "Paz Church São Paulo",
   // Contato oficial do manual da marca; também é o "responder para" dos e-mails.
   email: "heliopolis@paz.church",
-  pix: { tipo: "CNPJ", chave: "26.407.664/0001-63", copiar: "26407664000163" },
+  // Chave Pix do projeto em Heliópolis (confirmada pela equipe); não é a do CNPJ da igreja.
+  pix: { tipo: "e-mail", chave: "heliopolis@paz.church", copiar: "heliopolis@paz.church" },
   instagram: "pazkidsemacao",
   redes: [
     { nome: "Instagram", url: "https://www.instagram.com/pazkidsemacao/", usuario: "@pazkidsemacao" },
@@ -45,7 +46,7 @@ export const SOBRE = {
     {
       quando: "Hoje",
       titulo: "Junto com parceiros",
-      texto: "Segue em parceria com a Alive Now Kidz, levando a igreja para onde as crianças estão.",
+      texto: "Segue em parceria com a Metro World Kids, levando a igreja para onde as crianças estão.",
     },
   ],
 };
@@ -62,11 +63,11 @@ export const PERGUNTAS = [
   },
   {
     p: "Como o projeto começou?",
-    r: "Em julho de 2022, como um projeto de evangelismo inspirado pelo treinamento da Metro World Kids. Depois cresceu para atender crianças em Heliópolis e em outras áreas da Grande São Paulo, em parceria com a Alive Now Kidz.",
+    r: "Em julho de 2022, como um projeto de evangelismo inspirado pelo treinamento da Metro World Kids. Depois cresceu para atender crianças em Heliópolis e em outras áreas da Grande São Paulo, e hoje segue em parceria com a Metro World Kids.",
   },
   {
     p: "Como posso ajudar o Paz Kids em Ação?",
-    r: "Você pode apadrinhar uma criança nas campanhas, como a Sacolinha de Natal, doar qualquer valor pelo Pix CNPJ 26.407.664/0001-63 ou servir como voluntário. Para ser voluntário, escreva para heliopolis@paz.church.",
+    r: `Você pode apadrinhar uma criança nas campanhas, como a Sacolinha de Natal, doar qualquer valor pelo Pix (chave ${SITE.pix.chave}) ou servir como voluntário. Para ser voluntário, escreva para ${SITE.email}.`,
   },
   {
     p: "Como funciona a Sacolinha de Natal?",

@@ -336,7 +336,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
           <div>
             <h2 className="text-3xl font-bold text-verde">Prefere doar qualquer valor?</h2>
             <p className="mt-1 text-lg text-verde">
-              Pix {SITE.pix.tipo} <strong className="font-titulo text-2xl">{SITE.pix.chave}</strong>
+              Chave Pix <strong className="font-titulo text-2xl">{SITE.pix.chave}</strong>
             </p>
           </div>
           <CopyButton value={SITE.pix.copiar} label="Copiar chave Pix" className="btn btn-primario h-14 px-7 text-lg" />

@@ -29,7 +29,7 @@ export async function cancelar(pedidoId: number) {
   await revalidar(pedidoId);
 }
 
-/** Pagamento que chegou por fora do Asaas (Pix direto no CNPJ, dinheiro). */
+/** Pagamento que chegou por fora do Asaas (Pix direto na chave do projeto, dinheiro). */
 export async function pagamentoManual(pedidoId: number) {
   const u = await requireUsuario();
   await confirmarPagamento(pedidoId, u.email);

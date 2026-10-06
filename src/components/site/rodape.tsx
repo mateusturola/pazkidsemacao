@@ -35,7 +35,7 @@ export function Rodape({ variante }: { variante: "institucional" | "campanha" })
         </div>
         <div>
           <p className="chamada text-amarelo">Doe por Pix</p>
-          <p className="mt-4">{SITE.pix.tipo}</p>
+          <p className="mt-4">Chave Pix ({SITE.pix.tipo})</p>
           <p className="font-titulo text-xl font-semibold text-white">{SITE.pix.chave}</p>
           <p className="mt-6">
             <Link href="/" className="hover:text-white">
