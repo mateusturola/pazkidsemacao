@@ -157,13 +157,15 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
 
           <div className="relative">
             <Image
-              src="/img/ia-menino-sacolinha-marca.webp"
-              alt="Menino sorrindo segurando uma sacolinha kraft com laço vermelho e a marca da campanha"
+              src="/img/acampa-sorriso-oculos.webp"
+              alt="Menina de óculos sorrindo no AcampaKids Amor em Ação"
               width={1400}
-              height={933}
+              height={1750}
               priority
-              className="aspect-[4/5] w-full rounded-[32px] object-cover object-[60%_center] sm:aspect-[5/5]"
+              className="aspect-[4/5] w-full rounded-[32px] object-cover object-[center_35%] sm:aspect-[5/5]"
             />
+            {/* Foto de verdade de uma criança do projeto: a legenda evita que pareça uma das crianças da lista. */}
+            <p className="mt-3 text-sm text-tinta-2">AcampaKids Amor em Ação, outubro de 2025.</p>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/natal/simbolos/estrela.svg" alt="" className="absolute -top-6 -left-4 size-14" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -324,7 +326,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
 
       {/* Quem faz acontecer. */}
       <section className="relative isolate overflow-clip">
-        <Image src="/img/ia-voluntarios-entrega.webp" alt="Voluntários de camiseta verde entregando sacolinhas kraft com laço vermelho" fill sizes="100vw" className="-z-10 object-cover" />
+        <Image src="/img/acampa-abraco.webp" alt="Voluntária do Paz Kids abraçando uma menina no AcampaKids Amor em Ação" fill sizes="100vw" className="-z-10 object-cover object-[center_30%]" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-verde-escuro/90 via-verde-escuro/60 to-transparent" />
         <div className="mx-auto flex min-h-[460px] max-w-7xl items-center px-4 py-20 sm:px-8">
           <div className="max-w-lg" data-revelar>

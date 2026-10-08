@@ -66,8 +66,8 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
 
 ## Agenda semanal
 
-- Vive no painel (tabela `agenda`) e aparece na página inicial, em `/agenda` (link da bio) e no story
-  gerado pelo painel. O ponto no mapa vem do endereço (OpenStreetMap) ou de um link do Google Maps.
+- Vive no painel (tabela `agenda`) e aparece em resumo na página inicial, inteira com mapa em `/agenda`
+  (link da bio) e no story gerado pelo painel. O ponto no mapa vem do endereço (OpenStreetMap) ou de um link do Google Maps.
 
 ## Demonstração
 

@@ -39,40 +39,31 @@ export const SOBRE = {
     "Amor como ferramenta de transformação",
     "Educação, conhecimento e dedicação para construir um futuro digno",
   ],
-  historia: [
-    {
-      quando: "Julho de 2022",
-      titulo: "Começou como evangelismo",
-      texto: "O Paz Kids em Ação nasceu como um projeto de evangelismo, inspirado pelo treinamento da Metro World Kids.",
-    },
-    {
-      quando: "Depois",
-      titulo: "Cresceu para a comunidade",
-      texto: "Passou a atender crianças em Heliópolis e em outras áreas da Grande São Paulo.",
-    },
-    {
-      quando: "Hoje",
-      titulo: "Junto com parceiros",
-      texto: "Segue em parceria com a Metro World Kids, levando a igreja para onde as crianças estão.",
-    },
-  ],
 };
 
 /**
- * O legado do Pastor Lucas Huber, que dá a raiz do projeto. Só fatos confirmados pela equipe e pelas
- * fontes da PAZ International: nada de data, número ou cena que não esteja nelas.
+ * A história, numa linha do tempo só: o legado do Pastor Lucas Huber, que dá a raiz do projeto, e o
+ * Paz Kids em Ação, que é um dos frutos dele. Só fatos confirmados pela equipe e pelas fontes da
+ * PAZ International: nada de data, número ou cena que não esteja nelas.
  */
 export const LEGADO = {
   titulo: "Tudo começou às margens dos rios",
-  // Cada capítulo com a sua foto. As fotos são da família Huber, dos arquivos da Paz Church.
-  capitulos: [
+  // O resumo da página inicial; a história inteira, marco por marco, fica em /historia.
+  resumo:
+    "Em dezembro de 1976, o missionário Lucas Huber chegou a Santarém, no Pará, com a esposa, Christine. Ali nasceu a Paz Church, e de lá o Pastor Lucas levou o Evangelho de barco e de avião às comunidades ribeirinhas. Em 2026 ela completa 50 anos, e o mesmo amor pelas crianças está nas ruas e praças de Heliópolis.",
+  // Os quatro primeiros são da família Huber, dos arquivos da Paz Church (a página inicial mostra só eles).
+  marcos: [
     {
+      quando: "O começo",
+      titulo: "O chamado da família Huber",
       texto:
         "A história começa nos Estados Unidos, quando Melvin e Catherine Huber receberam o chamado de Deus para servir no Brasil. Foram mais de 25 anos plantando igrejas por aqui, e foi nessa família que cresceu Lucas Huber.",
       foto: { src: "/img/legado/melvin-catherine.webp", w: 840, h: 442, alt: "Melvin e Catherine Huber sentados, com os filhos adultos em pé atrás deles", legenda: "Melvin e Catherine Huber com os filhos." },
     },
     {
-      texto: "Em dezembro de 1976, o missionário Lucas Huber chegou a Santarém, no Pará, com a esposa, Christine, e as duas filhas pequenas. Ali nasceu a Paz Church.",
+      quando: "Dezembro de 1976",
+      titulo: "Nasce a Paz Church",
+      texto: "O missionário Lucas Huber chegou a Santarém, no Pará, com a esposa, Christine, e as duas filhas pequenas. Ali nasceu a Paz Church.",
       foto: {
         src: "/img/legado/familia-rio.webp",
         w: 806,
@@ -82,6 +73,8 @@ export const LEGADO = {
       },
     },
     {
+      quando: "Pelos rios",
+      titulo: "De barco e de avião",
       texto:
         "O sonho dele era levar o Evangelho a cada vila da Amazônia. Primeiro de barco, pelos rios, até as comunidades ribeirinhas. Depois, num pequeno avião que aprendeu a pilotar para chegar mais longe.",
       foto: {
@@ -93,8 +86,9 @@ export const LEGADO = {
       },
     },
     {
-      texto:
-        "Em agosto de 1994, voltando de uma viagem missionária, o Pastor Lucas partiu para a eternidade num acidente com o avião. O chamado continuou. Em 2026, a Paz Church completa 50 anos, e o Paz Kids em Ação é um dos frutos dessa história: o mesmo amor pelas crianças, agora nas ruas e praças de Heliópolis.",
+      quando: "Agosto de 1994",
+      titulo: "O chamado continuou",
+      texto: "Voltando de uma viagem missionária, o Pastor Lucas partiu para a eternidade num acidente com o avião. Mas o chamado continuou.",
       foto: {
         src: "/img/legado/familia-huber.webp",
         w: 1080,
@@ -102,6 +96,25 @@ export const LEGADO = {
         alt: "O Pastor Lucas Huber e a Pastora Christine com os quatro filhos, numa foto antiga de família",
         legenda: "O Pastor Lucas e a Pastora Christine com os filhos.",
       },
+    },
+    {
+      quando: "Julho de 2022",
+      titulo: "Nasce o Paz Kids em Ação",
+      texto: "O Paz Kids em Ação nasceu como um projeto de evangelismo do Paz Kids, o ministério infantil da Paz Church, inspirado pelo treinamento da Metro World Kids.",
+      foto: { src: "/img/acao-atencao.webp", w: 1600, h: 1066, alt: "Crianças sentadas no chão prestando atenção numa ação do Paz Kids em Ação", legenda: "Uma ação do Paz Kids em Ação em Heliópolis." },
+    },
+    {
+      quando: "Depois",
+      titulo: "Cresceu para a comunidade",
+      texto: "Passou a atender crianças em Heliópolis e em outras áreas da Grande São Paulo, nas quadras, praças, escolas e ruas.",
+      foto: { src: "/img/acampa-cuidado.webp", w: 1200, h: 1200, alt: "Voluntária abraçando crianças pequenas no AcampaKids", legenda: "Voluntária com as crianças no AcampaKids, em outubro de 2025." },
+    },
+    {
+      quando: "Hoje",
+      titulo: "Um dos frutos dessa história",
+      texto:
+        "Em 2026, a Paz Church completa 50 anos. O Paz Kids em Ação segue em parceria com a Metro World Kids, levando o mesmo amor pelas crianças para as ruas e praças de Heliópolis.",
+      foto: { src: "/img/acampa-equipe.webp", w: 1400, h: 933, alt: "Quatro voluntários do Paz Kids em Ação abraçados na quadra do AcampaKids", legenda: "Voluntários do Paz Kids em Ação no AcampaKids, em outubro de 2025." },
     },
   ],
   fecho: ["Hoje, cada voluntário carrega um pedacinho desse legado.", "Em cada comunidade.", "Em cada abraço.", "Em cada presente entregue."],

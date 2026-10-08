@@ -1,14 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { IconeMaos, IconePix, IconeSacola, IconeSeta } from "@/components/site/icones";
-import { Agenda } from "@/components/site/agenda";
 import { Instagram } from "@/components/site/instagram";
 import { JsonLd } from "@/components/site/json-ld";
 import { Rodape } from "@/components/site/rodape";
 import { Topo } from "@/components/site/topo";
 import { CopyButton } from "@/components/ui/copy-button";
-import { LEGADO, PERGUNTAS, SITE, SOBRE } from "@/content/site";
+import { LEGADO, PERGUNTAS, SITE } from "@/content/site";
 import { encontrosAtivos } from "@/lib/agenda";
+import { corDoDia } from "@/lib/agenda-cores";
 import { campanhasAtivas, progressoCampanhas } from "@/lib/campanhas";
 import { formatIsoDate } from "@/lib/dates";
 import { ldInicio } from "@/lib/seo";
@@ -32,8 +32,8 @@ export default async function Inicio() {
         logoDepoisDe="logo-topo"
         links={[
           { href: "#quem-somos", label: "Quem somos" },
-          { href: "#agenda", label: "Agenda" },
-          { href: "#legado", label: "História" },
+          { href: "/agenda", label: "Agenda" },
+          { href: "/historia", label: "História" },
           { href: "#como-ajudar", label: "Como ajudar" },
           { href: "#perguntas", label: "Perguntas" },
         ]}
@@ -84,171 +84,6 @@ export default async function Inicio() {
         </div>
       </section>
 
-      {/* Quem somos. */}
-      <section id="quem-somos" className="relative scroll-mt-16 overflow-clip bg-creme py-24 sm:py-32">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/natal/simbolos/forma-amarela.svg" alt="" className="forma -right-24 -bottom-28 w-[380px] sm:w-[460px]" />
-        <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-8 lg:grid-cols-[1.1fr_1fr]">
-          <div data-revelar>
-            <p className="chamada text-vermelho">Quem somos</p>
-            <p className="mt-5 font-titulo text-[clamp(1.9rem,3.6vw,3rem)] leading-[1.12] font-semibold text-verde">
-              O coração missionário do Paz Kids. A gente sai da igreja e vai para a <span className="pincelada">quadra</span>, a praça, a escola
-              e a rua.
-            </p>
-            <p className="mt-6 max-w-xl text-lg text-tinta-2">
-              {SOBRE.oQueE} Levamos a Palavra, brincadeira, lanche, abraço e recursos básicos para crianças da comunidade. É o Paz Kids,
-              ministério infantil da Paz Church, fora das quatro paredes.
-            </p>
-          </div>
-          <figure className="relative" data-revelar style={atraso(120)}>
-            <Image src="/img/acao-atencao.webp" alt="Crianças sentadas no chão prestando atenção numa ação do Paz Kids em Ação" width={1600} height={1067} className="rounded-[28px] object-cover" />
-            <figcaption className="absolute -bottom-5 left-6 rounded-xl bg-verde px-4 py-2 font-mao text-xl text-amarelo">Ação em Heliópolis</figcaption>
-          </figure>
-        </div>
-      </section>
-
-      {/* O que fazemos: fotos reais, com legendas que só descrevem o que se vê. */}
-      <section className="bg-papel py-24 sm:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-8">
-          <div className="max-w-2xl" data-revelar>
-            <p className="chamada text-vermelho">O que fazemos</p>
-            <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">A igreja onde as crianças estão</h2>
-            <p className="mt-4 text-lg text-tinta-2">
-              Projeto social e evangelismo infantil na comunidade: a igreja nas praças, nas quadras e nas escolas, com voluntários que conhecem as
-              crianças pelo nome.
-            </p>
-          </div>
-          <div className="mt-12 grid auto-rows-[170px] grid-cols-2 gap-3 sm:auto-rows-[220px] md:grid-cols-4">
-            <Foto src="/img/acao-oracao.webp" legenda="Orar juntos" className="col-span-2 row-span-2" posicao="object-[center_75%]" />
-            <Foto src="/img/acao-pula-pula.webp" legenda="Brincar" />
-            <Foto src="/img/acao-sorrisos.webp" legenda="Lanchar e conversar" />
-            <Foto src="/img/acao-voluntarios-servindo.webp" legenda="Servir" className="col-span-2" />
-            <Foto src="/img/acao-quadra.webp" legenda="Ocupar a quadra" className="col-span-2" />
-            <Foto src="/img/acao-maos.webp" legenda="Cuidar de perto" />
-            <Foto src="/img/acao-colete.webp" legenda="Brincar junto" />
-          </div>
-        </div>
-      </section>
-
-      {/* Agenda semanal: a equipe mantém pelo painel. Sem encontro cadastrado, a seção sai. */}
-      {agenda.length > 0 && (
-        <section id="agenda" className="scroll-mt-16 bg-creme py-24 sm:py-28">
-          <div className="mx-auto max-w-7xl px-4 sm:px-8">
-            <div className="max-w-2xl" data-revelar>
-              <p className="chamada text-vermelho">Agenda semanal</p>
-              <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">
-                Onde a gente está <span className="pincelada">toda semana</span>
-              </h2>
-              <p className="mt-4 text-lg text-tinta-2">
-                Os encontros do Paz Kids em Ação nas ruas, praças e garagens de Heliópolis, São João Clímaco e Diadema. Toque no lugar para ver no mapa.
-              </p>
-            </div>
-            <Agenda agenda={agenda} />
-          </div>
-        </section>
-      )}
-
-      {/* O legado do Pastor Lucas: a raiz do projeto, contada em capítulos com as fotos da família. */}
-      <section id="legado" className="scroll-mt-16 bg-papel py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-8">
-          <div className="flex flex-wrap items-end gap-x-14 gap-y-6" data-revelar>
-            <div>
-              <p className="font-titulo text-[clamp(6rem,14vw,10rem)] leading-[0.85] font-bold text-verde">50</p>
-              <p className="mt-3 font-titulo text-2xl font-semibold text-verde">anos de Paz Church</p>
-              <p className="mt-1 text-tinta-2">1976 · 2026</p>
-            </div>
-            <div className="max-w-2xl pb-2">
-              <p className="chamada text-vermelho">Um legado de amor</p>
-              <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">{LEGADO.titulo}</h2>
-            </div>
-          </div>
-
-          <div className="mt-16 space-y-16 sm:mt-20 sm:space-y-24">
-            {LEGADO.capitulos.map((c, i) => (
-              <div key={c.foto.src} className="grid items-center gap-8 md:grid-cols-2 md:gap-14" data-revelar>
-                <p className={`text-lg leading-relaxed text-tinta sm:text-xl ${i % 2 ? "md:order-2" : ""}`}>{c.texto}</p>
-                <figure>
-                  <Image src={c.foto.src} alt={c.foto.alt} width={c.foto.w} height={c.foto.h} className="w-full rounded-[24px] object-cover" />
-                  <figcaption className="mt-3 text-sm text-tinta-2">{c.foto.legenda}</figcaption>
-                </figure>
-              </div>
-            ))}
-          </div>
-
-          <div className="mx-auto mt-20 max-w-2xl text-center" data-revelar>
-            <div className="font-titulo text-2xl leading-snug font-semibold text-verde sm:text-3xl">
-              {LEGADO.fecho.map((t) => (
-                <p key={t}>{t}</p>
-              ))}
-            </div>
-            <p className="mt-8 font-mao text-3xl text-vermelho">E essa história continua. Agora, você também pode fazer parte dela.</p>
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
-              {principal && (
-                <Link href={`/${principal.slug}`} className="btn btn-acao">
-                  Apadrinhe uma criança
-                </Link>
-              )}
-              <a href={SITE.whatsapp.voluntario} target="_blank" rel="noopener" className="btn btn-claro">
-                Quero ser voluntário
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* História. */}
-      <section id="nossa-historia" className="relative scroll-mt-16 overflow-clip bg-verde py-24 text-creme sm:py-32">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/natal/simbolos/forma-amarela-2.svg" alt="" className="forma -top-36 -left-32 w-[340px]" />
-        <div className="relative mx-auto grid max-w-7xl gap-14 px-4 sm:px-8 lg:grid-cols-2">
-          <div data-revelar>
-            <p className="chamada text-amarelo">Nossa história</p>
-            <h2 className="mt-3 text-4xl leading-tight font-bold sm:text-5xl">De um projeto de evangelismo a uma comunidade inteira</h2>
-            <ol className="mt-12 space-y-10 border-l-2 border-dashed border-creme/25 pl-8">
-              {SOBRE.historia.map((h) => (
-                <li key={h.titulo} className="relative">
-                  <span className="absolute top-1.5 -left-[42px] size-4 rounded-full border-4 border-verde bg-amarelo" />
-                  <p className="font-mao text-2xl text-amarelo">{h.quando}</p>
-                  <p className="mt-1 font-titulo text-2xl font-semibold">{h.titulo}</p>
-                  <p className="mt-2 max-w-md text-creme/80">{h.texto}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-          <div className="grid grid-cols-2 gap-3 self-center" data-revelar style={atraso(120)}>
-            <Image src="/img/acao-dupla.webp" alt="Dois voluntários do Paz Kids com colete roxo sorrindo" width={1200} height={800} className="col-span-2 aspect-[16/10] rounded-[24px] object-cover" />
-            <Image src="/img/acao-roda.webp" alt="Crianças reunidas numa ação do Paz Kids em Ação" width={1200} height={800} className="aspect-square rounded-[24px] object-cover" />
-            <Image src="/img/acao-voluntarios-servindo.webp" alt="Voluntários servindo lanche para as crianças na quadra" width={1400} height={933} className="aspect-square rounded-[24px] object-cover" />
-          </div>
-        </div>
-      </section>
-
-      {/* Missão, visão e valores. */}
-      <section className="bg-creme py-24 sm:py-28">
-        <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-8 md:grid-cols-3">
-          <div data-revelar>
-            <p className="font-mao text-3xl text-vermelho">Missão</p>
-            <p className="mt-3 text-lg leading-relaxed">{SOBRE.missao}</p>
-          </div>
-          <div data-revelar style={atraso(90)}>
-            <p className="font-mao text-3xl text-vermelho">Visão</p>
-            <p className="mt-3 text-lg leading-relaxed">{SOBRE.visao}</p>
-          </div>
-          <div data-revelar style={atraso(180)}>
-            <p className="font-mao text-3xl text-vermelho">Valores</p>
-            <ul className="mt-3 space-y-2 text-lg leading-relaxed">
-              {SOBRE.valores.map((v) => (
-                <li key={v} className="flex gap-2.5">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/natal/simbolos/estrela.svg" alt="" className="mt-1.5 size-4 shrink-0" />
-                  {v}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
       {/* Campanha aberta, já na marca dela. */}
       {principal && p && (
         <section className="tema-natal relative overflow-clip bg-verde-escuro text-creme">
@@ -279,14 +114,101 @@ export default async function Inicio() {
               </Link>
             </div>
             <div data-revelar style={atraso(120)}>
-              <Image src="/img/ia-menino-sacolinha-marca.webp" alt="Menino sorrindo com uma sacolinha kraft da campanha de Natal" width={1400} height={933} className="rounded-[28px] object-cover" />
+              <Image src="/img/acampa-danca.webp" alt="Menina de jaqueta rosa dançando com outras crianças e voluntários no AcampaKids" width={1600} height={1067} className="rounded-[28px] object-cover" />
             </div>
           </div>
         </section>
       )}
 
+      {/* Quem somos: o que o projeto faz, contado pelas fotos reais das ações. */}
+      <section id="quem-somos" className="scroll-mt-16 bg-papel py-24 sm:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-8">
+          <div className="max-w-3xl" data-revelar>
+            <p className="chamada text-vermelho">Quem somos</p>
+            <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">
+              A igreja onde as crianças <span className="pincelada">estão</span>
+            </h2>
+            <p className="mt-5 text-lg text-tinta-2 sm:text-xl">
+              O Paz Kids em Ação é o coração missionário do Paz Kids, o ministério infantil da Paz Church. A gente sai da igreja e vai para a quadra,
+              a praça, a escola e a rua, com a Palavra, brincadeira, lanche e abraço, e com voluntários que conhecem as crianças pelo nome.
+            </p>
+          </div>
+          <div className="mt-12 grid auto-rows-[170px] grid-cols-2 gap-3 sm:auto-rows-[220px] md:grid-cols-4">
+            <Foto src="/img/acao-oracao.webp" legenda="Orar juntos" className="col-span-2 row-span-2" posicao="object-[center_75%]" />
+            <Foto src="/img/acao-pula-pula.webp" legenda="Brincar" />
+            <Foto src="/img/acao-sorrisos.webp" legenda="Lanchar e conversar" />
+            <Foto src="/img/acao-voluntarios-servindo.webp" legenda="Servir" className="col-span-2" />
+            <Foto src="/img/acao-quadra.webp" legenda="Ocupar a quadra" className="col-span-2" />
+            <Foto src="/img/acao-maos.webp" legenda="Cuidar de perto" />
+            <Foto src="/img/acao-colete.webp" legenda="Brincar junto" />
+          </div>
+        </div>
+      </section>
+
+      {/* Agenda semanal em resumo: o mapa e as rotas ficam em /agenda, o link da bio. */}
+      {agenda.length > 0 && (
+        <section id="agenda" className="scroll-mt-16 bg-creme py-20 sm:py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-8">
+            <div className="flex flex-wrap items-end justify-between gap-6" data-revelar>
+              <div className="max-w-2xl">
+                <p className="chamada text-vermelho">Agenda semanal</p>
+                <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">
+                  Onde a gente está <span className="pincelada">toda semana</span>
+                </h2>
+              </div>
+              <Link href="/agenda" className="btn btn-primario">
+                Ver no mapa e como chegar <IconeSeta className="size-5" />
+              </Link>
+            </div>
+            <div className="mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4" data-revelar>
+              {[...new Set(agenda.map((e) => e.dia))].map((dia) => (
+                <div key={dia} className="border-t-4 pt-4" style={{ borderColor: corDoDia(dia) }}>
+                  <p className="chamada" style={{ color: corDoDia(dia) }}>
+                    {dia}
+                  </p>
+                  <ul className="mt-3 space-y-2">
+                    {agenda
+                      .filter((e) => e.dia === dia)
+                      .map((e) => (
+                        <li key={`${e.hora}${e.nome}`} className="leading-snug">
+                          <span className="font-titulo font-semibold text-verde tabular-nums">{e.hora}</span> <span className="text-tinta">{e.nome}</span>
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* O legado em resumo; a história inteira, capítulo por capítulo, fica em /historia. */}
+      <section id="legado" className="scroll-mt-16 bg-papel py-24 sm:py-28">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-8 lg:grid-cols-[1fr_1.1fr]">
+          <div data-revelar>
+            <div className="flex items-end gap-5">
+              <p className="font-titulo text-[clamp(5rem,11vw,8rem)] leading-[0.85] font-bold text-verde">50</p>
+              <div className="pb-1">
+                <p className="font-titulo text-xl font-semibold text-verde">anos de Paz Church</p>
+                <p className="text-tinta-2">1976 · 2026</p>
+              </div>
+            </div>
+            <h2 className="mt-8 text-4xl leading-tight font-bold text-verde sm:text-5xl">{LEGADO.titulo}</h2>
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-tinta-2">{LEGADO.resumo}</p>
+            <Link href="/historia" className="btn btn-claro mt-8">
+              Conheça a nossa história <IconeSeta className="size-5" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 gap-3" data-revelar style={atraso(120)}>
+            {LEGADO.marcos.slice(0, 4).map((c) => (
+              <Image key={c.foto.src} src={c.foto.src} alt={c.foto.alt} width={c.foto.w} height={c.foto.h} className="aspect-[4/3] w-full rounded-[20px] object-cover" />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Como ajudar. */}
-      <section id="como-ajudar" className="scroll-mt-16 bg-papel py-24 sm:py-28">
+      <section id="como-ajudar" className="scroll-mt-16 bg-creme py-24 sm:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-8">
           <div className="max-w-2xl" data-revelar>
             <p className="chamada text-vermelho">Como ajudar</p>
@@ -323,18 +245,6 @@ export default async function Inicio() {
                 </a>
               }
             />
-          </div>
-        </div>
-      </section>
-
-      {/* A equipe. */}
-      <section className="relative isolate overflow-clip">
-        <Image src="/img/acao-equipe.webp" alt="Voluntários do Paz Kids em Ação reunidos na quadra" fill sizes="100vw" className="-z-10 object-cover" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-verde-escuro/85 via-verde-escuro/50 to-transparent" />
-        <div className="mx-auto flex min-h-[480px] max-w-7xl items-center px-4 py-24 sm:px-8">
-          <div data-revelar>
-            <p className="max-w-xl font-mao text-[clamp(2.6rem,6vw,4.6rem)] leading-none text-creme">Juntos fazemos a diferença.</p>
-            <p className="mt-5 max-w-md text-lg text-creme/90">Gente da igreja e da comunidade, de colete, servindo as crianças de Heliópolis.</p>
           </div>
         </div>
       </section>

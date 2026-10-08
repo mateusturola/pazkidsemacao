@@ -54,11 +54,8 @@ ${SOBRE.valores.map((v) => `- ${v}`).join("\n")}
 ## Agenda semanal (encontros nas ruas e praças)
 ${agenda.map((a) => `- ${a.dia}, ${a.hora}: ${a.nome} · ${a.endereco}${a.complemento ? ` · ${a.complemento}` : ""}`).join("\n")}
 
-## Um legado de amor (Paz Church, 50 anos)
-${LEGADO.capitulos.map((c) => c.texto).join("\n\n")}
-
-## História do projeto
-${SOBRE.historia.map((h) => `- ${h.quando}: ${h.texto}`).join("\n")}
+## Nossa história (Paz Church, 50 anos, e o Paz Kids em Ação)
+${LEGADO.marcos.map((m) => `- ${m.quando}: ${m.titulo}. ${m.texto}`).join("\n")}
 
 ## Campanhas abertas
 ${campanhas || "Nenhuma campanha aberta no momento. Acompanhe pelo Instagram."}

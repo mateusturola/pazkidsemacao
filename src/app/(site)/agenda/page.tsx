@@ -30,6 +30,7 @@ export default async function AgendaPage() {
         links={[
           { href: "/", label: "Início" },
           { href: "/#quem-somos", label: "Quem somos" },
+          { href: "/historia", label: "História" },
           { href: "/#como-ajudar", label: "Como ajudar" },
         ]}
         cta={principal ? { href: `/${principal.slug}`, label: principal.nome } : { href: "/#como-ajudar", label: "Quero ajudar" }}

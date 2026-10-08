@@ -1,9 +1,10 @@
 import { SITE } from "@/content/site";
 import { instagramConfigurado, postsInstagram } from "@/lib/instagram";
 
-// Antes de existir o token, a seção mostra fotos das próprias ações do projeto no lugar dos posts,
-// para a equipe ver a ideia funcionando. Com o token, entram os posts de verdade e isto some.
-const DEMONSTRACAO = ["acao-sorrisos", "acao-oracao", "acao-dupla", "acao-pula-pula", "acao-maos", "acao-colete", "acao-roda", "acao-quadra"];
+// Antes de existir o token, a seção mostra fotos do AcampaKids no lugar dos posts. Não repita as
+// fotos da galeria "O que fazemos": a mesma foto duas vezes na página denuncia o modelo.
+// Com o token, entram os posts de verdade e isto some.
+const DEMONSTRACAO = ["acampa-maos", "acampa-louvor", "acampa-sorriso", "acampa-bambole", "acampa-cozinha", "acampa-quadra", "acampa-abraco-crianca", "acampa-roda"];
 
 export async function Instagram() {
   const posts = await postsInstagram().catch(() => []);
