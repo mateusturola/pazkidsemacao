@@ -100,6 +100,8 @@ export async function criancasDaCampanha(campanhaId: number, status: StatusParti
       tamanhoCalcado: criancas.tamanhoCalcado,
       sugestaoPresente: criancas.sugestaoPresente,
       gostos: criancas.gostos,
+      sonho: criancas.sonho,
+      sobre: criancas.sobre,
       versaoImagem: sql<string>`coalesce(case when ${criancas.autorizacaoImagem} then ${criancas.fotoKey} end, ${criancas.avatarKey}, '')`,
       status: participacoes.status,
     })

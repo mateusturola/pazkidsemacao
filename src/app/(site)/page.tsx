@@ -7,7 +7,7 @@ import { JsonLd } from "@/components/site/json-ld";
 import { Rodape } from "@/components/site/rodape";
 import { Topo } from "@/components/site/topo";
 import { CopyButton } from "@/components/ui/copy-button";
-import { PERGUNTAS, SITE, SOBRE } from "@/content/site";
+import { LEGADO, PERGUNTAS, SITE, SOBRE } from "@/content/site";
 import { encontrosAtivos } from "@/lib/agenda";
 import { campanhasAtivas, progressoCampanhas } from "@/lib/campanhas";
 import { formatIsoDate } from "@/lib/dates";
@@ -33,7 +33,7 @@ export default async function Inicio() {
         links={[
           { href: "#quem-somos", label: "Quem somos" },
           { href: "#agenda", label: "Agenda" },
-          { href: "#nossa-historia", label: "História" },
+          { href: "#legado", label: "História" },
           { href: "#como-ajudar", label: "Como ajudar" },
           { href: "#perguntas", label: "Perguntas" },
         ]}
@@ -148,6 +148,52 @@ export default async function Inicio() {
         </section>
       )}
 
+      {/* O legado do Pastor Lucas: a raiz do projeto, antes da linha do tempo dele. */}
+      <section id="legado" className="scroll-mt-16 bg-papel py-24 sm:py-32">
+        <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-8 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
+          <div className="lg:sticky lg:top-28 lg:self-start" data-revelar>
+            <p className="chamada text-vermelho">Um legado de amor</p>
+            <p className="mt-6 font-titulo text-[clamp(6rem,14vw,10rem)] leading-[0.85] font-bold text-verde">50</p>
+            <p className="mt-3 font-titulo text-2xl font-semibold text-verde">anos de Paz Church</p>
+            <p className="mt-1 text-tinta-2">1976 · 2026</p>
+            <figure className="mt-10">
+              <Image
+                src="/img/legado/familia-huber.webp"
+                alt="O Pastor Lucas Huber e a Pastora Christine com os quatro filhos, numa foto antiga de família"
+                width={1080}
+                height={783}
+                className="w-full rounded-[24px] object-cover sepia-[.15]"
+              />
+              <figcaption className="mt-3 text-sm text-tinta-2">O Pastor Lucas e a Pastora Christine com os filhos.</figcaption>
+            </figure>
+          </div>
+          <div data-revelar style={atraso(120)}>
+            <h2 className="text-4xl leading-tight font-bold text-verde sm:text-5xl">{LEGADO.titulo}</h2>
+            <div className="mt-8 space-y-5 text-lg leading-relaxed text-tinta sm:text-xl">
+              {LEGADO.paragrafos.map((t) => (
+                <p key={t}>{t}</p>
+              ))}
+            </div>
+            <div className="mt-10 border-l-4 border-amarelo pl-6 font-titulo text-2xl leading-snug font-semibold text-verde">
+              {LEGADO.fecho.map((t) => (
+                <p key={t}>{t}</p>
+              ))}
+            </div>
+            <p className="mt-10 font-mao text-3xl text-vermelho">E essa história continua. Agora, você também pode fazer parte dela.</p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              {principal && (
+                <Link href={`/${principal.slug}`} className="btn btn-acao">
+                  Apadrinhe uma criança
+                </Link>
+              )}
+              <a href={SITE.whatsapp.voluntario} target="_blank" rel="noopener" className="btn btn-claro">
+                Quero ser voluntário
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* História. */}
       <section id="nossa-historia" className="relative scroll-mt-16 overflow-hidden bg-verde py-24 text-creme sm:py-32">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -213,7 +259,7 @@ export default async function Inicio() {
                 Mais que presentes, é <span className="pincelada">esperança</span>
               </h2>
               <p className="mt-5 max-w-lg text-lg text-creme/85">
-                {principal.nome}: escolha uma criança e monte a sacolinha com roupa, calçado e um presente, ou doe online e a equipe monta por você.
+                {principal.nome}: escolha uma criança e monte a sacolinha com roupa, calçado e um presente, ou doe online e a gente monta pra você.
               </p>
               {p.total > 0 && (
                 <div className="mt-8 max-w-md">

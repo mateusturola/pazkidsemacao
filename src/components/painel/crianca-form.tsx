@@ -64,6 +64,24 @@ export function CriancaForm({ action, crianca, botao }: { action: Action; crianc
         <Campo label="Do que gosta">
           <input name="gostos" defaultValue={c?.gostos ?? ""} placeholder="Ex.: futebol, desenhar" className="campo" />
         </Campo>
+        <Campo label="Sonho">
+          <input name="sonho" defaultValue={c?.sonho ?? ""} placeholder="Ex.: ser professora" className="campo" />
+        </Campo>
+        <div className="sm:col-span-2">
+          <Campo label="Sobre a criança">
+            <textarea
+              name="sobre"
+              rows={3}
+              maxLength={400}
+              defaultValue={c?.sobre ?? ""}
+              placeholder="Contado por ela ou pelos pais: o jeitinho dela, do que brinca. Ex.: Ama caminhões e diz que vai ser caminhoneiro."
+              className="campo"
+            />
+          </Campo>
+          <p className="mt-1 text-xs text-tinta-2">
+            Aparece no site. Não escreva escola, rua, sobrenome nem nada que identifique a família. Em branco, o site monta uma apresentação com idade, gostos e ideia de presente.
+          </p>
+        </div>
       </fieldset>
 
       <fieldset className="grid gap-4 sm:grid-cols-2">

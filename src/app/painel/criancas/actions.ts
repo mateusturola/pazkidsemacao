@@ -34,6 +34,8 @@ function dadosDoFormulario(form: FormData) {
     tamanhoCalcado: texto(form, "tamanhoCalcado"),
     sugestaoPresente: texto(form, "sugestaoPresente"),
     gostos: texto(form, "gostos"),
+    sonho: texto(form, "sonho"),
+    sobre: texto(form, "sobre")?.slice(0, 400) ?? null,
     responsavelNome: texto(form, "responsavelNome"),
     responsavelContato: texto(form, "responsavelContato"),
     autorizacaoImagem: autorizacao,
@@ -163,6 +165,8 @@ export type LinhaImportacao = {
   tamanhoCalcado?: string;
   sugestaoPresente?: string;
   gostos?: string;
+  sonho?: string;
+  sobre?: string;
   responsavelNome?: string;
   responsavelContato?: string;
   autorizacaoImagem?: string;
@@ -225,6 +229,8 @@ export async function importarCriancas(linhas: LinhaImportacao[], campanhaId: nu
       tamanhoCalcado: l.tamanhoCalcado?.trim() || null,
       sugestaoPresente: l.sugestaoPresente?.trim() || null,
       gostos: l.gostos?.trim() || null,
+      sonho: l.sonho?.trim() || null,
+      sobre: l.sobre?.trim().slice(0, 400) || null,
       responsavelNome: l.responsavelNome?.trim() || null,
       responsavelContato: l.responsavelContato?.trim() || null,
       // Célula vazia não decide nada; "não" escrito na planilha revoga, mesmo que o painel diga sim.

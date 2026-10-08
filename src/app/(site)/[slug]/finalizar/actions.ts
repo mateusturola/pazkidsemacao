@@ -31,6 +31,16 @@ function cpfValido(cpf: string) {
   return dv(9) === Number(cpf[9]) && dv(10) === Number(cpf[10]);
 }
 
+/** Mensagem e oração para uma criança. Texto puro, sem caractere de controle: vai impresso e para o e-mail. */
+function recado(form: FormData, criancaId: number) {
+  const mensagem = String(form.get(`mensagem_${criancaId}`) ?? "")
+    .replace(/[\u0000-\u0008\u000b-\u001f\u007f]/g, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim()
+    .slice(0, 500);
+  return { mensagem: mensagem || null, vaiOrar: form.get(`orar_${criancaId}`) === "1" };
+}
+
 export type Estado = { erro: string; indisponiveis?: number[] } | null;
 
 export async function finalizarPedido(slug: string, ids: number[], _: Estado, form: FormData): Promise<Estado> {
@@ -109,7 +119,7 @@ export async function finalizarPedido(slug: string, ids: number[], _: Estado, fo
       prazoEntrega: modalidade === "entrega_balcao" ? campanha.prazoEntrega : null,
     })
     .returning({ id: pedidos.id });
-  await db.insert(pedidoItens).values(criancaIds.map((criancaId) => ({ pedidoId: pedido.id, criancaId })));
+  await db.insert(pedidoItens).values(criancaIds.map((criancaId) => ({ pedidoId: pedido.id, criancaId, ...recado(form, criancaId) })));
 
   const r = await reservar({ campanhaId: campanha.id, criancaIds, pedidoId: pedido.id, padrinhoNome: nome, padrinhoContato: `${email} · ${telefone}` });
   if (!r.ok) {

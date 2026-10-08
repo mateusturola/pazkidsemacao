@@ -5,6 +5,7 @@ import type { Estado } from "@/app/(site)/[slug]/finalizar/actions";
 import { chaveCarrinho } from "./grade-criancas";
 
 type Ponto = { id: number; nome: string; endereco: string | null; horarios: string | null };
+type Escolhida = { id: number; nome: string; sexo: "F" | "M" | null };
 
 export function FinalizarForm({
   slug,
@@ -15,6 +16,7 @@ export function FinalizarForm({
   maxParcelas,
   prazo,
   pontos,
+  criancas,
 }: {
   slug: string;
   acao: (prev: Estado, form: FormData) => Promise<Estado>;
@@ -24,6 +26,7 @@ export function FinalizarForm({
   maxParcelas: number;
   prazo: string | null;
   pontos: Ponto[];
+  criancas: Escolhida[];
 }) {
   const [estado, formAction, pending] = useActionState(acao, null);
   const [modalidade, setModalidade] = useState(online ? "pagamento_online" : "entrega_balcao");
@@ -46,7 +49,7 @@ export function FinalizarForm({
           <legend className="font-titulo text-2xl font-semibold text-verde">Como você vai ajudar?</legend>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <Opcao nome="modalidade" valor="pagamento_online" atual={modalidade} onChange={setModalidade} titulo={`Pagar online · ${valorTotal}`}>
-              Pix ou cartão. A equipe compra e monta a sacolinha.
+              Pix ou cartão. A gente compra e monta a sacolinha pra você.
             </Opcao>
             <Opcao nome="modalidade" valor="entrega_balcao" atual={modalidade} onChange={setModalidade} titulo="Montar e entregar">
               Você compra os itens e entrega num ponto de coleta até {prazo}.
@@ -55,6 +58,31 @@ export function FinalizarForm({
         </fieldset>
       )}
       {!(online && balcao) && <input type="hidden" name="modalidade" value={modalidade} />}
+
+      {/* O recado vai impresso dentro da sacolinha: é o que transforma a doação em encontro. */}
+      <fieldset>
+        <legend className="font-titulo text-2xl font-semibold text-verde">Deixe uma mensagem {criancas.length > 1 ? "para cada criança" : `para ${artigo(criancas[0])}${criancas[0]?.nome}`}</legend>
+        <p className="mt-1 text-tinta-2">Opcional. A gente imprime e coloca junto da sacolinha.</p>
+        <div className="mt-4 space-y-5">
+          {criancas.map((c) => (
+            <div key={c.id}>
+              {criancas.length > 1 && <p className="font-mao text-2xl leading-none text-verde">Para {c.nome}</p>}
+              <textarea
+                name={`mensagem_${c.id}`}
+                rows={3}
+                maxLength={500}
+                placeholder={`Ex.: ${c.nome}, fiquei muito feliz em fazer parte do seu Natal. Vou orar pelos seus sonhos!`}
+                aria-label={`Mensagem para ${c.nome}`}
+                className="campo mt-2"
+              />
+              <label className="mt-2 flex items-center gap-2.5 text-[15px] font-bold text-verde">
+                <input type="checkbox" name={`orar_${c.id}`} value="1" className="size-4 accent-verde" />
+                Vou orar por {c.sexo === "M" ? "ele" : c.sexo === "F" ? "ela" : c.nome}
+              </label>
+            </div>
+          ))}
+        </div>
+      </fieldset>
 
       <fieldset className="grid gap-4 sm:grid-cols-2">
         <legend className="mb-3 font-titulo text-2xl font-semibold text-verde">Seus dados</legend>
@@ -141,6 +169,10 @@ export function FinalizarForm({
       </button>
     </form>
   );
+}
+
+function artigo(c?: Escolhida) {
+  return c?.sexo === "M" ? "o " : c?.sexo === "F" ? "a " : "";
 }
 
 function Opcao({ nome, valor, atual, onChange, titulo, children }: { nome: string; valor: string; atual: string; onChange: (v: string) => void; titulo: string; children: React.ReactNode }) {

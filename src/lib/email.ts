@@ -3,7 +3,7 @@ import { and, eq } from "drizzle-orm";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { SITE } from "@/content/site";
 import type { TIPOS_EMAIL } from "@/db/schema";
-import { idadeTexto, nomePublico } from "@/lib/criancas";
+import { idadeTexto, natalDas, nomePublico } from "@/lib/criancas";
 import { formatIsoDate } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
 import { env } from "@/lib/env";
@@ -62,6 +62,8 @@ export async function enviarEmailPedido(pedidoId: number, tipo: Tipo) {
       nome: criancas.nome,
       apelidoPublico: criancas.apelidoPublico,
       dataNascimento: criancas.dataNascimento,
+      sexo: criancas.sexo,
+      sonho: criancas.sonho,
       tamanhoCamiseta: criancas.tamanhoCamiseta,
       tamanhoCalca: criancas.tamanhoCalca,
       tamanhoCalcado: criancas.tamanhoCalcado,
@@ -106,6 +108,8 @@ type Dados = {
     nome: string;
     apelidoPublico: string | null;
     dataNascimento: string | null;
+    sexo: "F" | "M" | null;
+    sonho: string | null;
     tamanhoCamiseta: string | null;
     tamanhoCalca: string | null;
     tamanhoCalcado: string | null;
@@ -122,6 +126,7 @@ function montar(tipo: Tipo, d: Dados) {
   const nomes = d.itens.map((c) => esc(nomePublico(c)));
   const lista = nomes.length > 1 ? `${nomes.slice(0, -1).join(", ")} e ${nomes.at(-1)}` : (nomes[0] ?? "");
   const balcao = d.p.modalidade === "entrega_balcao";
+  const natal = esc(natalDas(d.itens));
 
   let assunto: string;
   let frase: string;
@@ -133,6 +138,7 @@ function montar(tipo: Tipo, d: Dados) {
       assunto = `Obrigado por apadrinhar ${n > 1 ? `${n} crianças` : "uma criança"}, ${d.padrinho.nome.split(" ")[0]}!`;
       frase = "Mais que presentes, é esperança.";
       corpo = `<p>Oi, ${primeiro}! ${n > 1 ? `${lista} já estão reservados` : `${lista} já está reservada`} para você. Agora é com você: monte a sacolinha com carinho e entregue até <strong>${prazo}</strong>.</p>
+<p style="margin:16px 0 0;font-size:18px;color:${VERDE};font-weight:700">Você vai transformar ${natal}.</p>
 ${blocoEntrega(d, prazo)}
 ${blocoCriancas(d)}
 <p style="margin:20px 0 0">Na sacola, escreva o nome da criança e o número do pedido: <strong>${d.p.id}</strong>.</p>`;
@@ -140,7 +146,8 @@ ${blocoCriancas(d)}
     } else {
       assunto = `Pagamento confirmado. Obrigado, ${d.padrinho.nome.split(" ")[0]}!`;
       frase = "O Natal também é sobre compartilhar.";
-      corpo = `<p>Oi, ${primeiro}! Recebemos o seu pagamento de <strong>${formatBRL(d.p.valor)}</strong>. A equipe do Paz Kids em Ação vai montar ${n > 1 ? "as sacolinhas" : "a sacolinha"} de <strong>${lista}</strong> e entregar no Natal.</p>
+      corpo = `<p>Oi, ${primeiro}! Recebemos o seu pagamento de <strong>${formatBRL(d.p.valor)}</strong>. Agora é com a gente: vamos montar ${n > 1 ? "as sacolinhas" : "a sacolinha"} de <strong>${lista}</strong> e entregar no Natal.</p>
+<p style="margin:16px 0 0;font-size:18px;color:${VERDE};font-weight:700">Você transformou ${natal}.</p>
 ${blocoCriancas(d)}
 <p style="margin:20px 0 0">A gente manda notícias quando ${n > 1 ? "elas forem entregues" : "ela for entregue"}.</p>`;
     }
@@ -151,7 +158,7 @@ ${blocoCriancas(d)}
     corpo = `<p>Oi, ${primeiro}! Passando para lembrar: ${n > 1 ? `as sacolinhas de ${lista} precisam` : `a sacolinha de ${lista} precisa`} chegar até <strong>${prazo}</strong>${amanha ? ", amanhã" : ""}.</p>
 ${blocoEntrega(d, prazo)}
 ${blocoCriancas(d)}
-<p style="margin:20px 0 0">Se aconteceu algum imprevisto, é só responder este e-mail: a gente conversa.</p>`;
+<p style="margin:20px 0 0">Se aconteceu algum imprevisto, chame a gente no WhatsApp <a href="${SITE.whatsapp.link}" style="color:${VERDE}">${SITE.whatsapp.numero}</a>: a gente conversa.</p>`;
     botao = "Ver tamanhos e local de entrega";
   } else {
     assunto = `Sua sacolinha chegou. Obrigado, ${d.padrinho.nome.split(" ")[0]}!`;

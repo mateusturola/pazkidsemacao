@@ -19,6 +19,10 @@ export const criancas = sqliteTable(
     tamanhoCalcado: text("tamanho_calcado"),
     sugestaoPresente: text("sugestao_presente"),
     gostos: text("gostos"),
+    // O que faz o padrinho conhecer a criança: o sonho ("quer ser professora") e um jeitinho dela,
+    // contado por ela ou pelos pais. Vão para o site: nada de escola, rua ou sobrenome.
+    sonho: text("sonho"),
+    sobre: text("sobre"),
     fotoKey: text("foto_key"),
     avatarKey: text("avatar_key"),
     avatarSeed: text("avatar_seed"),
@@ -123,6 +127,9 @@ export const pedidoItens = sqliteTable(
     criancaId: integer("crianca_id")
       .notNull()
       .references(() => criancas.id),
+    // Recado do padrinho para a criança: a equipe lê, imprime e põe na sacolinha.
+    mensagem: text("mensagem"),
+    vaiOrar: integer("vai_orar", { mode: "boolean" }).notNull().default(false),
   },
   (t) => [primaryKey({ columns: [t.pedidoId, t.criancaId] })],
 );

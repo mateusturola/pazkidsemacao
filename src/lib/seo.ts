@@ -40,7 +40,7 @@ const organizacao = {
     { "@type": "Place", name: "Heliópolis, São Paulo, SP" },
     { "@type": "AdministrativeArea", name: "Grande São Paulo" },
   ],
-  parentOrganization: { "@type": "Church", name: "Paz Church São Paulo", alternateName: "Paz Church", url: "https://paz.church", address: { "@type": "PostalAddress", addressLocality: "São Paulo", addressRegion: "SP", addressCountry: "BR" } },
+  parentOrganization: { "@type": "Church", name: "Paz Church São Paulo", alternateName: "Paz Church", url: "https://paz.church", foundingDate: "1976-12", founder: { "@type": "Person", name: "Lucas Huber" }, foundingLocation: "Santarém, Pará", address: { "@type": "PostalAddress", addressLocality: "São Paulo", addressRegion: "SP", addressCountry: "BR" } },
   knowsAbout: TERMOS,
   sameAs: SITE.redes.map((r) => r.url),
   potentialAction: { "@type": "DonateAction", name: "Doar pelo Pix", description: `Pix ${SITE.pix.tipo} ${SITE.pix.chave}`, recipient: { "@id": `${SITE.url}/#organizacao` } },

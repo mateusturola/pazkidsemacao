@@ -39,8 +39,8 @@ export default async function PainelLayout({ children }: { children: React.React
   await liberarExpiradas();
 
   return (
-    <div className="min-h-dvh bg-[#f7f5f1]">
-      <header className="sticky top-0 z-30 border-b border-linha bg-white/95 backdrop-blur">
+    <div className="min-h-dvh bg-[#f7f5f1] print:bg-white">
+      <header className="sticky top-0 z-30 border-b border-linha bg-white/95 backdrop-blur print:hidden">
         <div className="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4 sm:px-6">
           <Link href="/" className="flex shrink-0 items-center gap-2">
             <Image src="/brand/pazkids-em-acao-200.webp" alt="" width={200} height={238} className="h-9 w-auto" />

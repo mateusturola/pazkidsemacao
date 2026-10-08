@@ -58,6 +58,21 @@ export const SOBRE = {
   ],
 };
 
+/**
+ * O legado do Pastor Lucas Huber, que dá a raiz do projeto. Só fatos confirmados pela equipe e pelas
+ * fontes da PAZ International: nada de data, número ou cena que não esteja nelas.
+ */
+export const LEGADO = {
+  titulo: "Tudo começou às margens dos rios",
+  paragrafos: [
+    "A história começa nos Estados Unidos, quando Melvin e Catherine Huber receberam o chamado de Deus para servir no Brasil. Foram mais de 25 anos plantando igrejas por aqui, e foi nessa família que cresceu Lucas Huber.",
+    "Em dezembro de 1976, o missionário Lucas Huber chegou a Santarém, no Pará, com a esposa, Christine, e as duas filhas pequenas. Ali nasceu a Paz Church.",
+    "O sonho dele era levar o Evangelho a cada vila da Amazônia. Primeiro de barco, pelos rios, até as comunidades ribeirinhas. Depois, num pequeno avião que aprendeu a pilotar para chegar mais longe.",
+    "O Pastor Lucas partiu para a eternidade em 1994. O chamado continuou. Em 2026, a Paz Church completa 50 anos, e o Paz Kids em Ação é um dos frutos dessa história: o mesmo amor pelas crianças, agora nas ruas e praças de Heliópolis.",
+  ],
+  fecho: ["Hoje, cada voluntário carrega um pedacinho desse legado.", "Em cada comunidade.", "Em cada abraço.", "Em cada presente entregue."],
+};
+
 /** Perguntas frequentes: aparecem na página e vão para o Google e as IAs como FAQPage. */
 export const PERGUNTAS = [
   {
@@ -70,7 +85,7 @@ export const PERGUNTAS = [
   },
   {
     p: "Como o projeto começou?",
-    r: "Em julho de 2022, como um projeto de evangelismo inspirado pelo treinamento da Metro World Kids. Depois cresceu para atender crianças em Heliópolis e em outras áreas da Grande São Paulo, e hoje segue em parceria com a Metro World Kids.",
+    r: "O Paz Kids em Ação nasceu da Paz Church, fundada em 1976 em Santarém (PA) pelo missionário Lucas Huber, que levava o Evangelho às comunidades ribeirinhas. O projeto começou em julho de 2022, como evangelismo inspirado pelo treinamento da Metro World Kids. Depois cresceu para atender crianças em Heliópolis e em outras áreas da Grande São Paulo, e hoje segue em parceria com a Metro World Kids.",
   },
   {
     p: "Como posso ajudar o Paz Kids em Ação?",
@@ -78,7 +93,7 @@ export const PERGUNTAS = [
   },
   {
     p: "Como funciona a Sacolinha de Natal?",
-    r: "Você escolhe uma ou mais crianças no site e monta uma sacolinha com camiseta, calça, calçado e um presente, para entregar num ponto de coleta do Paz Kids até a data limite. Também dá para pagar a sacolinha online, e a equipe monta por você.",
+    r: "Você escolhe uma ou mais crianças no site e monta uma sacolinha com camiseta, calça, calçado e um presente, para entregar num ponto de coleta do Paz Kids até a data limite. Se não tiver tempo, dá para doar online, e a gente monta pra você.",
   },
   {
     p: "O Paz Kids em Ação é ligado a alguma igreja?",

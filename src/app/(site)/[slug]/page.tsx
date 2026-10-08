@@ -11,7 +11,7 @@ import { Topo } from "@/components/site/topo";
 import { CopyButton } from "@/components/ui/copy-button";
 import { SITE } from "@/content/site";
 import { campanhaAberta, campanhaPorSlug, criancasDaCampanha, itensSacolinha, progressoCampanhas } from "@/lib/campanhas";
-import { idade, idadeTexto, nomePublico } from "@/lib/criancas";
+import { fraseSonho, historiaCrianca, idade, idadeTexto, nomePublico } from "@/lib/criancas";
 import { formatIsoDate } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
 import { imagemPublica } from "@/lib/imagem-publica";
@@ -60,6 +60,9 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
     nome: nomePublico(c),
     idade: idade(c.dataNascimento),
     idadeTexto: idadeTexto(c.dataNascimento),
+    sonho: fraseSonho(c.sonho),
+    historiaPropria: !!c.sobre?.trim(),
+    historia: historiaCrianca({ nome: nomePublico(c), idadeTexto: idadeTexto(c.dataNascimento), gostos: c.gostos, sugestao: c.sugestaoPresente, sobre: c.sobre }),
     sexo: c.sexo,
     camiseta: c.tamanhoCamiseta,
     calca: c.tamanhoCalca,
@@ -183,9 +186,9 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
               </Passo>
               <Passo n={2} icone={<IconeSacola className="size-8" />} titulo="Monte ou doe a sacolinha" atrasoMs={90}>
                 {online && balcao
-                  ? `Monte você mesmo, ou doe ${formatBRL(campanha.valorSacolinha)} por criança e a equipe monta.`
+                  ? `Monte você mesmo, ou doe ${formatBRL(campanha.valorSacolinha)} por criança e a gente monta pra você.`
                   : online
-                    ? `Doe ${formatBRL(campanha.valorSacolinha)} por criança, no Pix ou no cartão. A equipe monta para você.`
+                    ? `Doe ${formatBRL(campanha.valorSacolinha)} por criança, no Pix ou no cartão. A gente monta pra você.`
                     : "Compre os itens da lista pensando na criança que você escolheu."}
               </Passo>
               <Passo n={3} icone={<IconePresente className="size-8" />} titulo={balcao ? "Entregue no Paz Kids" : "Pronto, é Natal!"} atrasoMs={180}>
@@ -225,6 +228,40 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
         </section>
       )}
 
+      {/* Da sua casa: as duas formas de participar, logo antes da lista, com o caminho até ela. */}
+      {aberta && (online || balcao) && (
+        <section className="bg-papel py-20 sm:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-8">
+            <div className="max-w-2xl" data-revelar>
+              <p className="chamada text-vermelho">Do seu jeito</p>
+              <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">
+                Você sabia que, mesmo da sua casa, pode fazer parte <span className="pincelada">dessa missão</span>?
+              </h2>
+              <p className="mt-4 text-lg text-tinta-2">Você escolhe a criança e decide como quer participar. O resto, a gente faz junto.</p>
+            </div>
+            <div className="mt-12 grid gap-5 md:grid-cols-2">
+              {balcao && (
+                <Forma
+                  icone={<IconeSacola className="size-8" />}
+                  titulo="Montar e entregar"
+                  texto={`Você compra os itens, monta a sacolinha com carinho e entrega na recepção do Paz Kids até ${prazo}.`}
+                />
+              )}
+              {online && (
+                <Forma
+                  icone={<IconeCartao className="size-8" />}
+                  titulo={`Doar online · ${formatBRL(campanha.valorSacolinha)}`}
+                  texto={`Pix ou cartão${campanha.maxParcelas > 1 ? ` em até ${campanha.maxParcelas}x` : ""}. A gente compra e monta a sacolinha da criança que você escolheu, com o mesmo carinho que você teria.`}
+                />
+              )}
+            </div>
+            <a href="#criancas" className="btn btn-acao mt-10">
+              Escolher uma criança
+            </a>
+          </div>
+        </section>
+      )}
+
       {/* As crianças. Encerrada a campanha, a lista sai: o agradecimento fica no topo. */}
       {aberta && (
       <section id="criancas" className="relative scroll-mt-20 overflow-hidden bg-creme py-20 pb-36 sm:py-28 sm:pb-40">
@@ -250,34 +287,6 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
             )}
         </div>
       </section>
-      )}
-
-      {/* Duas formas de ajudar. */}
-      {aberta && (online || balcao) && (
-        <section className="bg-papel py-20 sm:py-28">
-          <div className="mx-auto max-w-7xl px-4 sm:px-8">
-            <div className="max-w-2xl" data-revelar>
-              <p className="chamada text-vermelho">Do seu jeito</p>
-              <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">Duas formas de abençoar</h2>
-            </div>
-            <div className="mt-12 grid gap-5 md:grid-cols-2">
-              {balcao && (
-                <Forma
-                  icone={<IconeSacola className="size-8" />}
-                  titulo="Montar e entregar"
-                  texto={`Você compra os itens, monta a sacolinha com carinho e entrega na recepção do Paz Kids até ${prazo}.`}
-                />
-              )}
-              {online && (
-                <Forma
-                  icone={<IconeCartao className="size-8" />}
-                  titulo={`Doar online · ${formatBRL(campanha.valorSacolinha)}`}
-                  texto={`Pix ou cartão${campanha.maxParcelas > 1 ? ` em até ${campanha.maxParcelas}x` : ""}. A equipe do Paz Kids em Ação compra e monta a sacolinha da criança que você escolheu.`}
-                />
-              )}
-            </div>
-          </div>
-        </section>
       )}
 
       {/* Onde entregar. */}

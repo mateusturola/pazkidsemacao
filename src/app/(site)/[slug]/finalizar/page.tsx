@@ -104,6 +104,7 @@ export default async function FinalizarPage({ params, searchParams }: { params: 
               maxParcelas={campanha.maxParcelas}
               prazo={campanha.prazoEntrega ? formatIsoDate(campanha.prazoEntrega) : null}
               pontos={pontos}
+              criancas={escolhidas.map((c) => ({ id: c.id, nome: nomePublico(c), sexo: c.sexo }))}
             />
           </div>
         </>

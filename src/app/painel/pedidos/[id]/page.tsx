@@ -40,7 +40,7 @@ export default async function PedidoPage({ params }: { params: Promise<{ id: str
 
   const [itens, historico, emails] = await Promise.all([
     db
-      .select({ c: criancas, status: participacoes.status, pedidoDaParticipacao: participacoes.pedidoId })
+      .select({ c: criancas, status: participacoes.status, pedidoDaParticipacao: participacoes.pedidoId, mensagem: pedidoItens.mensagem, vaiOrar: pedidoItens.vaiOrar })
       .from(pedidoItens)
       .innerJoin(criancas, eq(criancas.id, pedidoItens.criancaId))
       .leftJoin(participacoes, and(eq(participacoes.criancaId, pedidoItens.criancaId), eq(participacoes.campanhaId, p.campanhaId)))
@@ -144,7 +144,7 @@ export default async function PedidoPage({ params }: { params: Promise<{ id: str
       <section className="cartao mt-6 p-5">
         <h2 className="text-lg font-semibold">Crianças</h2>
         <ul className="mt-3 divide-y divide-linha">
-          {itens.map(({ c, status, pedidoDaParticipacao }) => (
+          {itens.map(({ c, status, pedidoDaParticipacao, mensagem, vaiOrar }) => (
             <li key={c.id} className="flex flex-wrap items-center gap-3 py-2.5 text-sm">
               <FotoCrianca id={c.id} versao={c.fotoKey ?? c.avatarKey} />
               <Link href={`/criancas/${c.id}`} className="font-semibold hover:text-verde">
@@ -160,6 +160,12 @@ export default async function PedidoPage({ params }: { params: Promise<{ id: str
                   <span className="text-xs text-tinta-2">não está mais com este pedido</span>
                 )}
               </span>
+              {(mensagem || vaiOrar) && (
+                <div className="w-full rounded-lg bg-creme/60 px-3 py-2 text-tinta">
+                  {mensagem && <p className="whitespace-pre-line">“{mensagem}”</p>}
+                  {vaiOrar && <p className="mt-1 text-xs font-bold text-verde">Vai orar pela criança</p>}
+                </div>
+              )}
             </li>
           ))}
         </ul>

@@ -73,6 +73,9 @@ export default async function CampanhaPage({ params, searchParams }: { params: P
         <h1 className="text-3xl font-semibold">{c.nome}</h1>
         <StatusBadge status={c.status} label={STATUS_CAMPANHA_LABEL[c.status]} />
         <div className="ml-auto flex gap-2">
+          <Link href={`/campanhas/${c.id}/mensagens`} className="btn btn-claro btn-sm">
+            Mensagens para imprimir
+          </Link>
           {c.status !== "rascunho" && (
             <a href={`${siteUrl}/${c.slug}`} target="_blank" rel="noopener" className="btn btn-claro btn-sm">
               Ver no site

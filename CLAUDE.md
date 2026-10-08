@@ -4,8 +4,9 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
 
 ## Dados de crianças (LGPD e ECA)
 
-- O site mostra o mínimo: apelido público ou primeiro nome, idade, tamanhos, sugestão de presente e
-  gostos. **Nunca** sobrenome, responsável, contato ou observações. Toda consulta pública passa por
+- O site mostra o mínimo: apelido público ou primeiro nome, idade, tamanhos, sugestão de presente,
+  gostos, sonho e "sobre" (o texto da família; sem ele, `historiaCrianca` monta um com o cadastro).
+  **Nunca** sobrenome, responsável, contato ou observações. Toda consulta pública passa por
   `criancasDaCampanha` (`src/lib/campanhas.ts`), que só seleciona esses campos.
 - Bucket R2 privado. Foto sai pelo site (`/fotos/[id]`) só com `autorizacao_imagem` e só de criança
   numa campanha publicada; sem autorização, o avatar. No painel, pela rota protegida da criança.
@@ -56,6 +57,12 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
   foto de criança atendida é real e com autorização.
 - Data se escolhe no `DatePicker`, nunca em `<input type="date">`.
 - Rodapé: "Desenvolvido por" com o logo da The Kingdom Digital, na versão branca (o fundo é escuro).
+
+## Padrinho e criança
+
+- A mensagem e o "vou orar" de cada criança ficam em `pedido_itens`. A equipe lê e imprime pela página
+  "Mensagens para imprimir" da campanha: o que estiver lá chega à criança.
+- O agradecimento fala das crianças pelo nome e sonho (`natalDas`), nunca só "N crianças".
 
 ## Agenda semanal
 

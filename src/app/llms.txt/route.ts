@@ -1,4 +1,4 @@
-import { PERGUNTAS, SITE, SOBRE } from "@/content/site";
+import { LEGADO, PERGUNTAS, SITE, SOBRE } from "@/content/site";
 import { encontrosAtivos } from "@/lib/agenda";
 import { campanhasAtivas, itensSacolinha, progressoCampanhas } from "@/lib/campanhas";
 import { formatIsoDate } from "@/lib/dates";
@@ -54,7 +54,10 @@ ${SOBRE.valores.map((v) => `- ${v}`).join("\n")}
 ## Agenda semanal (encontros nas ruas e praças)
 ${agenda.map((a) => `- ${a.dia}, ${a.hora}: ${a.nome} · ${a.endereco}${a.complemento ? ` · ${a.complemento}` : ""}`).join("\n")}
 
-## História
+## Um legado de amor (Paz Church, 50 anos)
+${LEGADO.paragrafos.join("\n\n")}
+
+## História do projeto
 ${SOBRE.historia.map((h) => `- ${h.quando}: ${h.texto}`).join("\n")}
 
 ## Campanhas abertas

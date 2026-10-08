@@ -18,6 +18,8 @@ const CAMPOS: { campo: Campo; label: string; nomes: string[] }[] = [
   { campo: "tamanhoCalcado", label: "Calçado", nomes: ["calcado", "tamanhocalcado", "sapato", "tenis", "numero", "numeracao"] },
   { campo: "sugestaoPresente", label: "Sugestão de presente", nomes: ["presente", "sugestaopresente", "sugestaodepresente", "brinquedo", "desejo"] },
   { campo: "gostos", label: "Do que gosta", nomes: ["gostos", "hobbies", "hobby", "gosta", "preferencias"] },
+  { campo: "sonho", label: "Sonho", nomes: ["sonho", "sonhos", "oquequerser", "quandocrescer"] },
+  { campo: "sobre", label: "Sobre a criança", nomes: ["sobre", "historia", "sobreacrianca", "apresentacao", "jeitinho"] },
   { campo: "responsavelNome", label: "Responsável", nomes: ["responsavel", "nomeresponsavel", "nomedoresponsavel", "mae", "pai"] },
   { campo: "responsavelContato", label: "Contato do responsável", nomes: ["contato", "telefone", "celular", "whatsapp", "contatoresponsavel", "telefoneresponsavel"] },
   { campo: "autorizacaoImagem", label: "Autoriza imagem", nomes: ["autorizacao", "autorizacaoimagem", "autorizacaodeimagem", "usodeimagem", "autorizafoto"] },

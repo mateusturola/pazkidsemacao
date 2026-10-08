@@ -8,7 +8,7 @@ import { Topo } from "@/components/site/topo";
 import { CopyButton } from "@/components/ui/copy-button";
 import { SITE } from "@/content/site";
 import { campanhaAberta } from "@/lib/campanhas";
-import { idadeTexto, nomePublico } from "@/lib/criancas";
+import { idadeTexto, natalDas, nomePublico } from "@/lib/criancas";
 import { formatIsoDate } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
 import { imagemPublica } from "@/lib/imagem-publica";
@@ -42,6 +42,8 @@ export default async function PedidoPage({ params }: { params: Promise<{ token: 
       nome: criancas.nome,
       apelidoPublico: criancas.apelidoPublico,
       dataNascimento: criancas.dataNascimento,
+      sexo: criancas.sexo,
+      sonho: criancas.sonho,
       tamanhoCamiseta: criancas.tamanhoCamiseta,
       tamanhoCalca: criancas.tamanhoCalca,
       tamanhoCalcado: criancas.tamanhoCalcado,
@@ -92,6 +94,11 @@ export default async function PedidoPage({ params }: { params: Promise<{ token: 
             <p className="mt-6 font-mao text-3xl text-vermelho">Mais que presentes, é esperança.</p>
           )}
           <h1 className="mt-2 text-4xl leading-tight font-bold text-verde sm:text-5xl">{titulo}</h1>
+          {(p.status === "pago" || p.status === "aguardando_entrega" || p.status === "entregue") && itens.length > 0 && (
+            <p className="mt-5 font-titulo text-2xl leading-snug text-verde">
+              {p.status === "aguardando_entrega" ? "Você vai transformar" : "Você transformou"} {natalDas(itens)}.
+            </p>
+          )}
 
           {p.status === "pendente" && (
             <div className="mt-8 rounded-[24px] bg-white p-6 sm:p-8">
@@ -113,7 +120,7 @@ export default async function PedidoPage({ params }: { params: Promise<{ token: 
           )}
           {p.status === "pago" && (
             <p className="mt-5 text-lg text-tinta-2">
-              Pagamento confirmado. A equipe do Paz Kids em Ação vai montar a sacolinha e entregar para cada criança. Mandamos a confirmação
+              Pagamento confirmado. Agora é com a gente: vamos montar a sacolinha e entregar para cada criança. Mandamos a confirmação
               para o seu e-mail.
             </p>
           )}

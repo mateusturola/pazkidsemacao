@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MAX_POR_PEDIDO } from "@/lib/regras";
 import { IconeCheck, IconeSacola, IconeSeta } from "./icones";
 
@@ -10,6 +10,12 @@ export type CriancaCard = {
   nome: string;
   idade: number | null;
   idadeTexto: string | null;
+  /** "sonha em ser professora", ou null. */
+  sonho: string | null;
+  /** A apresentação da criança: a história da família ou o texto montado com o cadastro. */
+  historia: string;
+  /** A história veio da família; sem ela, o texto já cita gostos e presente e a lista não se repete. */
+  historiaPropria: boolean;
   sexo: "F" | "M" | null;
   camiseta: string | null;
   calca: string | null;
@@ -62,6 +68,11 @@ export function GradeCriancas({ slug, criancas, aberta }: { slug: string; crianc
   const [mostrar, setMostrar] = useState(POR_VEZ);
   const [quantas, setQuantas] = useState(1);
   const [aviso, setAviso] = useState<string | null>(null);
+  const [conhecendo, setConhecendo] = useState<CriancaCard | null>(null);
+  const janela = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    if (conhecendo) janela.current?.showModal();
+  }, [conhecendo]);
   // Com centenas de crianças, quem aparece primeiro é escolhido primeiro. A ordem é sorteada a cada
   // visita (depois de montar, para não divergir do HTML do servidor): todas têm a mesma chance.
   const [ordem, setOrdem] = useState(criancas);
@@ -211,6 +222,7 @@ export function GradeCriancas({ slug, criancas, aberta }: { slug: string; crianc
                   <p className="chamada mt-3 text-[10px] text-verde/70 sm:mt-5 sm:text-[12px]">Para:</p>
                   <h3 className="font-mao text-[1.9rem] leading-none text-verde sm:text-[2.6rem]">{c.nome}</h3>
                   <p className="mt-1 text-xs font-bold text-verde/80 sm:text-base">{[c.sexo === "F" ? "Menina" : c.sexo === "M" ? "Menino" : null, c.idadeTexto].filter(Boolean).join(" · ")}</p>
+                  {c.sonho && <p className="mt-2 text-xs leading-snug text-verde sm:text-[15px]">{c.sonho.charAt(0).toUpperCase() + c.sonho.slice(1)}</p>}
                   <p className="mt-2 text-xs font-bold text-tinta sm:hidden">
                     {c.camiseta || "—"} · {c.calca || "—"} · {c.calcado || "—"}
                     <span className="block text-[10px] font-extrabold tracking-wider text-tinta-2 uppercase">camiseta · calça · calçado</span>
@@ -227,20 +239,14 @@ export function GradeCriancas({ slug, criancas, aberta }: { slug: string; crianc
                       </div>
                     ))}
                   </dl>
-                  {(c.sugestao || c.gostos) && (
-                    <div className="mt-4 hidden w-full space-y-1 text-left text-[15px] text-tinta sm:block">
-                      {c.sugestao && (
-                        <p>
-                          <span className="font-extrabold text-verde">Ideia de presente:</span> {c.sugestao}
-                        </p>
-                      )}
-                      {c.gostos && (
-                        <p>
-                          <span className="font-extrabold text-verde">Gosta de:</span> {c.gostos}
-                        </p>
-                      )}
-                    </div>
-                  )}
+                  <p className="mt-4 hidden w-full text-left text-[15px] leading-relaxed text-tinta sm:line-clamp-3">{c.historia}</p>
+                  <button
+                    type="button"
+                    onClick={() => setConhecendo(c)}
+                    className="mt-2 text-xs font-extrabold text-verde underline decoration-vermelho decoration-2 underline-offset-4 sm:mt-3 sm:text-sm"
+                  >
+                    Conhecer {c.sexo === "M" ? "o" : c.sexo === "F" ? "a" : ""} {c.nome}
+                  </button>
                   <div className="flex-1" />
                   {aberta && (
                     <button
@@ -279,6 +285,84 @@ export function GradeCriancas({ slug, criancas, aberta }: { slug: string; crianc
           </p>
         </div>
       )}
+
+      {/* Conhecer a criança: a história, o sonho e o botão de apadrinhar no mesmo lugar. */}
+      <dialog
+        ref={janela}
+        onClose={() => setConhecendo(null)}
+        onClick={(e) => e.target === e.currentTarget && janela.current?.close()}
+        className="m-auto w-[min(92vw,560px)] rounded-[28px] bg-papel p-0 text-tinta backdrop:bg-verde-escuro/60 max-sm:mb-0 max-sm:w-full max-sm:max-w-none max-sm:rounded-b-none"
+      >
+        {conhecendo && (
+          <div className="p-6 sm:p-8">
+            <div className="flex items-center gap-4">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={conhecendo.imagem} alt="" className="size-20 shrink-0 rounded-full border-4 border-white object-cover sm:size-24" />
+              <div>
+                <h3 className="font-mao text-[2.6rem] leading-none text-verde">{conhecendo.nome}</h3>
+                <p className="mt-1 font-bold text-verde/80">
+                  {[conhecendo.sexo === "F" ? "Menina" : conhecendo.sexo === "M" ? "Menino" : null, conhecendo.idadeTexto].filter(Boolean).join(" · ")}
+                </p>
+              </div>
+            </div>
+            {conhecendo.sonho && (
+              <p className="mt-6 font-titulo text-2xl leading-snug font-semibold text-verde">
+                {conhecendo.nome} <span className="pincelada">{conhecendo.sonho}</span>.
+              </p>
+            )}
+            <p className="mt-4 text-lg leading-relaxed">{conhecendo.historia}</p>
+            <dl className="mt-6 grid grid-cols-3 gap-2 text-center">
+              {[
+                ["Camiseta", conhecendo.camiseta],
+                ["Calça", conhecendo.calca],
+                ["Calçado", conhecendo.calcado],
+              ].map(([k, v]) => (
+                <div key={k} className="rounded-xl bg-white px-1 py-2">
+                  <dt className="text-[11px] font-extrabold tracking-wider text-tinta-2 uppercase">{k}</dt>
+                  <dd className="font-titulo text-xl font-bold text-verde">{v || "—"}</dd>
+                </div>
+              ))}
+            </dl>
+            {conhecendo.historiaPropria && (conhecendo.gostos || conhecendo.sugestao) && (
+              <div className="mt-4 space-y-1 text-[15px]">
+                {conhecendo.gostos && (
+                  <p>
+                    <span className="font-extrabold text-verde">Gosta de:</span> {conhecendo.gostos}
+                  </p>
+                )}
+                {conhecendo.sugestao && (
+                  <p>
+                    <span className="font-extrabold text-verde">Ideia de presente:</span> {conhecendo.sugestao}
+                  </p>
+                )}
+              </div>
+            )}
+            <div className="mt-7 flex flex-wrap gap-3">
+              {aberta && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!escolhidas.includes(conhecendo.id)) alternar(conhecendo.id);
+                    janela.current?.close();
+                  }}
+                  className={`btn flex-1 ${escolhidas.includes(conhecendo.id) ? "bg-verde text-creme hover:bg-verde-2" : "btn-acao"}`}
+                >
+                  {escolhidas.includes(conhecendo.id) ? (
+                    <>
+                      <IconeCheck className="size-5" /> Já está na sua lista
+                    </>
+                  ) : (
+                    `Apadrinhar ${conhecendo.sexo === "M" ? "o" : conhecendo.sexo === "F" ? "a" : ""} ${conhecendo.nome}`
+                  )}
+                </button>
+              )}
+              <button type="button" onClick={() => janela.current?.close()} className="btn btn-claro">
+                Fechar
+              </button>
+            </div>
+          </div>
+        )}
+      </dialog>
 
       {aviso && <p className="fixed inset-x-4 bottom-28 z-40 mx-auto max-w-md rounded-xl bg-tinta p-3 text-center text-sm text-white">{aviso}</p>}
 
