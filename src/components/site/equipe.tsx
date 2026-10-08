@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { SITE } from "@/content/site";
 import { equipeAtiva } from "@/lib/equipe";
 
@@ -59,6 +60,21 @@ export async function Equipe() {
             );
           })}
         </ul>
+
+        {/* A família dos pastores, que serve inteira no projeto. Foto enviada pela própria família. */}
+        <figure className="mt-14 sm:mt-20" data-revelar>
+          <Image
+            src="/img/familia-vasconcelos.webp"
+            alt="A família Vasconcelos de camiseta amarela do Paz Kids em Ação: os pastores Moisés e Meire com os filhos, familiares e as crianças da família"
+            width={1179}
+            height={710}
+            className="w-full rounded-[28px] object-cover"
+          />
+          <figcaption className="mt-5 max-w-3xl">
+            <p className="font-mao text-3xl text-amarelo">A família inteira serve junto.</p>
+            <p className="mt-1 text-lg text-white/75">Os pastores Moisés e Meire, os filhos e familiares: a família Vasconcelos no Paz Kids em Ação.</p>
+          </figcaption>
+        </figure>
       </div>
     </section>
   );
