@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { IconeMaos, IconePix, IconeSacola, IconeSeta } from "@/components/site/icones";
 import { AgendaBrasil } from "@/components/site/agenda";
-import { Contador } from "@/components/site/contador";
+import { Hero } from "@/components/site/hero";
 import { Equipe } from "@/components/site/equipe";
 import { Instagram } from "@/components/site/instagram";
 import { QuemFazParte } from "@/components/site/quem-faz-parte";
@@ -21,7 +21,9 @@ export const dynamic = "force-dynamic";
 
 const atraso = (ms: number) => ({ "--atraso": `${ms}ms` }) as React.CSSProperties;
 
-export default async function Inicio() {
+export default async function Inicio({ searchParams }: { searchParams: Promise<{ hero?: string }> }) {
+  const sp = await searchParams;
+  const heroV = (process.env.NODE_ENV === "development" && (["a", "b", "c"] as const).find((v) => v === sp.hero)) || "a";
   const [ativas, agenda, alcance] = await Promise.all([campanhasAtivas(), encontrosAtivos(), lerAlcance()]);
   const progresso = await progressoCampanhas(ativas.map((c) => c.id));
   const principal = ativas[0];
@@ -33,8 +35,8 @@ export default async function Inicio() {
       <JsonLd dados={ldInicio(alcance)} />
       <Topo
         variante="institucional"
-        sobreFoto
-        logoDepoisDe="logo-topo"
+        sobreFoto={heroV !== "c"}
+        fundoClaro={heroV === "c"}
         links={[
           { href: "#quem-somos", label: "Quem somos" },
           { href: "/agenda", label: "Agenda" },
@@ -45,55 +47,12 @@ export default async function Inicio() {
         cta={principal ? { href: `/${principal.slug}`, label: principal.nome } : { href: "#como-ajudar", label: "Quero ajudar" }}
       />
 
-      {/* Topo: uma foto real de ação de ponta a ponta, com o texto por cima, na sombra de baixo. */}
-      <section className="relative isolate flex min-h-[92svh] items-end overflow-clip bg-tinta pt-[72px]">
-        <Image
-          src="/img/acao-alegria.webp"
-          alt="Crianças sentadas na quadra, rindo e erguendo os braços durante uma ação do Paz Kids em Ação em Heliópolis"
-          fill
-          priority
-          sizes="100vw"
-          className="-z-10 object-cover object-[center_30%]"
-        />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-tinta via-tinta/55 to-tinta/10 sm:bg-gradient-to-tr sm:via-tinta/45 sm:to-transparent" />
-        <div className="mx-auto w-full max-w-7xl px-4 pt-24 pb-14 sm:px-8 sm:pb-20">
-          {/* A marca em destaque: o logo do cabeçalho só aparece quando este sai da tela. */}
-          <Image
-            id="logo-topo"
-            src="/brand/pazkids-em-acao-480.webp"
-            alt="Paz Kids em Ação"
-            width={480}
-            height={572}
-            priority
-            className="h-28 w-auto drop-shadow-[0_5px_0_rgba(27,22,51,0.35)] sm:h-36"
-          />
-          <p className="mt-5 font-mao text-2xl text-amarelo sm:text-3xl">{nEstados > 1 ? `Em ${nEstados} estados do Brasil` : "Heliópolis, São Paulo"}</p>
-          <h1 className="mt-2 max-w-4xl text-[clamp(2.7rem,7vw,5.6rem)] leading-[0.95] font-bold text-white">
-            Alcançando além das <span className="pincelada">quatro paredes</span>
-          </h1>
-          {alcance.criancasPorSemana && (
-            // Continua o título ("alcançando… +1.628 crianças"). O número vem do painel e sobe de zero quando a página abre.
-            <p className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span className="font-titulo text-[clamp(2.6rem,6vw,4.2rem)] leading-none font-bold text-amarelo">
-                +<Contador valor={alcance.criancasPorSemana} />
-              </span>
-              <span className="text-lg leading-tight text-white sm:text-xl">crianças toda semana</span>
-            </p>
-          )}
-          <p className="mt-5 max-w-xl text-lg text-white/85 sm:text-xl">
-            O Paz Kids em Ação leva o amor de Cristo, educação e cuidado para as crianças lá onde elas estão: em Heliópolis, em São Paulo, e em
-            comunidades {nEstados > 1 ? `de mais ${nEstados - 1} estados do Brasil` : "da Grande São Paulo"}.
-          </p>
-          <div className="mt-9 flex flex-wrap gap-3">
-            <Link href={principal ? `/${principal.slug}` : "#como-ajudar"} className="btn h-14 bg-amarelo px-7 text-lg text-tinta hover:bg-white">
-              {principal ? "Apadrinhe uma criança no Natal" : "Quero ajudar"}
-            </Link>
-            <Link href="#quem-somos" className="btn btn-contorno-claro h-14 px-7 text-lg">
-              Conheça o projeto
-            </Link>
-          </div>
-        </div>
-      </section>
+      <Hero
+        variante={heroV}
+        criancas={alcance.criancasPorSemana}
+        nEstados={nEstados}
+        cta={principal ? { href: `/${principal.slug}`, label: "Apadrinhe uma criança no Natal" } : { href: "#como-ajudar", label: "Quero ajudar" }}
+      />
 
       {/* Campanha aberta, já na marca dela. */}
       {principal && p && (
