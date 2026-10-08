@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { IconeMaos, IconePix, IconeSacola, IconeSeta } from "@/components/site/icones";
 import { MapaAgenda } from "@/components/site/agenda";
+import { Equipe } from "@/components/site/equipe";
 import { Instagram } from "@/components/site/instagram";
 import { JsonLd } from "@/components/site/json-ld";
 import { Rodape } from "@/components/site/rodape";
@@ -143,6 +144,8 @@ export default async function Inicio() {
           </div>
         </div>
       </section>
+
+      <Equipe />
 
       {/* Agenda semanal: os encontros por dia e o mapa largo embaixo; endereços e rotas ficam em /agenda, o link da bio. */}
       {agenda.length > 0 && (

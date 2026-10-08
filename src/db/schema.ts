@@ -305,3 +305,27 @@ export const convitesEnviados = sqliteTable(
   },
   (t) => [uniqueIndex("convites_campanha_para_uq").on(t.campanhaId, t.para)],
 );
+
+/**
+ * Quem cuida do projeto, na seção da página inicial. A equipe cadastra pelo painel. Uma linha pode
+ * ser uma pessoa ou um casal (uma foto e um texto para os dois).
+ */
+export const equipe = sqliteTable(
+  "equipe",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    nome: text("nome").notNull(),
+    funcao: text("funcao"),
+    texto: text("texto"),
+    // Só o usuário, sem @ e sem o endereço: o link é montado na hora.
+    instagram: text("instagram"),
+    fotoKey: text("foto_key"),
+    ordem: integer("ordem").notNull().default(0),
+    ativo: integer("ativo", { mode: "boolean" }).notNull().default(true),
+    criadoEm: integer("criado_em", { mode: "timestamp_ms" }).notNull().default(agora),
+    atualizadoEm: integer("atualizado_em", { mode: "timestamp_ms" }).notNull().default(agora),
+  },
+  (t) => [index("equipe_ordem_idx").on(t.ativo, t.ordem)],
+);
+
+export type MembroEquipe = typeof equipe.$inferSelect;

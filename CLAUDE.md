@@ -68,6 +68,12 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
   aceite da campanha. Todo convite leva o "não quero mais receber" (página com confirmação e POST de um
   clique). Os e-mails do próprio pedido não dependem disso.
 
+## Equipe
+
+- "Quem cuida do projeto" na página inicial vem da tabela `equipe` (painel › Equipe, só admin). Uma linha
+  é uma pessoa ou um casal. Foto com o fundo recortado (PNG/WebP transparente) fica sobre a cor de um
+  balão do logo; amarelo não, porque é a cor da camiseta. Sem Instagram, o ícone leva ao do projeto.
+
 ## Agenda semanal
 
 - Vive no painel (tabela `agenda`) e aparece em resumo na página inicial, inteira com mapa em `/agenda`
