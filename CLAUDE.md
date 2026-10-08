@@ -57,6 +57,11 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
 - Data se escolhe no `DatePicker`, nunca em `<input type="date">`.
 - Rodapé: "Desenvolvido por" com o logo da The Kingdom Digital, na versão branca (o fundo é escuro).
 
+## Agenda semanal
+
+- Vive no painel (tabela `agenda`) e aparece na página inicial, em `/agenda` (link da bio) e no story
+  gerado pelo painel. O ponto no mapa vem do endereço (OpenStreetMap) ou de um link do Google Maps.
+
 ## Demonstração
 
 - `PAGAMENTO_MODO=demo` simula o pagamento; só `"asaas"` cobra. A rota de simulação recusa tudo fora do demo.
@@ -66,7 +71,9 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
 
 - "Apadrinhar" e "apadrinhe uma criança". Nunca "adotar", "adote" ou "adoção": é o termo que a equipe usa.
 - A igreja é a **Paz Church** (Paz Church São Paulo). O projeto atua em Heliópolis, mas não existe
-  Paz Church em Heliópolis: nunca escreva "igreja de Heliópolis" nem "Igreja da Paz".
+  Paz Church em Heliópolis: nunca escreva "igreja de Heliópolis" nem "Igreja da Paz". A única exceção é o
+  favorecido do Pix ("Igreja da Paz na Cidade de São Paulo"), que é o nome que o banco mostra ao doador.
+- Contato e voluntariado são pelo WhatsApp do projeto; heliopolis@paz.church é só a chave Pix.
 
 ## Código
 

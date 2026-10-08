@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { index, integer, primaryKey, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { index, integer, primaryKey, real, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 // Convenções: dinheiro em centavos (integer); data pura em texto "YYYY-MM-DD"; instante em timestamp_ms.
 
@@ -238,3 +238,26 @@ export const configuracoes = sqliteTable("configuracoes", {
   valor: text("valor").notNull(),
   atualizadoEm: integer("atualizado_em", { mode: "timestamp_ms" }).notNull().default(agora),
 });
+
+/**
+ * Agenda semanal dos encontros (a mesma da arte dos stories). Dia da semana 0 = domingo. A
+ * coordenada vem do endereço ou de um link do Google Maps; sem ela, o encontro aparece só na lista.
+ */
+export const agenda = sqliteTable(
+  "agenda",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    diaSemana: integer("dia_semana").notNull(),
+    hora: text("hora").notNull(),
+    nome: text("nome").notNull(),
+    endereco: text("endereco").notNull(),
+    complemento: text("complemento"),
+    lat: real("lat"),
+    lng: real("lng"),
+    ativo: integer("ativo", { mode: "boolean" }).notNull().default(true),
+    criadoEm: integer("criado_em", { mode: "timestamp_ms" }).notNull().default(agora),
+  },
+  (t) => [index("agenda_dia_idx").on(t.diaSemana, t.hora)],
+);
+
+export type EncontroAgenda = typeof agenda.$inferSelect;

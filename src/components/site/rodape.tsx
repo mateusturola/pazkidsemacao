@@ -30,8 +30,8 @@ export function Rodape({ variante }: { variante: "institucional" | "campanha" })
               </li>
             ))}
             <li>
-              <a href={`mailto:${SITE.email}`} className="hover:text-white">
-                {SITE.email}
+              <a href={SITE.whatsapp.link} target="_blank" rel="noopener" className="hover:text-white">
+                WhatsApp <span className="text-creme/50">{SITE.whatsapp.numero}</span>
               </a>
             </li>
           </ul>
@@ -40,6 +40,7 @@ export function Rodape({ variante }: { variante: "institucional" | "campanha" })
           <p className="chamada text-amarelo">Doe por Pix</p>
           <p className="mt-4">Chave Pix ({SITE.pix.tipo})</p>
           <p className="font-titulo text-xl font-semibold text-white">{SITE.pix.chave}</p>
+          <p className="mt-1 text-sm text-creme/60">Favorecido: {SITE.pix.favorecido}</p>
           <p className="mt-6">
             <Link href="/" className="hover:text-white">
               Paz Kids em Ação

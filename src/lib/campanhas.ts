@@ -168,4 +168,4 @@ export function slugify(texto: string) {
 }
 
 // Caminhos que já são do site e não podem virar endereço de campanha.
-export const SLUGS_RESERVADOS = new Set(["pedido", "fotos", "api", "painel", "robots.txt", "sitemap.xml", "icon.png", "apple-icon.png", "brand", "_next"]);
+export const SLUGS_RESERVADOS = new Set(["agenda", "pedido", "fotos", "modelos", "api", "painel", "robots.txt", "sitemap.xml", "icon.png", "apple-icon.png", "brand", "_next"]);

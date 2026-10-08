@@ -9,10 +9,17 @@ export const SITE = {
     "Projeto social e missionário do Paz Kids, da Paz Church, que leva o amor de Cristo, educação, apoio emocional e recursos básicos para crianças de Heliópolis e de outras comunidades da Grande São Paulo.",
   // O projeto atua em Heliópolis, mas a igreja não fica lá: é a Paz Church São Paulo.
   igreja: "Paz Church São Paulo",
-  // Contato oficial do manual da marca; também é o "responder para" dos e-mails.
-  email: "heliopolis@paz.church",
+  // O e-mail heliopolis@paz.church é só a chave Pix; contato e voluntariado são por este WhatsApp.
+  whatsapp: {
+    numero: "(11) 95348-9329",
+    link: "https://wa.me/5511953489329",
+    voluntario: "https://wa.me/5511953489329?text=" + encodeURIComponent("Olá! Quero ser voluntário no Paz Kids em Ação."),
+    internacional: "+55-11-95348-9329",
+  },
   // Chave Pix do projeto em Heliópolis (confirmada pela equipe); não é a do CNPJ da igreja.
-  pix: { tipo: "e-mail", chave: "heliopolis@paz.church", copiar: "heliopolis@paz.church" },
+  // O favorecido é o nome que o aplicativo do banco mostra ao pagar: vai junto da chave para o
+  // doador não estranhar. É o único lugar onde o nome jurídico da igreja aparece.
+  pix: { tipo: "e-mail", chave: "heliopolis@paz.church", copiar: "heliopolis@paz.church", favorecido: "Igreja da Paz na Cidade de São Paulo" },
   instagram: "pazkidsemacao",
   redes: [
     { nome: "Instagram", url: "https://www.instagram.com/pazkidsemacao/", usuario: "@pazkidsemacao" },
@@ -67,7 +74,7 @@ export const PERGUNTAS = [
   },
   {
     p: "Como posso ajudar o Paz Kids em Ação?",
-    r: `Você pode apadrinhar uma criança nas campanhas, como a Sacolinha de Natal, doar qualquer valor pelo Pix (chave ${SITE.pix.chave}) ou servir como voluntário. Para ser voluntário, escreva para ${SITE.email}.`,
+    r: `Você pode apadrinhar uma criança nas campanhas, como a Sacolinha de Natal, doar qualquer valor pelo Pix (chave ${SITE.pix.chave}) ou servir como voluntário. Para ser voluntário, chame a gente no WhatsApp ${SITE.whatsapp.numero}.`,
   },
   {
     p: "Como funciona a Sacolinha de Natal?",

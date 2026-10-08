@@ -80,10 +80,12 @@ export async function enviarEmailPedido(pedidoId: number, tipo: Tipo) {
   if (!registro || !emailConfigurado()) return;
 
   try {
+    // Quem responde o e-mail cai na caixa do projeto (a mesma da chave Pix), em vez de voltar
+    // com erro. O contato divulgado continua sendo o WhatsApp.
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { authorization: `Bearer ${env("RESEND_API_KEY")}`, "content-type": "application/json" },
-      body: JSON.stringify({ from: env("EMAIL_REMETENTE"), to: [linha.padrinho.email], reply_to: SITE.email, subject: assunto, html }),
+      body: JSON.stringify({ from: env("EMAIL_REMETENTE"), to: [linha.padrinho.email], reply_to: SITE.pix.chave, subject: assunto, html }),
     });
     if (!res.ok) throw new Error(`Resend respondeu ${res.status}: ${(await res.text()).slice(0, 300)}`);
     await db.update(emailsEnviados).set({ status: "enviado" }).where(eq(emailsEnviados.id, registro.id));
@@ -202,7 +204,7 @@ ${corpo}
 </td></tr>
 <tr><td style="padding:22px 28px 28px;color:#5b6b62;font-size:13px">
 ${esc(SITE.nome)} · ${esc(SITE.igreja)}<br>
-Dúvidas? Responda este e-mail ou escreva para <a href="mailto:${SITE.email}" style="color:${VERDE}">${SITE.email}</a>.
+Dúvidas? Fale com a gente no WhatsApp <a href="${SITE.whatsapp.link}" style="color:${VERDE}">${SITE.whatsapp.numero}</a>.
 </td></tr>
 </table></td></tr></table></body></html>`;
 }

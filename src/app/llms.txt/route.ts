@@ -1,4 +1,5 @@
 import { PERGUNTAS, SITE, SOBRE } from "@/content/site";
+import { encontrosAtivos } from "@/lib/agenda";
 import { campanhasAtivas, itensSacolinha, progressoCampanhas } from "@/lib/campanhas";
 import { formatIsoDate } from "@/lib/dates";
 import { formatBRL } from "@/lib/money";
@@ -9,7 +10,7 @@ export const dynamic = "force-dynamic";
 // Resumo em Markdown para assistentes de IA (padrão llms.txt): quem é o projeto, onde atua, como
 // ajudar e o que está aberto agora, sem precisar interpretar o HTML.
 export async function GET() {
-  const ativas = await campanhasAtivas();
+  const [ativas, agenda] = await Promise.all([campanhasAtivas(), encontrosAtivos()]);
   const progresso = await progressoCampanhas(ativas.map((c) => c.id));
   const campanhas = ativas
     .map((c) => {
@@ -37,8 +38,8 @@ ${SITE.lema}. ${SOBRE.oQueE}
 
 - Site: ${SITE.url}
 - Igreja: ${SITE.igreja}
-- Contato: ${SITE.email}
-- Doação por Pix (${SITE.pix.tipo}): ${SITE.pix.chave}
+- Contato e voluntariado: WhatsApp ${SITE.whatsapp.numero} (${SITE.whatsapp.link})
+- Doação por Pix (${SITE.pix.tipo}): ${SITE.pix.chave} · favorecido: ${SITE.pix.favorecido}
 - Redes: ${SITE.redes.map((r) => `${r.nome} ${r.url}`).join(" · ")}
 
 ## Missão
@@ -49,6 +50,9 @@ ${SOBRE.visao}
 
 ## Valores
 ${SOBRE.valores.map((v) => `- ${v}`).join("\n")}
+
+## Agenda semanal (encontros nas ruas e praças)
+${agenda.map((a) => `- ${a.dia}, ${a.hora}: ${a.nome} · ${a.endereco}${a.complemento ? ` · ${a.complemento}` : ""}`).join("\n")}
 
 ## História
 ${SOBRE.historia.map((h) => `- ${h.quando}: ${h.texto}`).join("\n")}

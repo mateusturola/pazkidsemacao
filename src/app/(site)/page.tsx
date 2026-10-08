@@ -1,12 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { IconeMaos, IconePix, IconeSacola, IconeSeta } from "@/components/site/icones";
+import { Agenda } from "@/components/site/agenda";
 import { Instagram } from "@/components/site/instagram";
 import { JsonLd } from "@/components/site/json-ld";
 import { Rodape } from "@/components/site/rodape";
 import { Topo } from "@/components/site/topo";
 import { CopyButton } from "@/components/ui/copy-button";
 import { PERGUNTAS, SITE, SOBRE } from "@/content/site";
+import { encontrosAtivos } from "@/lib/agenda";
 import { campanhasAtivas, progressoCampanhas } from "@/lib/campanhas";
 import { formatIsoDate } from "@/lib/dates";
 import { ldInicio } from "@/lib/seo";
@@ -16,7 +18,7 @@ export const dynamic = "force-dynamic";
 const atraso = (ms: number) => ({ "--atraso": `${ms}ms` }) as React.CSSProperties;
 
 export default async function Inicio() {
-  const ativas = await campanhasAtivas();
+  const [ativas, agenda] = await Promise.all([campanhasAtivas(), encontrosAtivos()]);
   const progresso = await progressoCampanhas(ativas.map((c) => c.id));
   const principal = ativas[0];
   const p = principal ? (progresso.get(principal.id) ?? { total: 0, comPadrinho: 0 }) : null;
@@ -30,6 +32,7 @@ export default async function Inicio() {
         logoDepoisDe="logo-topo"
         links={[
           { href: "#quem-somos", label: "Quem somos" },
+          { href: "#agenda", label: "Agenda" },
           { href: "#nossa-historia", label: "História" },
           { href: "#como-ajudar", label: "Como ajudar" },
           { href: "#perguntas", label: "Perguntas" },
@@ -126,6 +129,24 @@ export default async function Inicio() {
           </div>
         </div>
       </section>
+
+      {/* Agenda semanal: a equipe mantém pelo painel. Sem encontro cadastrado, a seção sai. */}
+      {agenda.length > 0 && (
+        <section id="agenda" className="scroll-mt-16 bg-creme py-24 sm:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-8">
+            <div className="max-w-2xl" data-revelar>
+              <p className="chamada text-vermelho">Agenda semanal</p>
+              <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">
+                Onde a gente está <span className="pincelada">toda semana</span>
+              </h2>
+              <p className="mt-4 text-lg text-tinta-2">
+                Os encontros do Paz Kids em Ação nas ruas, praças e garagens de Heliópolis, São João Clímaco e Diadema. Toque no lugar para ver no mapa.
+              </p>
+            </div>
+            <Agenda agenda={agenda} />
+          </div>
+        </section>
+      )}
 
       {/* História. */}
       <section id="nossa-historia" className="relative scroll-mt-16 overflow-hidden bg-verde py-24 text-creme sm:py-32">
@@ -241,15 +262,15 @@ export default async function Inicio() {
             <Ajuda
               icone={<IconePix className="size-7" />}
               titulo="Doe qualquer valor"
-              texto={`Chave Pix: ${SITE.pix.chave}. A doação vira lanche, material e presente para as crianças.`}
+              texto={`Chave Pix: ${SITE.pix.chave} (favorecido: ${SITE.pix.favorecido}). A doação vira lanche, material e presente para as crianças.`}
               acao={<CopyButton value={SITE.pix.copiar} label="Copiar chave Pix" className="btn btn-primario" />}
             />
             <Ajuda
               icone={<IconeMaos className="size-7" />}
               titulo="Seja voluntário"
-              texto="Escreva para a equipe e conte como você quer servir nas próximas ações."
+              texto="Chame a gente no WhatsApp e conte como você quer servir nas próximas ações."
               acao={
-                <a href={`mailto:${SITE.email}?subject=Quero%20ser%20volunt%C3%A1rio`} className="btn btn-claro">
+                <a href={SITE.whatsapp.voluntario} target="_blank" rel="noopener" className="btn btn-claro">
                   Quero ser voluntário
                 </a>
               }
@@ -279,9 +300,9 @@ export default async function Inicio() {
             <p className="chamada text-vermelho">Perguntas frequentes</p>
             <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">Quer saber mais?</h2>
             <p className="mt-4 text-lg text-tinta-2">
-              Escreva para{" "}
-              <a href={`mailto:${SITE.email}`} className="font-bold text-verde underline decoration-amarelo decoration-2 underline-offset-4">
-                {SITE.email}
+              Chame a gente no WhatsApp{" "}
+              <a href={SITE.whatsapp.link} target="_blank" rel="noopener" className="font-bold text-verde underline decoration-amarelo decoration-2 underline-offset-4">
+                {SITE.whatsapp.numero}
               </a>
               .
             </p>

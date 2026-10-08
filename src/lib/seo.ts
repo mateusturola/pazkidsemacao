@@ -33,7 +33,7 @@ const organizacao = {
   image: `${SITE.url}/og-home.jpg`,
   description: SITE.descricao,
   slogan: SITE.lema,
-  email: SITE.email,
+  telephone: SITE.whatsapp.internacional,
   foundingDate: "2022-07",
   address: { "@type": "PostalAddress", addressLocality: "São Paulo", addressRegion: "SP", addressCountry: "BR", streetAddress: "Heliópolis" },
   areaServed: [
