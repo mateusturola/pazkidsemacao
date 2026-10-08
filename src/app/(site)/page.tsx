@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { IconeMaos, IconePix, IconeSacola, IconeSeta } from "@/components/site/icones";
+import { MapaAgenda } from "@/components/site/agenda";
 import { Instagram } from "@/components/site/instagram";
 import { JsonLd } from "@/components/site/json-ld";
 import { Rodape } from "@/components/site/rodape";
@@ -8,7 +9,7 @@ import { Topo } from "@/components/site/topo";
 import { CopyButton } from "@/components/ui/copy-button";
 import { LEGADO, PERGUNTAS, SITE } from "@/content/site";
 import { encontrosAtivos } from "@/lib/agenda";
-import { corDoDia } from "@/lib/agenda-cores";
+import { corDoDia, lugaresDaAgenda } from "@/lib/agenda-pontos";
 import { campanhasAtivas, progressoCampanhas } from "@/lib/campanhas";
 import { formatIsoDate } from "@/lib/dates";
 import { ldInicio } from "@/lib/seo";
@@ -22,13 +23,14 @@ export default async function Inicio() {
   const progresso = await progressoCampanhas(ativas.map((c) => c.id));
   const principal = ativas[0];
   const p = principal ? (progresso.get(principal.id) ?? { total: 0, comPadrinho: 0 }) : null;
+  const lugares = lugaresDaAgenda(agenda);
 
   return (
     <div className="tema-paz">
       <JsonLd dados={ldInicio()} />
       <Topo
         variante="institucional"
-        fundoClaro
+        sobreFoto
         logoDepoisDe="logo-topo"
         links={[
           { href: "#quem-somos", label: "Quem somos" },
@@ -40,46 +42,43 @@ export default async function Inicio() {
         cta={principal ? { href: `/${principal.slug}`, label: principal.nome } : { href: "#como-ajudar", label: "Quero ajudar" }}
       />
 
-      {/* Topo: o amarelo do Paz Kids e uma foto real de ação. */}
-      <section className="relative overflow-clip bg-amarelo pt-[72px]" style={{ "--cor-pincelada": "#ffffff" } as React.CSSProperties}>
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-8 sm:py-20 lg:grid-cols-[1.05fr_1fr]">
-          <div>
-            {/* A marca em destaque: o logo do cabeçalho só aparece quando este sai da tela. */}
-            <Image
-              id="logo-topo"
-              src="/brand/pazkids-em-acao-480.webp"
-              alt="Paz Kids em Ação"
-              width={480}
-              height={572}
-              priority
-              className="h-44 w-auto drop-shadow-[0_5px_0_rgba(27,22,51,0.18)] sm:h-56"
-            />
-            <p className="mt-6 font-mao text-2xl text-verde sm:text-3xl">Heliópolis, São Paulo</p>
-            <h1 className="mt-2 text-[clamp(2.6rem,6vw,5rem)] leading-[0.95] font-bold text-verde">
-              Alcançando além das <span className="pincelada">quatro paredes</span>
-            </h1>
-            <p className="mt-6 max-w-xl text-lg text-verde/85 sm:text-xl">
-              O Paz Kids em Ação leva o amor de Cristo, educação e cuidado para as crianças de Heliópolis e de outras comunidades da Grande São
-              Paulo, lá onde elas estão.
-            </p>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Link href={principal ? `/${principal.slug}` : "#como-ajudar"} className="btn btn-acao h-14 px-7 text-lg">
-                {principal ? "Apadrinhe uma criança no Natal" : "Quero ajudar"}
-              </Link>
-              <Link href="#quem-somos" className="btn h-14 border-2 border-verde/25 px-7 text-lg text-verde hover:border-verde">
-                Conheça o projeto
-              </Link>
-            </div>
-          </div>
-          <div className="relative">
-            <Image
-              src="/img/acao-alegria.webp"
-              alt="Crianças sentadas na quadra, rindo e erguendo os braços durante uma ação do Paz Kids em Ação em Heliópolis"
-              width={1800}
-              height={1200}
-              priority
-              className="aspect-[4/3] w-full rounded-[32px] object-cover shadow-[0_8px_0_var(--color-verde)]"
-            />
+      {/* Topo: uma foto real de ação de ponta a ponta, com o texto por cima, na sombra de baixo. */}
+      <section className="relative isolate flex min-h-[92svh] items-end overflow-clip bg-tinta pt-[72px]">
+        <Image
+          src="/img/acao-alegria.webp"
+          alt="Crianças sentadas na quadra, rindo e erguendo os braços durante uma ação do Paz Kids em Ação em Heliópolis"
+          fill
+          priority
+          sizes="100vw"
+          className="-z-10 object-cover object-[center_30%]"
+        />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-tinta via-tinta/55 to-tinta/10 sm:bg-gradient-to-tr sm:via-tinta/45 sm:to-transparent" />
+        <div className="mx-auto w-full max-w-7xl px-4 pt-24 pb-14 sm:px-8 sm:pb-20">
+          {/* A marca em destaque: o logo do cabeçalho só aparece quando este sai da tela. */}
+          <Image
+            id="logo-topo"
+            src="/brand/pazkids-em-acao-480.webp"
+            alt="Paz Kids em Ação"
+            width={480}
+            height={572}
+            priority
+            className="h-28 w-auto drop-shadow-[0_5px_0_rgba(27,22,51,0.35)] sm:h-36"
+          />
+          <p className="mt-5 font-mao text-2xl text-amarelo sm:text-3xl">Heliópolis, São Paulo</p>
+          <h1 className="mt-2 max-w-4xl text-[clamp(2.7rem,7vw,5.6rem)] leading-[0.95] font-bold text-white">
+            Alcançando além das <span className="pincelada">quatro paredes</span>
+          </h1>
+          <p className="mt-6 max-w-xl text-lg text-white/85 sm:text-xl">
+            O Paz Kids em Ação leva o amor de Cristo, educação e cuidado para as crianças de Heliópolis e de outras comunidades da Grande São
+            Paulo, lá onde elas estão.
+          </p>
+          <div className="mt-9 flex flex-wrap gap-3">
+            <Link href={principal ? `/${principal.slug}` : "#como-ajudar"} className="btn h-14 bg-amarelo px-7 text-lg text-tinta hover:bg-white">
+              {principal ? "Apadrinhe uma criança no Natal" : "Quero ajudar"}
+            </Link>
+            <Link href="#quem-somos" className="btn btn-contorno-claro h-14 px-7 text-lg">
+              Conheça o projeto
+            </Link>
           </div>
         </div>
       </section>
@@ -145,9 +144,9 @@ export default async function Inicio() {
         </div>
       </section>
 
-      {/* Agenda semanal em resumo: o mapa e as rotas ficam em /agenda, o link da bio. */}
+      {/* Agenda semanal: os encontros por dia e o mapa largo embaixo; endereços e rotas ficam em /agenda, o link da bio. */}
       {agenda.length > 0 && (
-        <section id="agenda" className="scroll-mt-16 bg-creme py-20 sm:py-24">
+        <section id="agenda" className="scroll-mt-16 bg-creme pt-20 sm:pt-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-8">
             <div className="flex flex-wrap items-end justify-between gap-6" data-revelar>
               <div className="max-w-2xl">
@@ -157,7 +156,7 @@ export default async function Inicio() {
                 </h2>
               </div>
               <Link href="/agenda" className="btn btn-primario">
-                Ver no mapa e como chegar <IconeSeta className="size-5" />
+                Endereços e como chegar <IconeSeta className="size-5" />
               </Link>
             </div>
             <div className="mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4" data-revelar>
@@ -166,19 +165,34 @@ export default async function Inicio() {
                   <p className="chamada" style={{ color: corDoDia(dia) }}>
                     {dia}
                   </p>
-                  <ul className="mt-3 space-y-2">
+                  <ul className="mt-3 space-y-2.5">
                     {agenda
                       .filter((e) => e.dia === dia)
-                      .map((e) => (
-                        <li key={`${e.hora}${e.nome}`} className="leading-snug">
-                          <span className="font-titulo font-semibold text-verde tabular-nums">{e.hora}</span> <span className="text-tinta">{e.nome}</span>
-                        </li>
-                      ))}
+                      .map((e) => {
+                        const n = lugares.find((l) => l.pontos.includes(e))?.n;
+                        return (
+                          <li key={`${e.hora}${e.nome}`} className="flex items-start gap-2.5 leading-snug">
+                            {/* O mesmo número do pino no mapa; sem ponto no mapa, só o contorno. */}
+                            <span
+                              className="mt-px grid size-6 shrink-0 place-items-center rounded-full font-titulo text-xs font-semibold text-white"
+                              style={{ background: n ? corDoDia(dia) : "transparent", boxShadow: n ? undefined : `inset 0 0 0 2px ${corDoDia(dia)}` }}
+                              aria-hidden
+                            >
+                              {n ?? ""}
+                            </span>
+                            <span>
+                              <span className="font-titulo font-semibold text-verde tabular-nums">{e.hora}</span> <span className="text-tinta">{e.nome}</span>
+                            </span>
+                          </li>
+                        );
+                      })}
                   </ul>
                 </div>
               ))}
             </div>
           </div>
+          {/* O mapa de ponta a ponta e baixo, com os pinos numerados como na lista. */}
+          <MapaAgenda agenda={agenda} className="mt-12 h-64 w-full border-t border-linha sm:h-80" />
         </section>
       )}
 

@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Map as MapaLeaflet, Marker } from "leaflet";
 import type { PontoAgenda } from "@/lib/agenda";
-import { corDoDia as cor } from "@/lib/agenda-cores";
+import { corDoDia as cor, lugaresDaAgenda, type Lugar } from "@/lib/agenda-pontos";
 
 const rota = (p: PontoAgenda) => `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(p.endereco)}`;
 
@@ -13,28 +13,13 @@ function mediana(v: number[]) {
   return o[Math.floor(o.length / 2)];
 }
 
-type Lugar = { n: number; lat: number; lng: number; pontos: PontoAgenda[] };
-
-export function Agenda({ agenda }: { agenda: PontoAgenda[] }) {
-  // Encontros no mesmo endereço viram um pino só (Predinhos Redondos 1 e 2, por exemplo).
-  const lugares = useMemo(() => {
-    const porChave = new Map<string, Lugar>();
-    for (const p of agenda) {
-      if (p.lat == null || p.lng == null) continue;
-      const k = `${p.lat},${p.lng}`;
-      const l = porChave.get(k) ?? { n: porChave.size + 1, lat: p.lat, lng: p.lng, pontos: [] };
-      l.pontos.push(p);
-      porChave.set(k, l);
-    }
-    return [...porChave.values()];
-  }, [agenda]);
-  const numero = (p: PontoAgenda) => lugares.find((l) => l.pontos.includes(p))?.n;
-
-  const dias = useMemo(() => [...new Set(agenda.map((p) => p.dia))], [agenda]);
+/** Monta o mapa do Leaflet com um pino numerado por lugar, enquadrado onde está a maioria dos encontros. */
+function useMapa(lugares: Lugar[], aoTocar?: (n: number) => void) {
   const caixa = useRef<HTMLDivElement>(null);
   const mapa = useRef<MapaLeaflet | null>(null);
   const pinos = useRef(new Map<number, Marker>());
-  const [ativo, setAtivo] = useState<number | null>(null);
+  const tocar = useRef(aoTocar);
+  tocar.current = aoTocar;
 
   useEffect(() => {
     let cancelado = false;
@@ -42,13 +27,15 @@ export function Agenda({ agenda }: { agenda: PontoAgenda[] }) {
     (async () => {
       // O Leaflet mexe em window ao carregar: só entra no navegador.
       const L = (await import("leaflet")).default;
-      if (cancelado || !caixa.current || mapa.current) return;
+      if (cancelado || !caixa.current || mapa.current || !lugares.length) return;
       const toque = window.matchMedia("(pointer: coarse)").matches;
       const m = L.map(caixa.current, {
         scrollWheelZoom: false,
         // No celular, arrastar com um dedo rola a página em vez de prender o leitor no mapa.
         dragging: !toque,
         attributionControl: true,
+        // Zoom quebrado: o enquadramento aproveita a largura do mapa baixo da página inicial.
+        zoomSnap: 0.25,
       });
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -66,11 +53,11 @@ export function Agenda({ agenda }: { agenda: PontoAgenda[] }) {
         const pino = L.marker([l.lat, l.lng], { icon: icone, title: l.pontos[0].nome })
           .addTo(m)
           .bindPopup(`${linhas}<br><a href="${rota(l.pontos[0])}" target="_blank" rel="noopener">Como chegar</a>`);
-        pino.on("click", () => setAtivo(l.n));
+        pino.on("click", () => tocar.current?.(l.n));
         marcados.set(l.n, pino);
       }
-      // Abre enquadrado onde está a maioria dos encontros: um ponto mais longe (Diadema) deixaria
-      // Heliópolis minúsculo. Ele continua no mapa e aparece ao tocar na lista ou tirar o zoom.
+      // Um ponto mais longe (Diadema) deixaria Heliópolis minúsculo, com os pinos uns sobre os
+      // outros. Ele continua no mapa e aparece ao tocar na lista ou tirar o zoom.
       const meio = L.latLng(mediana(lugares.map((l) => l.lat)), mediana(lugares.map((l) => l.lng)));
       const perto = lugares.filter((l) => meio.distanceTo([l.lat, l.lng]) < 3000);
       m.fitBounds(L.latLngBounds((perto.length ? perto : lugares).map((l) => [l.lat, l.lng] as [number, number])), { padding: [40, 40] });
@@ -83,6 +70,25 @@ export function Agenda({ agenda }: { agenda: PontoAgenda[] }) {
       marcados.clear();
     };
   }, [lugares]);
+
+  return { caixa, mapa, pinos };
+}
+
+/** Só o mapa, largo e baixo: o da página inicial, embaixo dos dias. */
+export function MapaAgenda({ agenda, className = "" }: { agenda: PontoAgenda[]; className?: string }) {
+  const lugares = useMemo(() => lugaresDaAgenda(agenda), [agenda]);
+  const { caixa } = useMapa(lugares);
+  if (!lugares.length) return null;
+  return <div ref={caixa} className={`isolate bg-creme ${className}`} role="region" aria-label="Mapa dos encontros da semana" />;
+}
+
+export function Agenda({ agenda }: { agenda: PontoAgenda[] }) {
+  const lugares = useMemo(() => lugaresDaAgenda(agenda), [agenda]);
+  const numero = (p: PontoAgenda) => lugares.find((l) => l.pontos.includes(p))?.n;
+
+  const dias = useMemo(() => [...new Set(agenda.map((p) => p.dia))], [agenda]);
+  const [ativo, setAtivo] = useState<number | null>(null);
+  const { caixa, mapa, pinos } = useMapa(lugares, setAtivo);
 
   function mostrar(n: number | undefined) {
     if (!n) return;
