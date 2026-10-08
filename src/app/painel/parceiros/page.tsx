@@ -23,10 +23,6 @@ function Campos({ p }: { p?: Parceiro }) {
         </label>
       </div>
       <label className="block">
-        <span className="rotulo">O que faz pelo projeto (uma frase)</span>
-        <input name="descricao" maxLength={200} defaultValue={p?.descricao ?? ""} placeholder="Ex.: Doa todo mês o lanche das ações de sábado." className="campo" />
-      </label>
-      <label className="block">
         <span className="rotulo">Link (site ou loja)</span>
         <input name="link" defaultValue={p?.link ?? ""} placeholder="https://" className="campo" />
       </label>
@@ -42,8 +38,8 @@ export default async function ParceirosPage() {
     <div className="max-w-4xl">
       <h1 className="text-3xl font-semibold">Parceiros</h1>
       <p className="mt-1 text-tinta-2">
-        As empresas que apoiam o projeto, em &quot;Quem faz parte&quot;, na página inicial, com o logo e o link. O número da ordem decide quem
-        vem primeiro.
+        As empresas que apoiam o projeto, em &quot;Quem faz parte&quot;, na página inicial: o logo num cartão branco que leva ao link. Com 4 ou
+        mais, os logos rodam numa faixa. O número da ordem decide quem vem primeiro.
       </p>
 
       <div className="mt-6 space-y-4">
@@ -60,7 +56,7 @@ export default async function ParceirosPage() {
               <span className="min-w-0 flex-1">
                 <span className="font-semibold">{p.nome}</span>
                 {!p.ativo && <span className="ml-2 rounded-md bg-tinta/10 px-2 py-0.5 text-xs">Fora do site</span>}
-                <span className="block truncate text-sm text-tinta-2">{p.descricao}</span>
+                <span className="block truncate text-sm text-tinta-2">{p.link}</span>
               </span>
               <span className="text-sm text-verde">Editar</span>
             </summary>

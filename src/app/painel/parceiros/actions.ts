@@ -13,7 +13,7 @@ const { parceiros } = schema;
 
 function dados(form: FormData) {
   const t = (k: string, max: number) => String(form.get(k) ?? "").trim().slice(0, max) || null;
-  return { nome: t("nome", 80) ?? "", descricao: t("descricao", 200), link: linkSeguro(t("link", 500)), ordem: Number(form.get("ordem")) || 0 };
+  return { nome: t("nome", 80) ?? "", link: linkSeguro(t("link", 500)), ordem: Number(form.get("ordem")) || 0 };
 }
 
 function revalidar() {

@@ -230,3 +230,22 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Faixa de logos dos parceiros: a lista vai duplicada e anda metade da largura, então emenda sem pulo. */
+@keyframes rolar-faixa {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.faixa-logos {
+  animation: rolar-faixa var(--duracao, 40s) linear infinite;
+}
+.faixa-logos:hover {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Sem movimento: a faixa vira uma linha que rola com o dedo. */
+  .faixa-logos {
+    animation: none;
+  }
+}
