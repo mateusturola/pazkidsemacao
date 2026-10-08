@@ -84,7 +84,13 @@ export const LEGADO = {
     {
       texto:
         "O sonho dele era levar o Evangelho a cada vila da Amazônia. Primeiro de barco, pelos rios, até as comunidades ribeirinhas. Depois, num pequeno avião que aprendeu a pilotar para chegar mais longe.",
-      foto: { src: "/img/legado/lucas-aviao.webp", w: 836, h: 444, alt: "O Pastor Lucas Huber sorrindo, de boné, ao lado de um pequeno avião", legenda: "O Pastor Lucas ao lado do avião." },
+      foto: {
+        src: "/img/legado/lucas-aviao-rio.webp",
+        w: 1200,
+        h: 924,
+        alt: "O Pastor Lucas Huber sorrindo no pequeno avião branco e vermelho, pousado no rio, com a mata ao fundo",
+        legenda: "O Pastor Lucas no avião, pousado no rio.",
+      },
     },
     {
       texto:
