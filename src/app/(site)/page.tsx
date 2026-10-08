@@ -21,9 +21,7 @@ export const dynamic = "force-dynamic";
 
 const atraso = (ms: number) => ({ "--atraso": `${ms}ms` }) as React.CSSProperties;
 
-export default async function Inicio({ searchParams }: { searchParams: Promise<{ hero?: string }> }) {
-  const sp = await searchParams;
-  const heroV = (process.env.NODE_ENV === "development" && (["a", "b", "c"] as const).find((v) => v === sp.hero)) || "a";
+export default async function Inicio() {
   const [ativas, agenda, alcance] = await Promise.all([campanhasAtivas(), encontrosAtivos(), lerAlcance()]);
   const progresso = await progressoCampanhas(ativas.map((c) => c.id));
   const principal = ativas[0];
@@ -35,8 +33,7 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
       <JsonLd dados={ldInicio(alcance)} />
       <Topo
         variante="institucional"
-        sobreFoto={heroV !== "c"}
-        fundoClaro={heroV === "c"}
+        sobreFoto
         links={[
           { href: "#quem-somos", label: "Quem somos" },
           { href: "/agenda", label: "Agenda" },
@@ -48,7 +45,6 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
       />
 
       <Hero
-        variante={heroV}
         criancas={alcance.criancasPorSemana}
         nEstados={nEstados}
         cta={principal ? { href: `/${principal.slug}`, label: "Apadrinhe uma criança no Natal" } : { href: "#como-ajudar", label: "Quero ajudar" }}
