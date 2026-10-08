@@ -118,6 +118,7 @@ export async function finalizarPedido(slug: string, ids: number[], _: Estado, fo
       status: modalidade === "pagamento_online" ? "pendente" : "aguardando_entrega",
       reservadoAte: modalidade === "pagamento_online" ? new Date(Date.now() + RESERVA_MINUTOS * 60_000) : null,
       prazoEntrega: modalidade === "entrega_balcao" ? campanha.prazoEntrega : null,
+      exibirNome: form.get("exibir_nome") === "1",
     })
     .returning({ id: pedidos.id });
   await db.insert(pedidoItens).values(criancaIds.map((criancaId) => ({ pedidoId: pedido.id, criancaId, ...recado(form, criancaId) })));

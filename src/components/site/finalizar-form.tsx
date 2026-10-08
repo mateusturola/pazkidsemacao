@@ -164,6 +164,12 @@ export function FinalizarForm({
         <span>Quero receber por e-mail as próximas campanhas do Paz Kids em Ação. Dá para sair quando quiser.</span>
       </label>
 
+      {/* Também desmarcada: o nome só vai para o mural do site com o sim da pessoa. */}
+      <label className="-mt-2 flex items-start gap-3 text-sm">
+        <input type="checkbox" name="exibir_nome" value="1" className="mt-0.5 size-4 accent-verde" />
+        <span>Quero que meu nome apareça no site, na lista de quem apadrinhou (primeiro e último nome).</span>
+      </label>
+
       {estado?.erro && (
         <p className="rounded-xl border border-vermelho/30 bg-vermelho/5 p-4 text-vermelho" role="alert">
           {estado.erro}

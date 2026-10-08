@@ -4,6 +4,7 @@ import { IconeMaos, IconePix, IconeSacola, IconeSeta } from "@/components/site/i
 import { MapaAgenda } from "@/components/site/agenda";
 import { Equipe } from "@/components/site/equipe";
 import { Instagram } from "@/components/site/instagram";
+import { QuemFazParte } from "@/components/site/quem-faz-parte";
 import { JsonLd } from "@/components/site/json-ld";
 import { Rodape } from "@/components/site/rodape";
 import { Topo } from "@/components/site/topo";
@@ -265,6 +266,8 @@ export default async function Inicio() {
           </div>
         </div>
       </section>
+
+      <QuemFazParte />
 
       <Instagram />
 

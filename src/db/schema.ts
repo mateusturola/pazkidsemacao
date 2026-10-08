@@ -112,6 +112,8 @@ export const pedidos = sqliteTable(
     entregueEm: integer("entregue_em", { mode: "timestamp_ms" }),
     // Algo que a equipe precisa resolver (pagamento que chegou depois de a criança ir para outro padrinho, estorno).
     pendencia: text("pendencia"),
+    // O padrinho marcou, no finalizar, que quer o nome no mural do site. A equipe pode tirar pelo painel.
+    exibirNome: integer("exibir_nome", { mode: "boolean" }).notNull().default(false),
     observacoes: text("observacoes"),
     criadoEm: integer("criado_em", { mode: "timestamp_ms" }).notNull().default(agora),
   },
@@ -329,3 +331,23 @@ export const equipe = sqliteTable(
 );
 
 export type MembroEquipe = typeof equipe.$inferSelect;
+
+/** Empresas parceiras, na seção "Quem faz parte" da página inicial. A equipe cadastra pelo painel. */
+export const parceiros = sqliteTable(
+  "parceiros",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    nome: text("nome").notNull(),
+    // Uma frase sobre o que a empresa faz pelo projeto.
+    descricao: text("descricao"),
+    link: text("link"),
+    logoKey: text("logo_key"),
+    ordem: integer("ordem").notNull().default(0),
+    ativo: integer("ativo", { mode: "boolean" }).notNull().default(true),
+    criadoEm: integer("criado_em", { mode: "timestamp_ms" }).notNull().default(agora),
+    atualizadoEm: integer("atualizado_em", { mode: "timestamp_ms" }).notNull().default(agora),
+  },
+  (t) => [index("parceiros_ordem_idx").on(t.ativo, t.ordem)],
+);
+
+export type Parceiro = typeof parceiros.$inferSelect;

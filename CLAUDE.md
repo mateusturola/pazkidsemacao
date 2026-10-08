@@ -74,6 +74,14 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
   é uma pessoa ou um casal. Foto com o fundo recortado (PNG/WebP transparente) fica sobre a cor de um
   balão do logo; amarelo não, porque é a cor da camiseta. Sem Instagram, o ícone leva ao do projeto.
 
+## Quem faz parte
+
+- Empresas parceiras (tabela `parceiros`, painel › Parceiros, só admin): logo, uma frase e o link, que só
+  aceita http(s) (`linkSeguro`).
+- Mural de quem apadrinhou: só com a caixinha "quero que meu nome apareça" marcada no finalizar
+  (`pedidos.exibir_nome`, desmarcada) e só de pedido confirmado (pago, aguardando entrega ou entregue).
+  Mostra primeiro e último nome (`nomeNoMural`). A equipe tira pelo pedido no painel.
+
 ## Agenda semanal
 
 - Vive no painel (tabela `agenda`) e aparece em resumo na página inicial, inteira com mapa em `/agenda`

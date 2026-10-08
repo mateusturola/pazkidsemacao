@@ -64,6 +64,13 @@
       "when": 1791472238385,
       "tag": "0008_equipe",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1791482533279,
+      "tag": "0009_parceiros_e_mural",
+      "breakpoints": true
     }
   ]
 }

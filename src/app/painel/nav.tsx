@@ -15,6 +15,7 @@ const ITENS = [
 ];
 const ADMIN = [
   { href: "/equipe", label: "Equipe", ativo: (p: string) => p.includes("/equipe") },
+  { href: "/parceiros", label: "Parceiros", ativo: (p: string) => p.includes("/parceiros") },
   { href: "/convites", label: "Convites", ativo: (p: string) => p.includes("/convites") },
   { href: "/usuarios", label: "Usuários", ativo: (p: string) => p.includes("/usuarios") },
   { href: "/auditoria", label: "Auditoria", ativo: (p: string) => p.includes("/auditoria") },

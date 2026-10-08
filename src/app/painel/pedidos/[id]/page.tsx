@@ -12,7 +12,8 @@ import { formatDateTime, formatIsoDate, todayIso } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
 import { formatBRL } from "@/lib/money";
 import { STATUS_EMAIL, TIPO_EMAIL } from "@/lib/email-labels";
-import { cancelar, entregue, pagamentoManual, salvarObservacoes } from "../actions";
+import { nomeNoMural } from "@/lib/parceiros";
+import { alternarNomeNoMural, cancelar, entregue, pagamentoManual, salvarObservacoes } from "../actions";
 
 export const metadata: Metadata = { title: "Pedido" };
 
@@ -93,7 +94,14 @@ export default async function PedidoPage({ params }: { params: Promise<{ id: str
             <Item k="E-mail" v={padrinho.email} />
             <Item k="Telefone" v={padrinho.telefone} />
             {padrinho.cpf && <Item k="CPF" v={cpfParcial(padrinho.cpf)} />}
+            <Item k="Nome no site" v={p.exibirNome ? `Sim, como ${nomeNoMural(padrinho.nome)}` : "Não"} />
           </dl>
+          {/* O nome só sai no mural com o sim do padrinho: pôr de volta só se ele pediu por outro canal. */}
+          <form action={alternarNomeNoMural.bind(null, p.id)} className="mt-3">
+            <button className="text-sm text-verde underline underline-offset-2">
+              {p.exibirNome ? "Tirar o nome do mural do site" : "Pôr o nome no mural (só se o padrinho pediu)"}
+            </button>
+          </form>
           {padrinho.telefone && (
             <a
               href={`https://wa.me/55${padrinho.telefone.replace(/\D/g, "").replace(/^55(?=\d{10,11}$)/, "")}`}

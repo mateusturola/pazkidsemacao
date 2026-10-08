@@ -48,3 +48,14 @@ export async function salvarObservacoes(pedidoId: number, _: string | null, form
   await revalidar(pedidoId);
   return "Salvo.";
 }
+
+/** Tira o nome do mural (nome impróprio, ou o padrinho pediu) ou põe, quando o padrinho pediu por outro canal. */
+export async function alternarNomeNoMural(pedidoId: number) {
+  const u = await requireUsuario();
+  const db = getDb();
+  const [p] = await db.select({ exibirNome: schema.pedidos.exibirNome }).from(schema.pedidos).where(eq(schema.pedidos.id, pedidoId)).limit(1);
+  if (!p) return;
+  await db.update(schema.pedidos).set({ exibirNome: !p.exibirNome }).where(eq(schema.pedidos.id, pedidoId));
+  await auditar(u.email, p.exibirNome ? "tirou o nome do mural" : "pôs o nome no mural", "pedido", pedidoId);
+  await revalidar(pedidoId);
+}
