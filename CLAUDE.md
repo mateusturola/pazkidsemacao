@@ -63,6 +63,10 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
 - A mensagem e o "vou orar" de cada criança ficam em `pedido_itens`. A equipe lê e imprime pela página
   "Mensagens para imprimir" da campanha: o que estiver lá chega à criança.
 - O agradecimento fala das crianças pelo nome e sonho (`natalDas`), nunca só "N crianças".
+- Convite de campanha nova (painel › Convites) só vai para quem marcou, no finalizar, "quero receber as
+  próximas campanhas" (`inscricoes_novidades`, por e-mail). A caixinha vem desmarcada e é separada do
+  aceite da campanha. Todo convite leva o "não quero mais receber" (página com confirmação e POST de um
+  clique). Os e-mails do próprio pedido não dependem disso.
 
 ## Agenda semanal
 
@@ -73,6 +77,9 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
 
 - `PAGAMENTO_MODO=demo` simula o pagamento; só `"asaas"` cobra. A rota de simulação recusa tudo fora do demo.
 - `seed/demo.sql` é só para demonstração.
+- Criança de demonstração tem `id_externo` começando com `demo-`. Painel › Configurações apaga elas e o
+  que só existe por causa delas (`src/lib/demonstracao.ts`). Nenhum código real (o "Código no sistema antigo"
+  da planilha) pode começar assim.
 
 ## Linguagem
 

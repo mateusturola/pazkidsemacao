@@ -268,3 +268,40 @@ export const agenda = sqliteTable(
 );
 
 export type EncontroAgenda = typeof agenda.$inferSelect;
+
+/**
+ * Quem pediu, no finalizar, para receber as próximas campanhas por e-mail. É o consentimento da
+ * LGPD para o convite: sem linha aqui (ou com descadastro), a pessoa só recebe e-mails do próprio pedido.
+ * Por e-mail, e não por padrinho, porque a mesma pessoa pode ter mais de um cadastro de padrinho.
+ */
+export const inscricoesNovidades = sqliteTable("inscricoes_novidades", {
+  email: text("email").primaryKey(),
+  nome: text("nome").notNull(),
+  // Vai no link "não quero mais receber" de cada convite.
+  token: text("token").notNull().unique(),
+  aceitouEm: integer("aceitou_em", { mode: "timestamp_ms" }).notNull().default(agora),
+  descadastradoEm: integer("descadastrado_em", { mode: "timestamp_ms" }),
+});
+
+/** Convites para uma campanha nova, mandados a quem apadrinhou numa anterior. Um por e-mail por campanha. */
+export const convitesEnviados = sqliteTable(
+  "convites_enviados",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    campanhaId: integer("campanha_id")
+      .notNull()
+      .references(() => campanhas.id),
+    campanhaOrigemId: integer("campanha_origem_id")
+      .notNull()
+      .references(() => campanhas.id),
+    para: text("para").notNull(),
+    assunto: text("assunto").notNull(),
+    html: text("html").notNull(),
+    // "demo": gerado mas não enviado (sem Resend configurado). "erro": o provedor recusou.
+    status: text("status", { enum: ["enviado", "demo", "erro"] }).notNull(),
+    erro: text("erro"),
+    enviadoPor: text("enviado_por").notNull(),
+    criadoEm: integer("criado_em", { mode: "timestamp_ms" }).notNull().default(agora),
+  },
+  (t) => [uniqueIndex("convites_campanha_para_uq").on(t.campanhaId, t.para)],
+);

@@ -7,7 +7,7 @@ import { getDb, schema } from "@/lib/db";
 const { criancas, emailsEnviados, padrinhos, participacoes, pedidoItens, pedidos } = schema;
 
 // As crianças fictícias de demonstração (seed/demo.sql e a lista de teste) vêm com id_externo "demo-N".
-// É a única marca que separa elas das reais: a importação nunca gera esse prefixo.
+// É a única marca que separa elas das reais: nenhum código do sistema antigo começa assim.
 const ehDemo = like(criancas.idExterno, "demo-%");
 const idsDemo = sql`(select ${criancas.id} from ${criancas} where ${criancas.idExterno} like 'demo-%')`;
 

@@ -32,7 +32,7 @@ export function ActionForm({
     <form ref={ref} action={formAction} className={className}>
       {children}
       {message && (
-        <p className={`text-sm ${message === "Salvo." ? "text-emerald-700" : "text-vermelho"}`} role="status">
+        <p className={`text-sm ${message === "Salvo." || message.startsWith("Pronto") ? "text-emerald-700" : "text-vermelho"}`} role="status">
           {message}
         </p>
       )}

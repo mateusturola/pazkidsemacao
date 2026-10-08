@@ -158,6 +158,12 @@ export function FinalizarForm({
         <span>Autorizo o Paz Kids em Ação a usar meus dados só para esta campanha: confirmar o apadrinhamento e falar comigo sobre a entrega.</span>
       </label>
 
+      {/* Consentimento separado e desmarcado: o convite das próximas campanhas só vai para quem marcou. */}
+      <label className="-mt-2 flex items-start gap-3 text-sm">
+        <input type="checkbox" name="novidades" value="1" className="mt-0.5 size-4 accent-verde" />
+        <span>Quero receber por e-mail as próximas campanhas do Paz Kids em Ação. Dá para sair quando quiser.</span>
+      </label>
+
       {estado?.erro && (
         <p className="rounded-xl border border-vermelho/30 bg-vermelho/5 p-4 text-vermelho" role="alert">
           {estado.erro}

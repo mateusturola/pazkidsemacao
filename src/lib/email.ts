@@ -15,12 +15,12 @@ const { pedidos, padrinhos, campanhas, pedidoItens, criancas, pontosColeta, emai
 
 // Cores do manual da campanha. E-mail não carrega fonte nem SVG de forma confiável: o logo vai em
 // PNG e o texto em fonte do sistema, com a hierarquia da marca.
-const VERDE = "#1E4B36";
+export const VERDE = "#1E4B36";
 const CREME = "#F4EFE3";
 const AMARELO = "#F5B629";
 const VERMELHO = "#D64A2B";
 
-const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+export const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
 /** Sem RESEND_API_KEY, o e-mail é montado e guardado como "demo": a equipe vê no painel, ninguém recebe. */
 export function emailConfigurado() {
@@ -193,7 +193,8 @@ ${c.sugestaoPresente ? `<p style="margin:6px 0 0">Sugestão de presente: ${esc(c
     .join("");
 }
 
-function layout(titulo: string, frase: string, corpo: string, botao: string, link: string) {
+/** O molde de todos os e-mails. `rodape` entra embaixo do contato (o convite põe ali o link de descadastro). */
+export function layout(titulo: string, frase: string, corpo: string, botao: string, link: string, rodape = "") {
   const site = env("SITE_URL") || SITE.url;
   return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(titulo)}</title></head>
 <body style="margin:0;background:${CREME};font-family:Nunito,'Segoe UI',Helvetica,Arial,sans-serif;color:#23302a;font-size:16px;line-height:1.55">
@@ -211,7 +212,7 @@ ${corpo}
 </td></tr>
 <tr><td style="padding:22px 28px 28px;color:#5b6b62;font-size:13px">
 ${esc(SITE.nome)} · ${esc(SITE.igreja)}<br>
-Dúvidas? Fale com a gente no WhatsApp <a href="${SITE.whatsapp.link}" style="color:${VERDE}">${SITE.whatsapp.numero}</a>.
+Dúvidas? Fale com a gente no WhatsApp <a href="${SITE.whatsapp.link}" style="color:${VERDE}">${SITE.whatsapp.numero}</a>.${rodape}
 </td></tr>
 </table></td></tr></table></body></html>`;
 }

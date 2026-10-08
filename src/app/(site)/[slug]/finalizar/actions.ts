@@ -11,6 +11,7 @@ import { nomePublico } from "@/lib/criancas";
 import { todayIso } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
 import { cancelarPedido, liberarExpiradas, reservar } from "@/lib/reservas";
+import { inscrever } from "@/lib/novidades";
 import { modoPagamento, pagamentoOnlineDisponivel } from "@/lib/pagamento";
 import { MAX_POR_PEDIDO } from "@/lib/regras";
 import { novoToken } from "@/lib/token";
@@ -134,6 +135,9 @@ export async function finalizarPedido(slug: string, ids: number[], _: Estado, fo
       indisponiveis: r.indisponiveis,
     };
   }
+
+  // Só depois de a reserva dar certo: quem não conseguiu apadrinhar não entra na lista de convites.
+  if (form.get("novidades") === "1") await inscrever(nome, email);
 
   // Para onde o doador vai depois de confirmar: no online, direto para a tela de pagamento.
   let destino = `/pedido/${token}`;
