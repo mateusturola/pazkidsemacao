@@ -10,7 +10,7 @@ const caveatBrush = Caveat_Brush({ subsets: ["latin"], weight: "400", variable: 
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
-  title: { default: `${SITE.nome} · Projeto social com crianças em Heliópolis, São Paulo`, template: `%s · ${SITE.nome}` },
+  title: { default: `${SITE.nome} · Projeto social com crianças em comunidades do Brasil`, template: `%s · ${SITE.nome}` },
   description: SITE.descricao,
   keywords: TERMOS,
   applicationName: SITE.nome,

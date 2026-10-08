@@ -84,8 +84,12 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
 
 ## Agenda semanal
 
-- Vive no painel (tabela `agenda`) e aparece em resumo na página inicial, inteira com mapa em `/agenda`
-  (link da bio) e no story gerado pelo painel. O ponto no mapa vem do endereço (OpenStreetMap) ou de um link do Google Maps.
+- Vive no painel (tabela `agenda`, com estado e cidade; hora opcional) e aparece na página inicial e em
+  `/agenda` (link da bio, com endereço e "Como chegar") pelo mapa do Brasil em SVG (`AgendaBrasil`), e no
+  story do painel, um por estado.
+- Os estados atendidos e as crianças por semana ficam em `configuracoes` (painel › Agenda › Onde o projeto
+  está, `lerAlcance`): pintam o mapa e entram nos textos ("em 7 estados"), no FAQ, no SEO e no llms.txt.
+  Contorno dos estados: malha do IBGE (`src/content/mapa-brasil.ts`).
 
 ## Demonstração
 
@@ -98,7 +102,7 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
 ## Linguagem
 
 - "Apadrinhar" e "apadrinhe uma criança". Nunca "adotar", "adote" ou "adoção": é o termo que a equipe usa.
-- A igreja é a **Paz Church** (Paz Church São Paulo). O projeto atua em Heliópolis, mas não existe
+- A igreja é a **Paz Church** (Paz Church São Paulo). O projeto está em Heliópolis e em outros estados, mas não existe
   Paz Church em Heliópolis: nunca escreva "igreja de Heliópolis" nem "Igreja da Paz". A única exceção é o
   favorecido do Pix ("Igreja da Paz na Cidade de São Paulo"), que é o nome que o banco mostra ao doador.
 - Contato e voluntariado são pelo WhatsApp do projeto; heliopolis@paz.church é só a chave Pix.

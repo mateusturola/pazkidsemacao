@@ -261,6 +261,9 @@ export const agenda = sqliteTable(
     nome: text("nome").notNull(),
     endereco: text("endereco").notNull(),
     complemento: text("complemento"),
+    // O projeto está em vários estados: a agenda do site se separa por estado (sigla da UF).
+    estado: text("estado").notNull().default("SP"),
+    cidade: text("cidade"),
     lat: real("lat"),
     lng: real("lng"),
     ativo: integer("ativo", { mode: "boolean" }).notNull().default(true),

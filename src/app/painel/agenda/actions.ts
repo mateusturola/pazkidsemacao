@@ -2,9 +2,9 @@
 
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { coordenadaDoEndereco, coordenadaDoLink } from "@/lib/agenda";
+import { ESTADOS } from "@/content/mapa-brasil";
 import { auditar } from "@/lib/auditoria";
-import { requireUsuario } from "@/lib/auth";
+import { requireAdmin, requireUsuario } from "@/lib/auth";
 import { getDb, schema } from "@/lib/db";
 
 const { agenda } = schema;
@@ -21,39 +21,27 @@ function horaPadrao(v: string) {
 function dados(form: FormData) {
   const t = (k: string) => String(form.get(k) ?? "").trim();
   const dia = Number(t("diaSemana"));
+  // Hora é opcional: tem lugar que manda só o dia ("aos sábados"). Vazia, o site mostra só o dia.
   const hora = horaPadrao(t("hora"));
   return {
+    horaInvalida: Boolean(t("hora")) && !hora,
     diaSemana: Number.isInteger(dia) && dia >= 0 && dia <= 6 ? dia : -1,
     hora,
     nome: t("nome").replace(/\s+/g, " "),
     endereco: t("endereco").replace(/\s+/g, " "),
     complemento: t("complemento") || null,
-    link: t("link"),
+    estado: t("estado") in ESTADOS ? t("estado") : "",
+    cidade: t("cidade").replace(/\s+/g, " ") || null,
   };
 }
 
 function invalido(d: ReturnType<typeof dados>) {
   if (d.diaSemana < 0) return "Escolha o dia da semana.";
-  if (!d.hora) return "Informe a hora no formato 19:00.";
+  if (d.horaInvalida) return "Escreva a hora no formato 19:00, ou deixe em branco se não tiver horário fixo.";
   if (!d.nome) return "Informe o nome do encontro.";
   if (!d.endereco) return "Informe o endereço.";
+  if (!d.estado) return "Escolha o estado.";
   return null;
-}
-
-/**
- * O link do Google Maps manda no ponto do mapa; sem ele, o endereço é procurado no OpenStreetMap.
- * Endereço que não muda mantém o ponto que já existe (inclusive um que veio de link).
- */
-async function coordenada(d: ReturnType<typeof dados>, atual?: { endereco: string; lat: number | null; lng: number | null }) {
-  if (d.link) {
-    const c = await coordenadaDoLink(d.link);
-    return c ? { ...c, aviso: null } : { lat: atual?.lat ?? null, lng: atual?.lng ?? null, aviso: "Não achei a localização nesse link. Abra o lugar no Google Maps, toque em Compartilhar e cole o link." };
-  }
-  if (atual && atual.endereco === d.endereco && atual.lat != null) return { lat: atual.lat, lng: atual.lng, aviso: null };
-  const c = await coordenadaDoEndereco(d.endereco);
-  return c
-    ? { ...c, aviso: null }
-    : { lat: null, lng: null, aviso: "O endereço não foi encontrado no mapa: o encontro aparece só na lista. Para pôr no mapa, cole o link do lugar no Google Maps." };
 }
 
 function revalidar() {
@@ -67,15 +55,9 @@ export async function criarEncontro(_: string | null, form: FormData) {
   const d = dados(form);
   const erro = invalido(d);
   if (erro) return erro;
-  // Sem o aviso de "não achei no mapa": o encontro já foi criado, e uma mensagem deixaria o
-  // formulário cheio, convidando a criar de novo. A lista mostra a etiqueta "Sem ponto no mapa".
-  const { lat, lng } = await coordenada(d);
-  const campos = { diaSemana: d.diaSemana, hora: d.hora, nome: d.nome, endereco: d.endereco, complemento: d.complemento };
-  const [novo] = await getDb()
-    .insert(agenda)
-    .values({ ...campos, lat, lng })
-    .returning({ id: agenda.id });
-  await auditar(u.email, "criou", "agenda", novo.id, { ...campos, noMapa: lat != null });
+  const campos = { diaSemana: d.diaSemana, hora: d.hora, nome: d.nome, endereco: d.endereco, complemento: d.complemento, estado: d.estado, cidade: d.cidade };
+  const [novo] = await getDb().insert(agenda).values(campos).returning({ id: agenda.id });
+  await auditar(u.email, "criou", "agenda", novo.id, campos);
   revalidar();
   return null;
 }
@@ -88,15 +70,14 @@ export async function salvarEncontro(id: number, _: string | null, form: FormDat
   const db = getDb();
   const [atual] = await db.select().from(agenda).where(eq(agenda.id, id)).limit(1);
   if (!atual) return "Esse encontro não existe mais.";
-  const { lat, lng, aviso } = await coordenada(d, atual);
-  const campos = { diaSemana: d.diaSemana, hora: d.hora, nome: d.nome, endereco: d.endereco, complemento: d.complemento };
+  const campos = { diaSemana: d.diaSemana, hora: d.hora, nome: d.nome, endereco: d.endereco, complemento: d.complemento, estado: d.estado, cidade: d.cidade };
   await db
     .update(agenda)
-    .set({ ...campos, lat, lng, ativo: form.get("ativo") === "1" })
+    .set({ ...campos, ativo: form.get("ativo") === "1" })
     .where(eq(agenda.id, id));
-  await auditar(u.email, "editou", "agenda", id, { ...campos, noMapa: lat != null });
+  await auditar(u.email, "editou", "agenda", id, campos);
   revalidar();
-  return aviso ?? "Salvo.";
+  return "Salvo.";
 }
 
 export async function excluirEncontro(id: number) {
@@ -107,4 +88,25 @@ export async function excluirEncontro(id: number) {
   await db.delete(agenda).where(eq(agenda.id, id));
   await auditar(u.email, "excluiu", "agenda", id, { nome: atual.nome, diaSemana: atual.diaSemana, hora: atual.hora });
   revalidar();
+}
+
+/** Os estados onde o projeto está e quantas crianças alcança por semana: pintam o mapa e entram nos textos do site. */
+export async function salvarAlcance(_: string | null, form: FormData) {
+  const u = await requireAdmin();
+  const estados = form.getAll("estados").map(String).filter((e) => e in ESTADOS);
+  const criancas = String(form.get("criancas") ?? "").replace(/\D/g, "");
+  const db = getDb();
+  await db.batch([
+    db
+      .insert(schema.configuracoes)
+      .values({ chave: "alcance_estados", valor: estados.join(",") })
+      .onConflictDoUpdate({ target: schema.configuracoes.chave, set: { valor: estados.join(","), atualizadoEm: new Date() } }),
+    db
+      .insert(schema.configuracoes)
+      .values({ chave: "alcance_criancas", valor: criancas })
+      .onConflictDoUpdate({ target: schema.configuracoes.chave, set: { valor: criancas, atualizadoEm: new Date() } }),
+  ]);
+  await auditar(u.email, "editou o alcance", "configuracao", null, { estados, criancas });
+  revalidar();
+  return "Salvo.";
 }

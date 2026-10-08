@@ -1,4 +1,6 @@
-import { LEGADO, PERGUNTAS, SITE, SOBRE } from "@/content/site";
+import { LEGADO, SITE, SOBRE } from "@/content/site";
+import { ESTADOS } from "@/content/mapa-brasil";
+import { lerAlcance, listaEstados, numero, perguntasDoSite } from "@/lib/alcance";
 import { encontrosAtivos } from "@/lib/agenda";
 import { campanhasAtivas, itensSacolinha, progressoCampanhas } from "@/lib/campanhas";
 import { formatIsoDate } from "@/lib/dates";
@@ -10,7 +12,7 @@ export const dynamic = "force-dynamic";
 // Resumo em Markdown para assistentes de IA (padrão llms.txt): quem é o projeto, onde atua, como
 // ajudar e o que está aberto agora, sem precisar interpretar o HTML.
 export async function GET() {
-  const [ativas, agenda] = await Promise.all([campanhasAtivas(), encontrosAtivos()]);
+  const [ativas, agenda, alcance] = await Promise.all([campanhasAtivas(), encontrosAtivos(), lerAlcance()]);
   const progresso = await progressoCampanhas(ativas.map((c) => c.id));
   const campanhas = ativas
     .map((c) => {
@@ -51,8 +53,11 @@ ${SOBRE.visao}
 ## Valores
 ${SOBRE.valores.map((v) => `- ${v}`).join("\n")}
 
+## Onde atua
+${alcance.estados.length ? `${alcance.estados.length} estados do Brasil: ${listaEstados(alcance.estados)}.` : ""}${alcance.criancasPorSemana ? ` ${numero(alcance.criancasPorSemana)} crianças alcançadas por semana.` : ""}
+
 ## Agenda semanal (encontros nas ruas e praças)
-${agenda.map((a) => `- ${a.dia}, ${a.hora}: ${a.nome} · ${a.endereco}${a.complemento ? ` · ${a.complemento}` : ""}`).join("\n")}
+${agenda.map((a) => `- ${ESTADOS[a.estado as keyof typeof ESTADOS]?.nome ?? a.estado}${a.cidade ? `, ${a.cidade}` : ""} · ${a.dia}${a.hora ? `, ${a.hora}` : ""}: ${a.nome} · ${a.endereco}${a.complemento ? ` · ${a.complemento}` : ""}`).join("\n")}
 
 ## Nossa história (Paz Church, 50 anos, e o Paz Kids em Ação)
 ${LEGADO.marcos.map((m) => `- ${m.quando}: ${m.titulo}. ${m.texto}`).join("\n")}
@@ -61,7 +66,7 @@ ${LEGADO.marcos.map((m) => `- ${m.quando}: ${m.titulo}. ${m.texto}`).join("\n")}
 ${campanhas || "Nenhuma campanha aberta no momento. Acompanhe pelo Instagram."}
 
 ## Perguntas frequentes
-${PERGUNTAS.map((q) => `### ${q.p}\n${q.r}`).join("\n\n")}
+${perguntasDoSite(alcance).map((q) => `### ${q.p}\n${q.r}`).join("\n\n")}
 
 ## Assuntos relacionados
 ${TERMOS.join(", ")}.

@@ -160,31 +160,6 @@ body {
   z-index: 1;
 }
 
-/* Pinos da agenda: círculo na cor do dia, com o número do lugar na lista. */
-.pino-agenda {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  background: var(--c);
-  color: #fff;
-  border: 3px solid #fff;
-  box-shadow: 0 1px 4px rgb(0 0 0 / 0.35);
-  font: 600 14px/1 var(--font-titulo);
-}
-.leaflet-container {
-  font-family: var(--font-sans);
-}
-.leaflet-popup-content {
-  font-size: 14px;
-  line-height: 1.45;
-}
-.leaflet-container .leaflet-popup-content a {
-  color: var(--color-verde);
-  font-weight: 700;
-}
-
 .tkd-calendar .rdp-root {
   --rdp-accent-color: var(--color-verde);
   --rdp-accent-background-color: #1e4b3612;

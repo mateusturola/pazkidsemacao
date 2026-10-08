@@ -4,11 +4,13 @@ import { asc } from "drizzle-orm";
 import { ActionForm } from "@/components/ui/action-form";
 import { ConfirmButton } from "@/components/ui/confirm-button";
 import { SubmitButton } from "@/components/ui/submit-button";
+import { ESTADOS, UFS } from "@/content/mapa-brasil";
 import type { EncontroAgenda } from "@/db/schema";
 import { DIAS } from "@/lib/agenda";
+import { lerAlcance } from "@/lib/alcance";
 import { requireUsuario } from "@/lib/auth";
 import { getDb, schema } from "@/lib/db";
-import { criarEncontro, excluirEncontro, salvarEncontro } from "./actions";
+import { criarEncontro, excluirEncontro, salvarAlcance, salvarEncontro } from "./actions";
 
 export const metadata: Metadata = { title: "Agenda semanal" };
 
@@ -33,8 +35,8 @@ function Campos({ e }: { e?: EncontroAgenda }) {
           </select>
         </label>
         <label className="block">
-          <span className="rotulo">Hora</span>
-          <input name="hora" required defaultValue={e?.hora} placeholder="19:00" inputMode="numeric" className="campo" />
+          <span className="rotulo">Hora (se tiver)</span>
+          <input name="hora" defaultValue={e?.hora} placeholder="19:00" inputMode="numeric" className="campo" />
         </label>
       </div>
       <label className="block">
@@ -49,18 +51,29 @@ function Campos({ e }: { e?: EncontroAgenda }) {
         <span className="rotulo">Complemento (opcional)</span>
         <input name="complemento" defaultValue={e?.complemento ?? ""} placeholder="Ex.: Casa do Amor em Ação" className="campo" />
       </label>
-      <label className="block">
-        <span className="rotulo">Link do Google Maps (opcional)</span>
-        <input name="link" type="url" placeholder="Cole aqui se o ponto não aparecer certo no mapa" className="campo" />
-        <span className="mt-1 block text-xs text-tinta-2">No Google Maps, abra o lugar, toque em Compartilhar e cole o link.</span>
-      </label>
+      <div className="grid gap-3 sm:grid-cols-[14rem_1fr]">
+        <label className="block">
+          <span className="rotulo">Estado</span>
+          <select name="estado" required defaultValue={e?.estado ?? "SP"} className="campo">
+            {UFS.map((u) => (
+              <option key={u} value={u}>
+                {ESTADOS[u].nome}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="block">
+          <span className="rotulo">Cidade</span>
+          <input name="cidade" defaultValue={e?.cidade ?? ""} placeholder="Ex.: São Paulo" className="campo" />
+        </label>
+      </div>
     </>
   );
 }
 
 export default async function AgendaPainel() {
-  await requireUsuario();
-  const encontros = await getDb().select().from(schema.agenda).orderBy(asc(schema.agenda.hora));
+  const usuario = await requireUsuario();
+  const [encontros, alcance] = await Promise.all([getDb().select().from(schema.agenda).orderBy(asc(schema.agenda.hora)), lerAlcance()]);
   const porDia = ORDEM.map((d) => ({ d, lista: encontros.filter((e) => e.diaSemana === d) })).filter((g) => g.lista.length);
 
   return (
@@ -81,6 +94,37 @@ export default async function AgendaPainel() {
         </Link>
       </div>
 
+      {/* Pinta o mapa do Brasil no site e entra nos textos ("em 7 estados", "1.628 crianças por semana"). */}
+      {usuario.papel === "admin" && (
+        <details className="cartao mt-6 p-5">
+          <summary className="cursor-pointer">
+            <span className="font-semibold">Onde o projeto está</span>
+            <span className="ml-2 text-sm text-tinta-2">
+              {alcance.estados.length} estado(s){alcance.criancasPorSemana ? ` · ${alcance.criancasPorSemana.toLocaleString("pt-BR")} crianças por semana` : ""}
+            </span>
+          </summary>
+          <ActionForm action={salvarAlcance} className="mt-4 space-y-4">
+            <fieldset>
+              <legend className="rotulo">Estados atendidos (ficam coloridos no mapa do site)</legend>
+              <div className="mt-2 grid grid-cols-2 gap-1.5 sm:grid-cols-3">
+                {UFS.map((u) => (
+                  <label key={u} className="flex items-center gap-2 text-sm">
+                    <input type="checkbox" name="estados" value={u} defaultChecked={alcance.estados.includes(u)} className="size-4 accent-verde" />
+                    {ESTADOS[u].nome}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+            <label className="block max-w-xs">
+              <span className="rotulo">Crianças alcançadas por semana, no Brasil todo</span>
+              <input name="criancas" inputMode="numeric" defaultValue={alcance.criancasPorSemana ?? ""} className="campo" />
+              <span className="mt-1 block text-xs text-tinta-2">Só número real. Vazio, o número sai do site.</span>
+            </label>
+            <SubmitButton className="btn btn-claro btn-sm">Salvar</SubmitButton>
+          </ActionForm>
+        </details>
+      )}
+
       <div className="mt-8 space-y-8">
         {porDia.length === 0 && <p className="cartao p-8 text-center text-tinta-2">Nenhum encontro cadastrado. Sem encontro, a agenda sai do site.</p>}
         {porDia.map(({ d, lista }) => (
@@ -92,10 +136,11 @@ export default async function AgendaPainel() {
                   <summary className="flex cursor-pointer items-center justify-between gap-3">
                     <span className="min-w-0">
                       <span className="font-semibold">
-                        <span className="tabular-nums">{e.hora}</span> · {e.nome}
+                        {e.hora && <span className="tabular-nums">{e.hora} · </span>}
+                        {e.nome}
                       </span>
                       {!e.ativo && <span className="ml-2 rounded-md bg-tinta/10 px-2 py-0.5 text-xs">Fora do site</span>}
-                      {e.lat == null && <span className="ml-2 rounded-md bg-laranja/15 px-2 py-0.5 text-xs text-laranja">Sem ponto no mapa</span>}
+                      <span className="ml-2 rounded-md bg-tinta/[0.06] px-2 py-0.5 text-xs">{e.cidade ? `${e.cidade} · ${e.estado}` : e.estado}</span>
                       <span className="block truncate text-sm text-tinta-2">{e.endereco}</span>
                     </span>
                     <span className="shrink-0 text-sm text-verde">Editar</span>

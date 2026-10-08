@@ -6,8 +6,8 @@ export const SITE = {
   lema: "Alcançando além das quatro paredes",
   url: "https://pazkidsemacao.com",
   descricao:
-    "Projeto social e missionário do Paz Kids, da Paz Church, que leva o amor de Cristo, educação, apoio emocional e recursos básicos para crianças de Heliópolis e de outras comunidades da Grande São Paulo.",
-  // O projeto atua em Heliópolis, mas a igreja não fica lá: é a Paz Church São Paulo.
+    "Projeto social e missionário do Paz Kids, da Paz Church, que leva o amor de Cristo, educação, apoio emocional e recursos básicos para crianças de Heliópolis, em São Paulo, e de comunidades em outros estados do Brasil.",
+  // O projeto está em Heliópolis e em outros estados, mas a igreja é a Paz Church São Paulo (não há Paz Church em Heliópolis).
   igreja: "Paz Church São Paulo",
   // O e-mail heliopolis@paz.church é só a chave Pix; contato e voluntariado são por este WhatsApp.
   whatsapp: {
@@ -50,7 +50,7 @@ export const LEGADO = {
   titulo: "Tudo começou às margens dos rios",
   // O resumo da página inicial; a história inteira, marco por marco, fica em /historia.
   resumo:
-    "Em dezembro de 1976, o missionário Lucas Huber chegou a Santarém, no Pará, com a esposa, Christine. Ali nasceu a Paz Church, e de lá o Pastor Lucas levou o Evangelho de barco e de avião às comunidades ribeirinhas. Em 2026 ela completa 50 anos, e o mesmo amor pelas crianças está nas ruas e praças de Heliópolis.",
+    "Em dezembro de 1976, o missionário Lucas Huber chegou a Santarém, no Pará, com a esposa, Christine. Ali nasceu a Paz Church, e de lá o Pastor Lucas levou o Evangelho de barco e de avião às comunidades ribeirinhas. Em 2026 ela completa 50 anos, e o mesmo amor pelas crianças está nas ruas e praças de comunidades de vários estados do Brasil.",
   // Os quatro primeiros são da família Huber, dos arquivos da Paz Church (a página inicial mostra só eles).
   marcos: [
     {
@@ -113,7 +113,7 @@ export const LEGADO = {
       quando: "Hoje",
       titulo: "Um dos frutos dessa história",
       texto:
-        "Em 2026, a Paz Church completa 50 anos. O Paz Kids em Ação segue em parceria com a Metro World Kids, levando o mesmo amor pelas crianças para as ruas e praças de Heliópolis.",
+        "Em 2026, a Paz Church completa 50 anos. O Paz Kids em Ação segue em parceria com a Metro World Kids, levando o mesmo amor pelas crianças para as ruas e praças de comunidades de vários estados do Brasil.",
       foto: { src: "/img/acampa-equipe.webp", w: 1400, h: 933, alt: "Quatro voluntários do Paz Kids em Ação abraçados na quadra do AcampaKids", legenda: "Voluntários do Paz Kids em Ação no AcampaKids, em outubro de 2025." },
     },
   ],
@@ -125,10 +125,6 @@ export const PERGUNTAS = [
   {
     p: "O que é o Paz Kids em Ação?",
     r: "É o braço missionário e social do Paz Kids, o ministério infantil da Paz Church. O projeto leva o amor de Cristo, educação, apoio emocional e recursos básicos para crianças de comunidades, fora das quatro paredes da igreja.",
-  },
-  {
-    p: "Onde o Paz Kids em Ação atua?",
-    r: "Em Heliópolis, em São Paulo, e em outras comunidades da Grande São Paulo. As ações acontecem onde as crianças estão: quadras, praças, escolas e ruas da comunidade.",
   },
   {
     p: "Como o projeto começou?",
@@ -144,6 +140,27 @@ export const PERGUNTAS = [
   },
   {
     p: "O Paz Kids em Ação é ligado a alguma igreja?",
-    r: "Sim. É uma iniciativa do Paz Kids, o ministério infantil da Paz Church São Paulo. As ações acontecem em Heliópolis e em outras comunidades da Grande São Paulo.",
+    r: "Sim. É uma iniciativa do Paz Kids, o ministério infantil da Paz Church São Paulo. As ações acontecem em Heliópolis, em São Paulo, e em comunidades de outros estados do Brasil.",
   },
 ];
+
+/**
+ * As perguntas com a de "onde atua" montada a partir do alcance do painel (estados e crianças por
+ * semana): assim o texto não fica para trás quando um estado entra ou sai.
+ */
+export function perguntas(alcance: { estados: string; quantos: number; criancasPorSemana: number | null }) {
+  const onde = {
+    p: "Onde o Paz Kids em Ação atua?",
+    r:
+      alcance.quantos > 1
+        ? [
+            `Em ${alcance.quantos} estados do Brasil: ${alcance.estados}.`,
+            alcance.criancasPorSemana ? `Toda semana são ${alcance.criancasPorSemana.toLocaleString("pt-BR")} crianças alcançadas.` : "",
+            "Em São Paulo, em Heliópolis e em outras comunidades da Grande São Paulo. As ações acontecem onde as crianças estão: quadras, praças, escolas e ruas da comunidade.",
+          ]
+            .filter(Boolean)
+            .join(" ")
+        : "Em Heliópolis, em São Paulo, e em outras comunidades da Grande São Paulo. As ações acontecem onde as crianças estão: quadras, praças, escolas e ruas da comunidade.",
+  };
+  return [PERGUNTAS[0], onde, ...PERGUNTAS.slice(1)];
+}

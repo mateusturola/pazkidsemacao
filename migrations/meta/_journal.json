@@ -71,6 +71,13 @@
       "when": 1791482533279,
       "tag": "0009_parceiros_e_mural",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "6",
+      "when": 1791484198486,
+      "tag": "0010_agenda_por_estado",
+      "breakpoints": true
     }
   ]
 }

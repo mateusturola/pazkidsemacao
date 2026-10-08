@@ -144,7 +144,7 @@ async function desenhar(canvas: HTMLCanvasElement, agenda: PontoAgenda[]) {
   ctx.fillText("pazkidsemacao.com/agenda", L / 2, A - 80);
   ctx.fillStyle = "#ffffff";
   ctx.font = `600 30px ${texto}`;
-  ctx.fillText("Mapa e rota de cada encontro", L / 2, A - 36);
+  ctx.fillText("Endereço e rota de cada encontro", L / 2, A - 36);
   ctx.textAlign = "left";
 }
 

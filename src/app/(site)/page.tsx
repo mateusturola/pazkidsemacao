@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { IconeMaos, IconePix, IconeSacola, IconeSeta } from "@/components/site/icones";
-import { MapaAgenda } from "@/components/site/agenda";
+import { AgendaBrasil } from "@/components/site/agenda";
 import { Equipe } from "@/components/site/equipe";
 import { Instagram } from "@/components/site/instagram";
 import { QuemFazParte } from "@/components/site/quem-faz-parte";
@@ -9,9 +9,9 @@ import { JsonLd } from "@/components/site/json-ld";
 import { Rodape } from "@/components/site/rodape";
 import { Topo } from "@/components/site/topo";
 import { CopyButton } from "@/components/ui/copy-button";
-import { LEGADO, PERGUNTAS, SITE } from "@/content/site";
+import { LEGADO, SITE } from "@/content/site";
 import { encontrosAtivos } from "@/lib/agenda";
-import { corDoDia, lugaresDaAgenda } from "@/lib/agenda-pontos";
+import { lerAlcance, numero, perguntasDoSite } from "@/lib/alcance";
 import { campanhasAtivas, progressoCampanhas } from "@/lib/campanhas";
 import { formatIsoDate } from "@/lib/dates";
 import { ldInicio } from "@/lib/seo";
@@ -21,15 +21,15 @@ export const dynamic = "force-dynamic";
 const atraso = (ms: number) => ({ "--atraso": `${ms}ms` }) as React.CSSProperties;
 
 export default async function Inicio() {
-  const [ativas, agenda] = await Promise.all([campanhasAtivas(), encontrosAtivos()]);
+  const [ativas, agenda, alcance] = await Promise.all([campanhasAtivas(), encontrosAtivos(), lerAlcance()]);
   const progresso = await progressoCampanhas(ativas.map((c) => c.id));
   const principal = ativas[0];
   const p = principal ? (progresso.get(principal.id) ?? { total: 0, comPadrinho: 0 }) : null;
-  const lugares = lugaresDaAgenda(agenda);
+  const nEstados = alcance.estados.length;
 
   return (
     <div className="tema-paz">
-      <JsonLd dados={ldInicio()} />
+      <JsonLd dados={ldInicio(alcance)} />
       <Topo
         variante="institucional"
         sobreFoto
@@ -66,13 +66,13 @@ export default async function Inicio() {
             priority
             className="h-28 w-auto drop-shadow-[0_5px_0_rgba(27,22,51,0.35)] sm:h-36"
           />
-          <p className="mt-5 font-mao text-2xl text-amarelo sm:text-3xl">Heliópolis, São Paulo</p>
+          <p className="mt-5 font-mao text-2xl text-amarelo sm:text-3xl">{nEstados > 1 ? `Em ${nEstados} estados do Brasil` : "Heliópolis, São Paulo"}</p>
           <h1 className="mt-2 max-w-4xl text-[clamp(2.7rem,7vw,5.6rem)] leading-[0.95] font-bold text-white">
             Alcançando além das <span className="pincelada">quatro paredes</span>
           </h1>
           <p className="mt-6 max-w-xl text-lg text-white/85 sm:text-xl">
-            O Paz Kids em Ação leva o amor de Cristo, educação e cuidado para as crianças de Heliópolis e de outras comunidades da Grande São
-            Paulo, lá onde elas estão.
+            O Paz Kids em Ação leva o amor de Cristo, educação e cuidado para as crianças lá onde elas estão: em Heliópolis, em São Paulo, e em
+            comunidades {nEstados > 1 ? `de mais ${nEstados - 1} estados do Brasil` : "da Grande São Paulo"}.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
             <Link href={principal ? `/${principal.slug}` : "#como-ajudar"} className="btn h-14 bg-amarelo px-7 text-lg text-tinta hover:bg-white">
@@ -148,55 +148,30 @@ export default async function Inicio() {
 
       <Equipe />
 
-      {/* Agenda semanal: os encontros por dia e o mapa largo embaixo; endereços e rotas ficam em /agenda, o link da bio. */}
-      {agenda.length > 0 && (
-        <section id="agenda" className="scroll-mt-16 bg-creme pt-20 sm:pt-24">
+      {/* Onde a gente está: o Brasil com os estados atendidos e a agenda de cada um; endereços e rotas em /agenda, o link da bio. */}
+      {nEstados > 0 && (
+        <section id="agenda" className="scroll-mt-16 bg-creme py-20 sm:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-8">
-            <div className="flex flex-wrap items-end justify-between gap-6" data-revelar>
-              <div className="max-w-2xl">
-                <p className="chamada text-vermelho">Agenda semanal</p>
-                <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">
-                  Onde a gente está <span className="pincelada">toda semana</span>
-                </h2>
-              </div>
-              <Link href="/agenda" className="btn btn-primario">
-                Endereços e como chegar <IconeSeta className="size-5" />
-              </Link>
-            </div>
-            <div className="mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4" data-revelar>
-              {[...new Set(agenda.map((e) => e.dia))].map((dia) => (
-                <div key={dia} className="border-t-4 pt-4" style={{ borderColor: corDoDia(dia) }}>
-                  <p className="chamada" style={{ color: corDoDia(dia) }}>
-                    {dia}
-                  </p>
-                  <ul className="mt-3 space-y-2.5">
-                    {agenda
-                      .filter((e) => e.dia === dia)
-                      .map((e) => {
-                        const n = lugares.find((l) => l.pontos.includes(e))?.n;
-                        return (
-                          <li key={`${e.hora}${e.nome}`} className="flex items-start gap-2.5 leading-snug">
-                            {/* O mesmo número do pino no mapa; sem ponto no mapa, só o contorno. */}
-                            <span
-                              className="mt-px grid size-6 shrink-0 place-items-center rounded-full font-titulo text-xs font-semibold text-white"
-                              style={{ background: n ? corDoDia(dia) : "transparent", boxShadow: n ? undefined : `inset 0 0 0 2px ${corDoDia(dia)}` }}
-                              aria-hidden
-                            >
-                              {n ?? ""}
-                            </span>
-                            <span>
-                              <span className="font-titulo font-semibold text-verde tabular-nums">{e.hora}</span> <span className="text-tinta">{e.nome}</span>
-                            </span>
-                          </li>
-                        );
-                      })}
-                  </ul>
+            <AgendaBrasil
+              estados={alcance.estados}
+              agenda={agenda}
+              cabecalho={
+                <div data-revelar>
+                  <p className="chamada text-vermelho">Onde a gente está</p>
+                  <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">
+                    {nEstados > 1 ? `Em ${nEstados} estados,` : "Toda semana,"} <span className="pincelada">{nEstados > 1 ? "toda semana" : "nas ruas"}</span>
+                  </h2>
+                  {alcance.criancasPorSemana && (
+                    <p className="mt-6 flex items-baseline gap-3">
+                      <span className="font-titulo text-6xl leading-none font-bold text-verde tabular-nums sm:text-7xl">{numero(alcance.criancasPorSemana)}</span>
+                      <span className="max-w-[12rem] text-lg leading-tight text-tinta-2">crianças alcançadas por semana em todo o Brasil</span>
+                    </p>
+                  )}
+                  <p className="mt-5 max-w-lg text-tinta-2">Escolha um estado no mapa para ver onde e quando são os encontros.</p>
                 </div>
-              ))}
-            </div>
+              }
+            />
           </div>
-          {/* O mapa de ponta a ponta e baixo, com os pinos numerados como na lista. */}
-          <MapaAgenda agenda={agenda} className="mt-12 h-64 w-full border-t border-linha sm:h-80" />
         </section>
       )}
 
@@ -286,7 +261,7 @@ export default async function Inicio() {
             </p>
           </div>
           <div className="divide-y divide-linha border-y border-linha">
-            {PERGUNTAS.map((q) => (
+            {perguntasDoSite(alcance).map((q) => (
               <details key={q.p} className="group py-5">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-titulo text-xl font-semibold text-verde">
                   {q.p}

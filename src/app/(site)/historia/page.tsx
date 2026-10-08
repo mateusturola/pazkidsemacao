@@ -9,7 +9,7 @@ import { campanhasAtivas } from "@/lib/campanhas";
 export const dynamic = "force-dynamic";
 
 const descricao =
-  "O legado do Pastor Lucas Huber, os 50 anos da Paz Church e como nasceu o Paz Kids em Ação, o projeto que leva o amor de Cristo às crianças de Heliópolis.";
+  "O legado do Pastor Lucas Huber, os 50 anos da Paz Church e como nasceu o Paz Kids em Ação, o projeto que leva o amor de Cristo às crianças de Heliópolis, em São Paulo, e de comunidades de vários estados do Brasil.";
 
 export const metadata: Metadata = {
   title: "Nossa história",

@@ -1,4 +1,6 @@
-import { PERGUNTAS, SITE, SOBRE } from "@/content/site";
+import { ESTADOS } from "@/content/mapa-brasil";
+import { SITE, SOBRE } from "@/content/site";
+import { perguntasDoSite, type Alcance } from "@/lib/alcance";
 import type { Campanha } from "@/db/schema";
 
 // Dados estruturados (schema.org). É o que o Google usa para o painel de conhecimento e as IAs
@@ -7,6 +9,7 @@ import type { Campanha } from "@/db/schema";
 export const TERMOS = [
   "projeto social em Heliópolis",
   "projeto social para crianças em São Paulo",
+  "projeto social para crianças no Brasil",
   "ação social em comunidade",
   "trabalho social em comunidades de São Paulo",
   "evangelismo infantil",
@@ -36,19 +39,20 @@ const organizacao = {
   telephone: SITE.whatsapp.internacional,
   foundingDate: "2022-07",
   address: { "@type": "PostalAddress", addressLocality: "São Paulo", addressRegion: "SP", addressCountry: "BR", streetAddress: "Heliópolis" },
-  areaServed: [
-    { "@type": "Place", name: "Heliópolis, São Paulo, SP" },
-    { "@type": "AdministrativeArea", name: "Grande São Paulo" },
-  ],
   parentOrganization: { "@type": "Church", name: "Paz Church São Paulo", alternateName: "Paz Church", url: "https://paz.church", foundingDate: "1976-12", founder: { "@type": "Person", name: "Lucas Huber" }, foundingLocation: "Santarém, Pará", address: { "@type": "PostalAddress", addressLocality: "São Paulo", addressRegion: "SP", addressCountry: "BR" } },
   knowsAbout: TERMOS,
   sameAs: SITE.redes.map((r) => r.url),
   potentialAction: { "@type": "DonateAction", name: "Doar pelo Pix", description: `Pix ${SITE.pix.tipo} ${SITE.pix.chave}`, recipient: { "@id": `${SITE.url}/#organizacao` } },
 };
 
-export function ldInicio() {
+export function ldInicio(alcance: Alcance) {
+  // Onde o projeto está sai do painel (Agenda › Onde o projeto está), como o mapa do site.
+  const areaServed = [
+    { "@type": "Place", name: "Heliópolis, São Paulo, SP" },
+    ...alcance.estados.map((u) => ({ "@type": "AdministrativeArea", name: `${ESTADOS[u].nome}, Brasil` })),
+  ];
   return [
-    { "@context": "https://schema.org", ...organizacao, mission: SOBRE.missao },
+    { "@context": "https://schema.org", ...organizacao, areaServed, mission: SOBRE.missao },
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
@@ -61,7 +65,7 @@ export function ldInicio() {
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      mainEntity: PERGUNTAS.map((q) => ({ "@type": "Question", name: q.p, acceptedAnswer: { "@type": "Answer", text: q.r } })),
+      mainEntity: perguntasDoSite(alcance).map((q) => ({ "@type": "Question", name: q.p, acceptedAnswer: { "@type": "Answer", text: q.r } })),
     },
   ];
 }
