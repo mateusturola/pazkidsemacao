@@ -26,7 +26,7 @@ export function PagamentoDemo({
   const confirmar = () => start(() => pagar());
 
   return (
-    <div className="mt-6 overflow-hidden rounded-3xl bg-white shadow-[0_1px_0_var(--color-linha)]">
+    <div className="mt-6 overflow-clip rounded-3xl bg-white shadow-[0_1px_0_var(--color-linha)]">
       <div className="grid grid-cols-2 border-b border-linha">
         {(["pix", "cartao"] as const).map((k) => (
           <button

@@ -31,7 +31,7 @@ export async function Instagram() {
         <ul className="mt-10 grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-4">
           {itens.map((i, n) => (
             <li key={i.chave} data-revelar style={{ "--atraso": `${(n % 4) * 70}ms` } as React.CSSProperties}>
-              <a href={i.href} target="_blank" rel="noopener" className="group relative block aspect-square overflow-hidden rounded-xl bg-creme">
+              <a href={i.href} target="_blank" rel="noopener" className="group relative block aspect-square overflow-clip rounded-xl bg-creme">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={i.img} alt={i.alt} loading="lazy" className="size-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 <span className="absolute inset-0 flex items-end bg-gradient-to-t from-verde-escuro/70 via-transparent to-transparent p-3 text-sm font-bold text-creme opacity-0 transition-opacity group-hover:opacity-100">

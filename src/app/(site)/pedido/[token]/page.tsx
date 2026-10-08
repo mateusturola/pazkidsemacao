@@ -80,7 +80,7 @@ export default async function PedidoPage({ params }: { params: Promise<{ token: 
   return (
     <>
       <Topo variante="campanha" links={[{ href: `/${campanha.slug}`, label: campanha.nome }, { href: "/", label: "Sobre o projeto" }]} />
-      <div className="relative overflow-hidden bg-creme pt-[72px]">
+      <div className="relative overflow-clip bg-creme pt-[72px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/natal/simbolos/forma-vermelha.svg" alt="" className="forma -top-28 -right-36 w-[380px]" />
         {/* eslint-disable-next-line @next/next/no-img-element */}

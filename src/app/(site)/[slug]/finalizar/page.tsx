@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { and, asc, eq, inArray } from "drizzle-orm";
 import { FinalizarForm } from "@/components/site/finalizar-form";
 import { Rodape } from "@/components/site/rodape";
+import { TirarDaSacolinha } from "@/components/site/tirar-da-sacolinha";
 import { Topo } from "@/components/site/topo";
 import { campanhaAberta, campanhaPorSlug, criancasDaCampanha } from "@/lib/campanhas";
 import { idadeTexto, nomePublico } from "@/lib/criancas";
@@ -52,7 +53,7 @@ export default async function FinalizarPage({ params, searchParams }: { params: 
   return (
     <>
     <Topo variante="campanha" links={[{ href: `/${slug}#criancas`, label: "Voltar para as crianças" }]} />
-    <div className="relative overflow-hidden bg-creme pt-[72px]">
+    <div className="relative overflow-clip bg-creme pt-[72px]">
     {/* eslint-disable-next-line @next/next/no-img-element */}
     <img src="/natal/simbolos/forma-amarela.svg" alt="" className="forma -top-28 -right-40 w-[420px]" />
     <div className="relative mx-auto max-w-3xl px-4 pt-12 pb-24 sm:px-6">
@@ -85,15 +86,19 @@ export default async function FinalizarPage({ params, searchParams }: { params: 
               <li key={c.id} className="flex items-center gap-4 p-4">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={imagemPublica(c.id, c.versaoImagem)} alt="" className="size-14 rounded-xl bg-creme object-cover" />
-                <div>
+                <div className="min-w-0">
                   <p className="font-mao text-3xl leading-none text-verde">{nomePublico(c)}</p>
                   <p className="text-sm text-tinta-2">
                     {idadeTexto(c.dataNascimento)} · camiseta {c.tamanhoCamiseta || "—"}, calça {c.tamanhoCalca || "—"}, calçado {c.tamanhoCalcado || "—"}
                   </p>
                 </div>
+                <TirarDaSacolinha slug={slug} id={c.id} ids={escolhidas.map((e) => e.id)} nome={nomePublico(c)} />
               </li>
             ))}
           </ul>
+          <Link href={`/${slug}#criancas`} className="mt-3 inline-block text-sm font-bold text-verde underline decoration-amarelo decoration-2 underline-offset-4">
+            Escolher mais crianças
+          </Link>
           <div className="mt-8 rounded-[24px] bg-white p-6 sm:p-8">
             <FinalizarForm
               slug={slug}

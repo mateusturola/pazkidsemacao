@@ -41,7 +41,7 @@ export default async function Inicio() {
       />
 
       {/* Topo: o amarelo do Paz Kids e uma foto real de ação. */}
-      <section className="relative overflow-hidden bg-amarelo pt-[72px]" style={{ "--cor-pincelada": "#ffffff" } as React.CSSProperties}>
+      <section className="relative overflow-clip bg-amarelo pt-[72px]" style={{ "--cor-pincelada": "#ffffff" } as React.CSSProperties}>
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-8 sm:py-20 lg:grid-cols-[1.05fr_1fr]">
           <div>
             {/* A marca em destaque: o logo do cabeçalho só aparece quando este sai da tela. */}
@@ -85,7 +85,7 @@ export default async function Inicio() {
       </section>
 
       {/* Quem somos. */}
-      <section id="quem-somos" className="relative scroll-mt-16 overflow-hidden bg-creme py-24 sm:py-32">
+      <section id="quem-somos" className="relative scroll-mt-16 overflow-clip bg-creme py-24 sm:py-32">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/natal/simbolos/forma-amarela.svg" alt="" className="forma -right-24 -bottom-28 w-[380px] sm:w-[460px]" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-8 lg:grid-cols-[1.1fr_1fr]">
@@ -197,7 +197,7 @@ export default async function Inicio() {
       </section>
 
       {/* História. */}
-      <section id="nossa-historia" className="relative scroll-mt-16 overflow-hidden bg-verde py-24 text-creme sm:py-32">
+      <section id="nossa-historia" className="relative scroll-mt-16 overflow-clip bg-verde py-24 text-creme sm:py-32">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/natal/simbolos/forma-amarela-2.svg" alt="" className="forma -top-36 -left-32 w-[340px]" />
         <div className="relative mx-auto grid max-w-7xl gap-14 px-4 sm:px-8 lg:grid-cols-2">
@@ -251,7 +251,7 @@ export default async function Inicio() {
 
       {/* Campanha aberta, já na marca dela. */}
       {principal && p && (
-        <section className="tema-natal relative overflow-hidden bg-verde-escuro text-creme">
+        <section className="tema-natal relative overflow-clip bg-verde-escuro text-creme">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/natal/simbolos/forma-amarela-2.svg" alt="" className="forma -right-36 -bottom-40 w-[420px]" />
           <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 sm:px-8 lg:grid-cols-[1fr_1.1fr]">
@@ -265,7 +265,7 @@ export default async function Inicio() {
               </p>
               {p.total > 0 && (
                 <div className="mt-8 max-w-md">
-                  <div className="h-3 overflow-hidden rounded-full bg-creme/15">
+                  <div className="h-3 overflow-clip rounded-full bg-creme/15">
                     <div className="h-full rounded-full bg-amarelo" style={{ width: `${(p.comPadrinho / p.total) * 100}%` }} />
                   </div>
                   <p className="mt-2 text-creme/80">
@@ -328,7 +328,7 @@ export default async function Inicio() {
       </section>
 
       {/* A equipe. */}
-      <section className="relative isolate overflow-hidden">
+      <section className="relative isolate overflow-clip">
         <Image src="/img/acao-equipe.webp" alt="Voluntários do Paz Kids em Ação reunidos na quadra" fill sizes="100vw" className="-z-10 object-cover" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-verde-escuro/85 via-verde-escuro/50 to-transparent" />
         <div className="mx-auto flex min-h-[480px] max-w-7xl items-center px-4 py-24 sm:px-8">
@@ -376,7 +376,7 @@ export default async function Inicio() {
 
 function Foto({ src, legenda, className = "", posicao = "" }: { src: string; legenda: string; className?: string; posicao?: string }) {
   return (
-    <figure className={`group relative overflow-hidden rounded-2xl bg-creme ${className}`} data-revelar>
+    <figure className={`group relative overflow-clip rounded-2xl bg-creme ${className}`} data-revelar>
       <Image src={src} alt={`${legenda}: ação do Paz Kids em Ação em Heliópolis`} fill sizes="(min-width: 768px) 50vw, 100vw" className={`object-cover transition-transform duration-700 group-hover:scale-[1.04] ${posicao}`} />
       <figcaption className="absolute bottom-3 left-3 rounded-lg bg-creme px-3 py-1 font-mao text-lg text-verde">{legenda}</figcaption>
     </figure>

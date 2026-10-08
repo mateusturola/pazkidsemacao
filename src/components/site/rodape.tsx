@@ -8,7 +8,7 @@ const CREDITO_URL = "https://thekingdomdigital.online/?utm_source=pazkidsemacao.
 /** Rodapé em verde escuro: o logo da campanha vai na versão negativa e o da agência na branca. */
 export function Rodape({ variante }: { variante: "institucional" | "campanha" }) {
   return (
-    <footer className="relative overflow-hidden bg-verde-escuro text-creme/80">
+    <footer className="relative overflow-clip bg-verde-escuro text-creme/80">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 pt-16 pb-12 sm:px-8 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           {variante === "campanha" ? (

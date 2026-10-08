@@ -159,7 +159,7 @@ export function Agenda({ agenda }: { agenda: PontoAgenda[] }) {
         ))}
       </div>
       <div className="order-1 lg:sticky lg:top-24 lg:order-2">
-        <div ref={caixa} className="isolate h-80 overflow-hidden rounded-2xl border border-linha bg-creme sm:h-[460px] lg:h-[560px]" role="region" aria-label="Mapa dos encontros da semana" />
+        <div ref={caixa} className="isolate h-80 overflow-clip rounded-2xl border border-linha bg-creme sm:h-[460px] lg:h-[560px]" role="region" aria-label="Mapa dos encontros da semana" />
       </div>
     </div>
   );

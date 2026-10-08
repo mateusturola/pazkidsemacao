@@ -70,6 +70,11 @@ export function GradeCriancas({ slug, criancas, aberta }: { slug: string; crianc
   const [quantas, setQuantas] = useState(1);
   const [aviso, setAviso] = useState<string | null>(null);
   const [conhecendo, setConhecendo] = useState<CriancaCard | null>(null);
+  // A lista das escolhidas, aberta pela barra: o jeito de tirar alguém sem caçar na lista embaralhada.
+  const [verLista, setVerLista] = useState(false);
+  useEffect(() => {
+    if (escolhidas.length === 0) setVerLista(false);
+  }, [escolhidas.length]);
   const janela = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     if (conhecendo) janela.current?.showModal();
@@ -134,7 +139,8 @@ export function GradeCriancas({ slug, criancas, aberta }: { slug: string; crianc
 
   const visiveis = filtradas.slice(0, mostrar);
 
-  const nomes = escolhidas.map((id) => criancas.find((c) => c.id === id)?.nome).filter(Boolean);
+  const naSacolinha = escolhidas.map((id) => criancas.find((c) => c.id === id)).filter((c): c is CriancaCard => !!c);
+  const nomes = naSacolinha.map((c) => c.nome);
 
   return (
     <div>
@@ -352,18 +358,55 @@ export function GradeCriancas({ slug, criancas, aberta }: { slug: string; crianc
 
       {escolhidas.length > 0 && (
         <div className="fixed inset-x-0 bottom-0 z-40 bg-verde text-creme shadow-[0_-8px_30px_rgba(20,52,38,.25)]">
-          <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3.5 sm:px-8">
-            <span className="hidden size-12 shrink-0 place-items-center rounded-xl bg-creme/10 text-amarelo sm:grid">
-              <IconeSacola className="size-7" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="font-titulo text-lg font-semibold">
-                {escolhidas.length} {escolhidas.length === 1 ? "sacolinha escolhida" : "sacolinhas escolhidas"}
-              </p>
-              <p className="truncate text-sm text-creme/75">Para {nomes.join(", ")}</p>
+          {verLista && (
+            <div id="lista-sacolinha" className="mx-auto max-h-[55dvh] max-w-7xl overflow-y-auto border-b border-creme/15 px-4 pt-4 pb-2 sm:px-8">
+              <div className="flex items-center justify-between gap-4">
+                <p className="chamada text-amarelo">Sua sacolinha</p>
+                <button type="button" onClick={() => salvar([])} className="text-sm font-bold text-creme/75 underline underline-offset-4 hover:text-creme">
+                  Limpar tudo
+                </button>
+              </div>
+              <ul className="mt-2 divide-y divide-creme/10">
+                {naSacolinha.map((c) => (
+                  <li key={c.id} className="flex items-center gap-3 py-2.5">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={c.imagem} alt="" className="size-10 shrink-0 rounded-full border-2 border-creme/30 object-cover" />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-mao text-2xl leading-none">{c.nome}</p>
+                      <p className="text-xs text-creme/70">{[c.sexo === "F" ? "Menina" : c.sexo === "M" ? "Menino" : null, c.idadeTexto].filter(Boolean).join(" · ")}</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => alternar(c.id)}
+                      aria-label={`Tirar ${c.nome} da sacolinha`}
+                      className="rounded-lg border border-creme/30 px-3 py-1.5 text-sm font-bold hover:bg-creme/10"
+                    >
+                      Tirar
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <button type="button" onClick={() => salvar([])} className="hidden text-sm text-creme/70 hover:text-creme sm:block">
-              Limpar
+          )}
+          <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3.5 sm:px-8">
+            <button
+              type="button"
+              onClick={() => setVerLista((v) => !v)}
+              aria-expanded={verLista}
+              aria-controls="lista-sacolinha"
+              className="flex min-w-0 flex-1 items-center gap-4 text-left"
+            >
+              <span className="hidden size-12 shrink-0 place-items-center rounded-xl bg-creme/10 text-amarelo sm:grid">
+                <IconeSacola className="size-7" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block font-titulo text-lg font-semibold">
+                  {escolhidas.length} {escolhidas.length === 1 ? "sacolinha escolhida" : "sacolinhas escolhidas"}
+                </span>
+                <span className="block truncate text-sm text-creme/75">
+                  Para {nomes.join(", ")} · <span className="underline underline-offset-2">{verLista ? "fechar" : "ver ou tirar"}</span>
+                </span>
+              </span>
             </button>
             <Link href={`/${slug}/finalizar?c=${escolhidas.join(",")}`} className="btn btn-acao shrink-0">
               Continuar <IconeSeta className="size-5" />

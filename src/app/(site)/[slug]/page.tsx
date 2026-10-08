@@ -88,7 +88,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
       />
 
       {/* Topo da campanha: fundo creme, formas saindo das bordas, uma palavra com pincelada. */}
-      <section className="relative overflow-hidden bg-creme pt-[72px]">
+      <section className="relative overflow-clip bg-creme pt-[72px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/natal/simbolos/forma-vermelha.svg" alt="" className="forma -top-24 -right-32 w-[360px] sm:w-[520px]" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -119,7 +119,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
                   </p>
                   <p className="font-titulo text-xl font-bold text-vermelho">{pct}%</p>
                 </div>
-                <div className="mt-3 h-3.5 overflow-hidden rounded-full bg-creme">
+                <div className="mt-3 h-3.5 overflow-clip rounded-full bg-creme">
                   <div className="h-full rounded-full bg-verde" style={{ width: `${pct}%` }} />
                 </div>
                 {aberta && lista.length > 0 && (
@@ -203,7 +203,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
 
       {/* A sacolinha. */}
       {itens.length > 0 && aberta && (
-        <section className="relative overflow-hidden bg-verde text-creme">
+        <section className="relative overflow-clip bg-verde text-creme">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/natal/simbolos/forma-amarela.svg" alt="" className="forma -top-48 -right-40 w-[440px]" />
           <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 sm:px-8 sm:py-24 lg:grid-cols-2">
@@ -264,7 +264,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
 
       {/* As crianças. Encerrada a campanha, a lista sai: o agradecimento fica no topo. */}
       {aberta && (
-      <section id="criancas" className="relative scroll-mt-20 overflow-hidden bg-creme py-20 pb-36 sm:py-28 sm:pb-40">
+      <section id="criancas" className="relative scroll-mt-20 overflow-clip bg-creme py-20 pb-36 sm:py-28 sm:pb-40">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-8">
           <div className="max-w-2xl">
             <p className="chamada text-vermelho">Esperando um padrinho</p>
@@ -323,7 +323,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
       )}
 
       {/* Quem faz acontecer. */}
-      <section className="relative isolate overflow-hidden">
+      <section className="relative isolate overflow-clip">
         <Image src="/img/ia-voluntarios-entrega.webp" alt="Voluntários de camiseta verde entregando sacolinhas kraft com laço vermelho" fill sizes="100vw" className="-z-10 object-cover" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-verde-escuro/90 via-verde-escuro/60 to-transparent" />
         <div className="mx-auto flex min-h-[460px] max-w-7xl items-center px-4 py-20 sm:px-8">
