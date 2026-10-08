@@ -55,7 +55,7 @@ ${SOBRE.valores.map((v) => `- ${v}`).join("\n")}
 ${agenda.map((a) => `- ${a.dia}, ${a.hora}: ${a.nome} · ${a.endereco}${a.complemento ? ` · ${a.complemento}` : ""}`).join("\n")}
 
 ## Um legado de amor (Paz Church, 50 anos)
-${LEGADO.paragrafos.join("\n\n")}
+${LEGADO.capitulos.map((c) => c.texto).join("\n\n")}
 
 ## História do projeto
 ${SOBRE.historia.map((h) => `- ${h.quando}: ${h.texto}`).join("\n")}

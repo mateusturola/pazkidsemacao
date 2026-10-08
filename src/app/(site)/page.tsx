@@ -148,39 +148,41 @@ export default async function Inicio() {
         </section>
       )}
 
-      {/* O legado do Pastor Lucas: a raiz do projeto, antes da linha do tempo dele. */}
+      {/* O legado do Pastor Lucas: a raiz do projeto, contada em capítulos com as fotos da família. */}
       <section id="legado" className="scroll-mt-16 bg-papel py-24 sm:py-32">
-        <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-8 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
-          <div className="lg:sticky lg:top-28 lg:self-start" data-revelar>
-            <p className="chamada text-vermelho">Um legado de amor</p>
-            <p className="mt-6 font-titulo text-[clamp(6rem,14vw,10rem)] leading-[0.85] font-bold text-verde">50</p>
-            <p className="mt-3 font-titulo text-2xl font-semibold text-verde">anos de Paz Church</p>
-            <p className="mt-1 text-tinta-2">1976 · 2026</p>
-            <figure className="mt-10">
-              <Image
-                src="/img/legado/familia-huber.webp"
-                alt="O Pastor Lucas Huber e a Pastora Christine com os quatro filhos, numa foto antiga de família"
-                width={1080}
-                height={783}
-                className="w-full rounded-[24px] object-cover sepia-[.15]"
-              />
-              <figcaption className="mt-3 text-sm text-tinta-2">O Pastor Lucas e a Pastora Christine com os filhos.</figcaption>
-            </figure>
-          </div>
-          <div data-revelar style={atraso(120)}>
-            <h2 className="text-4xl leading-tight font-bold text-verde sm:text-5xl">{LEGADO.titulo}</h2>
-            <div className="mt-8 space-y-5 text-lg leading-relaxed text-tinta sm:text-xl">
-              {LEGADO.paragrafos.map((t) => (
-                <p key={t}>{t}</p>
-              ))}
+        <div className="mx-auto max-w-7xl px-4 sm:px-8">
+          <div className="flex flex-wrap items-end gap-x-14 gap-y-6" data-revelar>
+            <div>
+              <p className="font-titulo text-[clamp(6rem,14vw,10rem)] leading-[0.85] font-bold text-verde">50</p>
+              <p className="mt-3 font-titulo text-2xl font-semibold text-verde">anos de Paz Church</p>
+              <p className="mt-1 text-tinta-2">1976 · 2026</p>
             </div>
-            <div className="mt-10 border-l-4 border-amarelo pl-6 font-titulo text-2xl leading-snug font-semibold text-verde">
+            <div className="max-w-2xl pb-2">
+              <p className="chamada text-vermelho">Um legado de amor</p>
+              <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">{LEGADO.titulo}</h2>
+            </div>
+          </div>
+
+          <div className="mt-16 space-y-16 sm:mt-20 sm:space-y-24">
+            {LEGADO.capitulos.map((c, i) => (
+              <div key={c.foto.src} className="grid items-center gap-8 md:grid-cols-2 md:gap-14" data-revelar>
+                <p className={`text-lg leading-relaxed text-tinta sm:text-xl ${i % 2 ? "md:order-2" : ""}`}>{c.texto}</p>
+                <figure>
+                  <Image src={c.foto.src} alt={c.foto.alt} width={c.foto.w} height={c.foto.h} className="w-full rounded-[24px] object-cover" />
+                  <figcaption className="mt-3 text-sm text-tinta-2">{c.foto.legenda}</figcaption>
+                </figure>
+              </div>
+            ))}
+          </div>
+
+          <div className="mx-auto mt-20 max-w-2xl text-center" data-revelar>
+            <div className="font-titulo text-2xl leading-snug font-semibold text-verde sm:text-3xl">
               {LEGADO.fecho.map((t) => (
                 <p key={t}>{t}</p>
               ))}
             </div>
-            <p className="mt-10 font-mao text-3xl text-vermelho">E essa história continua. Agora, você também pode fazer parte dela.</p>
-            <div className="mt-6 flex flex-wrap gap-3">
+            <p className="mt-8 font-mao text-3xl text-vermelho">E essa história continua. Agora, você também pode fazer parte dela.</p>
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
               {principal && (
                 <Link href={`/${principal.slug}`} className="btn btn-acao">
                   Apadrinhe uma criança

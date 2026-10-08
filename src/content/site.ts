@@ -64,11 +64,39 @@ export const SOBRE = {
  */
 export const LEGADO = {
   titulo: "Tudo começou às margens dos rios",
-  paragrafos: [
-    "A história começa nos Estados Unidos, quando Melvin e Catherine Huber receberam o chamado de Deus para servir no Brasil. Foram mais de 25 anos plantando igrejas por aqui, e foi nessa família que cresceu Lucas Huber.",
-    "Em dezembro de 1976, o missionário Lucas Huber chegou a Santarém, no Pará, com a esposa, Christine, e as duas filhas pequenas. Ali nasceu a Paz Church.",
-    "O sonho dele era levar o Evangelho a cada vila da Amazônia. Primeiro de barco, pelos rios, até as comunidades ribeirinhas. Depois, num pequeno avião que aprendeu a pilotar para chegar mais longe.",
-    "O Pastor Lucas partiu para a eternidade em 1994. O chamado continuou. Em 2026, a Paz Church completa 50 anos, e o Paz Kids em Ação é um dos frutos dessa história: o mesmo amor pelas crianças, agora nas ruas e praças de Heliópolis.",
+  // Cada capítulo com a sua foto. As fotos são da família Huber, dos arquivos da Paz Church.
+  capitulos: [
+    {
+      texto:
+        "A história começa nos Estados Unidos, quando Melvin e Catherine Huber receberam o chamado de Deus para servir no Brasil. Foram mais de 25 anos plantando igrejas por aqui, e foi nessa família que cresceu Lucas Huber.",
+      foto: { src: "/img/legado/melvin-catherine.webp", w: 840, h: 442, alt: "Melvin e Catherine Huber sentados, com os filhos adultos em pé atrás deles", legenda: "Melvin e Catherine Huber com os filhos." },
+    },
+    {
+      texto: "Em dezembro de 1976, o missionário Lucas Huber chegou a Santarém, no Pará, com a esposa, Christine, e as duas filhas pequenas. Ali nasceu a Paz Church.",
+      foto: {
+        src: "/img/legado/familia-rio.webp",
+        w: 806,
+        h: 530,
+        alt: "Lucas, Christine e os três filhos numa moto à beira do rio, com um barco da missão ao fundo",
+        legenda: "Lucas, Christine e os filhos à beira do rio, com um barco da missão ao fundo.",
+      },
+    },
+    {
+      texto:
+        "O sonho dele era levar o Evangelho a cada vila da Amazônia. Primeiro de barco, pelos rios, até as comunidades ribeirinhas. Depois, num pequeno avião que aprendeu a pilotar para chegar mais longe.",
+      foto: { src: "/img/legado/lucas-aviao.webp", w: 836, h: 444, alt: "O Pastor Lucas Huber sorrindo, de boné, ao lado de um pequeno avião", legenda: "O Pastor Lucas ao lado do avião." },
+    },
+    {
+      texto:
+        "Em agosto de 1994, voltando de uma viagem missionária, o Pastor Lucas partiu para a eternidade num acidente com o avião. O chamado continuou. Em 2026, a Paz Church completa 50 anos, e o Paz Kids em Ação é um dos frutos dessa história: o mesmo amor pelas crianças, agora nas ruas e praças de Heliópolis.",
+      foto: {
+        src: "/img/legado/familia-huber.webp",
+        w: 1080,
+        h: 783,
+        alt: "O Pastor Lucas Huber e a Pastora Christine com os quatro filhos, numa foto antiga de família",
+        legenda: "O Pastor Lucas e a Pastora Christine com os filhos.",
+      },
+    },
   ],
   fecho: ["Hoje, cada voluntário carrega um pedacinho desse legado.", "Em cada comunidade.", "Em cada abraço.", "Em cada presente entregue."],
 };
