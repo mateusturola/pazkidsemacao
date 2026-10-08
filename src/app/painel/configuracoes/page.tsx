@@ -8,7 +8,8 @@ import { formatBRL } from "@/lib/money";
 import { instagramConfigurado, postsInstagram } from "@/lib/instagram";
 import { modoPagamento } from "@/lib/pagamento";
 import { emailConfigurado } from "@/lib/email";
-import { atualizarInstagramAgora, configurarWebhook } from "./actions";
+import { contarDemonstracao } from "@/lib/demonstracao";
+import { apagarDadosDemonstracao, atualizarInstagramAgora, configurarWebhook } from "./actions";
 
 export const metadata: Metadata = { title: "Configurações" };
 
@@ -26,10 +27,34 @@ async function statusAsaas() {
 export default async function ConfiguracoesPage() {
   await requireAdmin();
   const s = await statusAsaas();
-  const [igOk, posts] = await Promise.all([instagramConfigurado(), postsInstagram()]);
+  const [igOk, posts, demo] = await Promise.all([instagramConfigurado(), postsInstagram(), contarDemonstracao()]);
   return (
     <div className="max-w-3xl space-y-6">
       <h1 className="text-3xl font-semibold">Configurações</h1>
+
+      <section id="demonstracao" className="cartao scroll-mt-24 p-5">
+        <h2 className="text-lg font-semibold">Dados de demonstração</h2>
+        {demo.criancas ? (
+          <>
+            <p className="mt-1 text-sm text-tinta-2">
+              Há <strong>{demo.criancas} criança(s) de demonstração</strong>, com nomes fictícios, aparecendo no site
+              {demo.pedidos ? <>, e {demo.pedidos} pedido(s) de teste</> : null}. Apague antes de divulgar a campanha. Saem também os pedidos, e-mails e
+              padrinhos de teste ligados a elas. As crianças reais não são afetadas.
+            </p>
+            <ActionForm action={apagarDadosDemonstracao} className="mt-3 space-y-2">
+              <label className="block text-sm">
+                Para confirmar, digite <strong>APAGAR</strong>
+                <input name="confirmar" autoComplete="off" className="campo mt-1 max-w-xs" />
+              </label>
+              <SubmitButton className="btn btn-sm bg-vermelho text-white hover:bg-vermelho/90" pendingText="Apagando…">
+                Apagar dados de demonstração
+              </SubmitButton>
+            </ActionForm>
+          </>
+        ) : (
+          <p className="mt-1 text-sm text-tinta-2">Nenhum dado de demonstração. Tudo que está no painel é real.</p>
+        )}
+      </section>
 
       <section className="cartao p-5">
         <h2 className="text-lg font-semibold">Asaas</h2>

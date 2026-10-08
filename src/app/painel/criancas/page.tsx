@@ -5,6 +5,7 @@ import { FotoCrianca } from "@/components/painel/foto-crianca";
 import { usuarioAtual } from "@/lib/auth";
 import { idadeTexto, SEXO_LABEL } from "@/lib/criancas";
 import { getDb, schema } from "@/lib/db";
+import { contarDemonstracao } from "@/lib/demonstracao";
 
 export const metadata: Metadata = { title: "Crianças" };
 
@@ -12,7 +13,7 @@ const { criancas } = schema;
 
 export default async function CriancasPage({ searchParams }: { searchParams: Promise<{ q?: string; inativas?: string }> }) {
   const { q = "", inativas } = await searchParams;
-  const usuario = await usuarioAtual();
+  const [usuario, demo] = await Promise.all([usuarioAtual(), contarDemonstracao()]);
   const busca = q.trim();
   const lista = await getDb()
     .select()
@@ -45,6 +46,19 @@ export default async function CriancasPage({ searchParams }: { searchParams: Pro
           </Link>
         </div>
       </div>
+
+      {demo.criancas > 0 && (
+        <p className="mt-6 rounded-xl border border-amarelo bg-amarelo/15 px-4 py-3 text-sm">
+          {demo.criancas} criança(s) desta lista são de demonstração, com nomes fictícios.{" "}
+          {usuario?.papel === "admin" ? (
+            <Link href="/configuracoes#demonstracao" className="font-semibold underline underline-offset-2">
+              Apagar dados de demonstração
+            </Link>
+          ) : (
+            "Um administrador pode apagar em Configurações."
+          )}
+        </p>
+      )}
 
       <form className="mt-6 flex flex-wrap gap-2">
         <input name="q" defaultValue={busca} placeholder="Buscar por nome ou responsável" className="campo max-w-sm" />
