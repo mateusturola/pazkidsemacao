@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { IconeMaos, IconePix, IconeSacola, IconeSeta } from "@/components/site/icones";
 import { AgendaBrasil } from "@/components/site/agenda";
+import { Contador } from "@/components/site/contador";
 import { Equipe } from "@/components/site/equipe";
 import { Instagram } from "@/components/site/instagram";
 import { QuemFazParte } from "@/components/site/quem-faz-parte";
@@ -70,7 +71,16 @@ export default async function Inicio() {
           <h1 className="mt-2 max-w-4xl text-[clamp(2.7rem,7vw,5.6rem)] leading-[0.95] font-bold text-white">
             Alcançando além das <span className="pincelada">quatro paredes</span>
           </h1>
-          <p className="mt-6 max-w-xl text-lg text-white/85 sm:text-xl">
+          {alcance.criancasPorSemana && (
+            // Continua o título ("alcançando… +1.628 crianças"). O número vem do painel e sobe de zero quando a página abre.
+            <p className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span className="font-titulo text-[clamp(2.6rem,6vw,4.2rem)] leading-none font-bold text-amarelo">
+                +<Contador valor={alcance.criancasPorSemana} />
+              </span>
+              <span className="text-lg leading-tight text-white sm:text-xl">crianças toda semana</span>
+            </p>
+          )}
+          <p className="mt-5 max-w-xl text-lg text-white/85 sm:text-xl">
             O Paz Kids em Ação leva o amor de Cristo, educação e cuidado para as crianças lá onde elas estão: em Heliópolis, em São Paulo, e em
             comunidades {nEstados > 1 ? `de mais ${nEstados - 1} estados do Brasil` : "da Grande São Paulo"}.
           </p>
@@ -162,12 +172,11 @@ export default async function Inicio() {
                     {nEstados > 1 ? `Em ${nEstados} estados,` : "Toda semana,"} <span className="pincelada">{nEstados > 1 ? "toda semana" : "nas ruas"}</span>
                   </h2>
                   {alcance.criancasPorSemana && (
-                    <p className="mt-6 flex items-baseline gap-3">
-                      <span className="font-titulo text-6xl leading-none font-bold text-verde tabular-nums sm:text-7xl">{numero(alcance.criancasPorSemana)}</span>
-                      <span className="max-w-[12rem] text-lg leading-tight text-tinta-2">crianças alcançadas por semana em todo o Brasil</span>
+                    <p className="mt-5 max-w-lg text-lg text-tinta-2">
+                      São <strong className="text-verde">{numero(alcance.criancasPorSemana)} crianças</strong> alcançadas toda semana em todo o Brasil.
                     </p>
                   )}
-                  <p className="mt-5 max-w-lg text-tinta-2">Escolha um estado no mapa para ver onde e quando são os encontros.</p>
+                  <p className="mt-2 max-w-lg text-tinta-2">Escolha um estado no mapa para ver onde e quando são os encontros.</p>
                 </div>
               }
             />
