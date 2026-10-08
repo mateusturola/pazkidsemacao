@@ -38,12 +38,13 @@ export function chaveCarrinho(slug: string) {
   return `pkea:carrinho:${slug}`;
 }
 
-// Etiqueta kraft com o canto cortado, como a etiqueta da sacolinha no manual da marca.
-const ETIQUETA = "polygon(16% 0, 84% 0, 100% 9%, 100% 100%, 0 100%, 0 9%)";
+// A etiqueta da sacolinha do manual da marca, deitada: o canto cortado e o furo ficam à esquerda.
+// Deitada, cabem várias por tela no celular; a história completa abre no "Conhecer".
+const ETIQUETA = "polygon(0 18%, 22px 0, 100% 0, 100% 100%, 22px 100%, 0 82%)";
+const KRAFT = "radial-gradient(rgba(120,85,40,.07) 1px, transparent 1.4px) 0 0/7px 7px, var(--color-kraft)";
 
-// Com centenas de crianças, a lista vem de 12 em 12 e, no celular, em duas etiquetas compactas por
-// linha (uma por linha viraria rolagem sem fim).
-const POR_VEZ = 12;
+// Com centenas de crianças, a lista vem aos poucos: 18 fecha as linhas de 2 e de 3 colunas.
+const POR_VEZ = 18;
 
 const sem = (t: string) =>
   t
@@ -204,60 +205,43 @@ export function GradeCriancas({ slug, criancas, aberta }: { slug: string; crianc
       {filtradas.length === 0 ? (
         <p className="mt-10 text-lg text-tinta-2">Nenhuma criança com esse filtro agora.</p>
       ) : (
-        <ul className="mt-8 grid grid-cols-2 gap-x-3 gap-y-6 sm:mt-10 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 xl:grid-cols-4">
+        <ul className="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2 lg:grid-cols-3">
           {visiveis.map((c) => {
             const escolhida = escolhidas.includes(c.id);
             return (
-              <li key={c.id} className={`relative transition-transform duration-300 ${escolhida ? "-rotate-1" : "hover:-translate-y-1"}`}>
+              <li key={c.id} className="relative flex">
                 <div
-                  className="relative flex h-full flex-col items-center px-3 pt-9 pb-4 text-center sm:px-6 sm:pt-12 sm:pb-6"
-                  style={{
-                    clipPath: ETIQUETA,
-                    background: "radial-gradient(rgba(120,85,40,.07) 1px, transparent 1.4px) 0 0/7px 7px, var(--color-kraft)",
-                  }}
+                  className={`relative flex w-full items-center gap-3 py-3 pr-3 pl-9 transition-[filter] sm:gap-4 ${escolhida ? "brightness-[.93]" : ""}`}
+                  style={{ clipPath: ETIQUETA, background: KRAFT }}
                 >
-                  <span className="absolute top-3 left-1/2 size-4 -translate-x-1/2 sm:top-4 sm:size-5 rounded-full bg-papel shadow-[inset_0_1px_2px_rgba(0,0,0,.25)]" />
+                  <span className="absolute top-1/2 left-3 size-3 -translate-y-1/2 rounded-full bg-papel shadow-[inset_0_1px_2px_rgba(0,0,0,.25)]" />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={c.imagem} alt="" loading="lazy" className="size-16 rounded-full border-4 border-papel object-cover sm:size-28" />
-                  <p className="chamada mt-3 text-[10px] text-verde/70 sm:mt-5 sm:text-[12px]">Para:</p>
-                  <h3 className="font-mao text-[1.9rem] leading-none text-verde sm:text-[2.6rem]">{c.nome}</h3>
-                  <p className="mt-1 text-xs font-bold text-verde/80 sm:text-base">{[c.sexo === "F" ? "Menina" : c.sexo === "M" ? "Menino" : null, c.idadeTexto].filter(Boolean).join(" · ")}</p>
-                  {c.sonho && <p className="mt-2 text-xs leading-snug text-verde sm:text-[15px]">{c.sonho.charAt(0).toUpperCase() + c.sonho.slice(1)}</p>}
-                  <p className="mt-2 text-xs font-bold text-tinta sm:hidden">
-                    {c.camiseta || "—"} · {c.calca || "—"} · {c.calcado || "—"}
-                    <span className="block text-[10px] font-extrabold tracking-wider text-tinta-2 uppercase">camiseta · calça · calçado</span>
-                  </p>
-                  <dl className="mt-5 hidden w-full grid-cols-3 gap-2 sm:grid">
-                    {[
-                      ["Camiseta", c.camiseta],
-                      ["Calça", c.calca],
-                      ["Calçado", c.calcado],
-                    ].map(([k, v]) => (
-                      <div key={k} className="rounded-xl bg-papel/70 px-1 py-2">
-                        <dt className="text-[11px] font-extrabold tracking-wider text-tinta-2 uppercase">{k}</dt>
-                        <dd className="font-titulo text-xl font-bold text-verde">{v || "—"}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                  <p className="mt-4 hidden w-full text-left text-[15px] leading-relaxed text-tinta sm:line-clamp-3">{c.historia}</p>
-                  <button
-                    type="button"
-                    onClick={() => setConhecendo(c)}
-                    className="mt-2 text-xs font-extrabold text-verde underline decoration-vermelho decoration-2 underline-offset-4 sm:mt-3 sm:text-sm"
-                  >
-                    Conhecer {c.sexo === "M" ? "o" : c.sexo === "F" ? "a" : ""} {c.nome}
-                  </button>
-                  <div className="flex-1" />
+                  <img src={c.imagem} alt="" loading="lazy" className="size-14 shrink-0 rounded-full border-[3px] border-papel object-cover sm:size-16" />
+                  <div className="min-w-0 flex-1">
+                    <h3 className="truncate font-mao text-[1.75rem] leading-none text-verde">{c.nome}</h3>
+                    <p className="text-xs font-bold text-verde/80 sm:text-sm">
+                      {[c.sexo === "F" ? "Menina" : c.sexo === "M" ? "Menino" : null, c.idadeTexto].filter(Boolean).join(" · ")}
+                    </p>
+                    {c.sonho && <p className="truncate text-xs text-tinta sm:text-[13px]">{c.sonho.charAt(0).toUpperCase() + c.sonho.slice(1)}</p>}
+                    <button
+                      type="button"
+                      onClick={() => setConhecendo(c)}
+                      className="mt-0.5 text-xs font-extrabold text-verde underline decoration-vermelho decoration-2 underline-offset-2"
+                    >
+                      Conhecer
+                    </button>
+                  </div>
                   {aberta && (
                     <button
                       type="button"
                       onClick={() => alternar(c.id)}
                       aria-pressed={escolhida}
-                      className={`btn mt-4 h-10 w-full px-2 text-sm sm:mt-6 sm:h-12 sm:px-6 sm:text-[17px] ${escolhida ? "bg-verde text-creme hover:bg-verde-2" : "btn-acao"}`}
+                      aria-label={escolhida ? `Tirar ${c.nome} da sua lista` : `Apadrinhar ${c.nome}`}
+                      className={`btn h-10 shrink-0 px-3 text-sm ${escolhida ? "bg-verde text-creme hover:bg-verde-2" : "btn-acao"}`}
                     >
                       {escolhida ? (
                         <>
-                          <IconeCheck className="size-4 sm:size-5" /> Escolhida
+                          <IconeCheck className="size-4" /> Escolhida
                         </>
                       ) : (
                         "Apadrinhar"
@@ -268,7 +252,7 @@ export function GradeCriancas({ slug, criancas, aberta }: { slug: string; crianc
                 {/* O laço vermelho marca quem já está na sacolinha do doador. */}
                 {escolhida && (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src="/natal/simbolos/coracao.svg" alt="" className="absolute -top-3 -right-2 size-12 rotate-12 drop-shadow-sm" />
+                  <img src="/natal/simbolos/coracao.svg" alt="" className="absolute -top-2 -right-1 size-8 rotate-12 drop-shadow-sm" />
                 )}
               </li>
             );
