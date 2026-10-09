@@ -11,7 +11,7 @@ const ENTIDADE: Record<string, string> = {
   campanha: "Campanha",
   participacao: "Apadrinhamento",
   pedido: "Pedido",
-  ponto_coleta: "Ponto de coleta",
+  ponto_coleta: "Ponto de entrega",
   usuario: "Usuário",
 };
 const LINK: Record<string, (id: string) => string> = {

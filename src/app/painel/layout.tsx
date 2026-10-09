@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { emailConfirmado, usuarioAtual } from "@/lib/auth";
 import { liberarExpiradas } from "@/lib/reservas";
 import { PainelNav } from "./nav";
@@ -39,27 +38,9 @@ export default async function PainelLayout({ children }: { children: React.React
   await liberarExpiradas();
 
   return (
-    <div className="min-h-dvh bg-[#f7f5f1] print:bg-white">
-      <header className="sticky top-0 z-30 border-b border-linha bg-white/95 backdrop-blur print:hidden">
-        <div className="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4 sm:px-6">
-          <Link href="/" className="flex shrink-0 items-center gap-2">
-            <Image src="/brand/pazkids-em-acao-horizontal-400.webp" alt="" width={400} height={163} className="h-9 w-auto" />
-            <span className="hidden font-titulo font-semibold lg:inline">Painel</span>
-          </Link>
-          <PainelNav admin={usuario.papel === "admin"} />
-          <div className="ml-auto flex shrink-0 items-center gap-3">
-            <span className="hidden text-sm text-tinta-2 md:inline" title={usuario.papel === "admin" ? "Administrador" : "Voluntário"}>
-              {usuario.nome || usuario.email}
-            </span>
-            {/* Encerra a sessão do Cloudflare Access, que é quem guarda o login. */}
-            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-            <a href="/cdn-cgi/access/logout" className="text-sm text-tinta-2 hover:text-tinta">
-              Sair
-            </a>
-          </div>
-        </div>
-      </header>
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">{children}</main>
+    <div className="min-h-dvh bg-[#f7f5f1] lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] print:block print:bg-white">
+      <PainelNav admin={usuario.papel === "admin"} nome={usuario.nome || usuario.email} />
+      <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-10">{children}</main>
     </div>
   );
 }

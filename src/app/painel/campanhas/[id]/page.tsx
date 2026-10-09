@@ -59,7 +59,7 @@ export default async function CampanhaPage({ params, searchParams }: { params: P
   else if (!pagamentoOnlineDisponivel()) avisos.push("O Asaas não está configurado: o pagamento online fica escondido até a chave ser cadastrada.");
   else if (modoPagamento() === "demo") avisos.push("Pagamento online em modo demonstração: o fluxo funciona inteiro, mas ninguém é cobrado.");
   if (!c.prazoEntrega) avisos.push("Sem data limite de entrega: o site não oferece montar e entregar no balcão.");
-  if (!Number(pontosAtivos?.n)) avisos.push("Nenhum ponto de coleta ativo: cadastre os balcões em Pontos de coleta.");
+  if (!Number(pontosAtivos?.n)) avisos.push("Nenhum ponto de entrega ativo: cadastre os balcões em Pontos de entrega.");
   if (resumo.total === 0) avisos.push("Nenhuma criança na campanha ainda. Adicione abaixo.");
 
   const siteUrl = env("SITE_URL") || "https://pazkidsemacao.com";

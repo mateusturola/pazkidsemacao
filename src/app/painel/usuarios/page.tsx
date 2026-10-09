@@ -19,7 +19,7 @@ export default async function UsuariosPage() {
       <h1 className="text-3xl font-semibold">Usuários do painel</h1>
       <p className="mt-1 text-tinta-2">
         Para liberar alguém, cadastre o e-mail aqui. A pessoa entra em painel.pazkidsemacao.com e recebe um código nesse e-mail.
-        Voluntário cuida de crianças, apadrinhamentos e entregas; admin também cuida de campanhas, pontos de coleta, importação e usuários.
+        Voluntário cuida de crianças, apadrinhamentos e entregas; admin também cuida de campanhas, pontos de entrega, importação e usuários.
       </p>
 
       <div className="cartao mt-6 overflow-x-auto">

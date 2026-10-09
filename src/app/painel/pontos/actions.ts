@@ -20,7 +20,7 @@ function revalidar() {
 export async function criarPonto(_: string | null, form: FormData) {
   const u = await requireAdmin();
   const d = dados(form);
-  if (!d.nome) return "Informe o nome do ponto de coleta.";
+  if (!d.nome) return "Informe o nome do ponto de entrega.";
   const [novo] = await getDb().insert(schema.pontosColeta).values(d).returning({ id: schema.pontosColeta.id });
   await auditar(u.email, "criou", "ponto_coleta", novo.id, d);
   revalidar();
@@ -30,7 +30,7 @@ export async function criarPonto(_: string | null, form: FormData) {
 export async function salvarPonto(id: number, _: string | null, form: FormData) {
   const u = await requireAdmin();
   const d = dados(form);
-  if (!d.nome) return "Informe o nome do ponto de coleta.";
+  if (!d.nome) return "Informe o nome do ponto de entrega.";
   await getDb()
     .update(schema.pontosColeta)
     .set({ ...d, ativo: form.get("ativo") === "1" })

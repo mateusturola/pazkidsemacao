@@ -140,7 +140,7 @@ export default async function PedidoPage({ params }: { params: Promise<{ id: str
               </>
             ) : (
               <>
-                <Item k="Ponto de coleta" v={ponto?.nome} />
+                <Item k="Ponto de entrega" v={ponto?.nome} />
                 <Item k="Prazo" v={p.prazoEntrega ? formatIsoDate(p.prazoEntrega) : null} />
               </>
             )}

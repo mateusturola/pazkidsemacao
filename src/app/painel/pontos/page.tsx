@@ -7,7 +7,7 @@ import { usuarioAtual } from "@/lib/auth";
 import { getDb, schema } from "@/lib/db";
 import { criarPonto, salvarPonto } from "./actions";
 
-export const metadata: Metadata = { title: "Pontos de coleta" };
+export const metadata: Metadata = { title: "Pontos de entrega" };
 
 function Campos({ p }: { p?: PontoColeta }) {
   return (
@@ -34,7 +34,7 @@ export default async function PontosPage() {
   const pontos = await getDb().select().from(schema.pontosColeta).orderBy(desc(schema.pontosColeta.ativo), asc(schema.pontosColeta.nome));
   return (
     <div className="max-w-4xl">
-      <h1 className="text-3xl font-semibold">Pontos de coleta</h1>
+      <h1 className="text-3xl font-semibold">Pontos de entrega</h1>
       <p className="mt-1 text-tinta-2">Os balcões onde o padrinho entrega a sacolinha. Os ativos aparecem no site para ele escolher.</p>
 
       <div className="mt-6 space-y-4">
@@ -73,7 +73,7 @@ export default async function PontosPage() {
 
       {admin && (
         <section className="cartao mt-8 p-5">
-          <h2 className="text-lg font-semibold">Novo ponto de coleta</h2>
+          <h2 className="text-lg font-semibold">Novo ponto de entrega</h2>
           <ActionForm action={criarPonto} resetOnSuccess className="mt-4 grid gap-3">
             <Campos />
             <div>
