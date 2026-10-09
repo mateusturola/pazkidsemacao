@@ -52,7 +52,8 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
 - Pincelada amarela (`.pincelada`) sublinha uma palavra, nunca um parágrafo. Formas orgânicas sempre
   grandes e cortadas pela borda. Ícones de traço arredondado em verde; a estrela é o único preenchido.
 - Logo da campanha: o original de `public/natal/logo`, nunca redigitado nem recolorido; colorido só em
-  fundo claro, negativo no verde. O site institucional usa o logo do Paz Kids em Ação (balões).
+  fundo claro, negativo no verde. O site institucional usa o logo do Paz Kids em Ação (balões): o horizontal
+  (`public/brand/pazkids-em-acao-horizontal-*`, do time de design) no menu, rodapé e painel; o vertical só no story.
 - Sem glow, sem degradê em texto, sem dado inventado no site. Imagem de IA só como clima da campanha;
   foto de criança atendida é real e com autorização.
 - Data se escolhe no `DatePicker`, nunca em `<input type="date">`.

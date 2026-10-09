@@ -14,7 +14,7 @@ export function Rodape({ variante }: { variante: "institucional" | "campanha" })
           {variante === "campanha" ? (
             <Image src="/natal/logo/paz-kids-vertical-negativa-colorida-sem-fundo.svg" alt="Paz Kids em Ação · Campanha de Natal" width={150} height={186} className="h-32 w-auto" />
           ) : (
-            <Image src="/brand/pazkids-em-acao-200.webp" alt="Paz Kids em Ação" width={200} height={238} className="h-28 w-auto" />
+            <Image src="/brand/pazkids-em-acao-horizontal-400.webp" alt="Paz Kids em Ação" width={400} height={163} className="h-20 w-auto" />
           )}
           <p className="mt-5 max-w-sm">{SITE.descricao}</p>
           <p className="mt-3 font-mao text-2xl text-amarelo">Juntos fazemos a diferença.</p>

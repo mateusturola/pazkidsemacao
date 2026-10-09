@@ -32,7 +32,7 @@ const organizacao = {
   name: SITE.nome,
   alternateName: ["Paz Kids em Acao", "Paz Kids em Ação Heliópolis"],
   url: SITE.url,
-  logo: `${SITE.url}/brand/pazkids-em-acao-480.webp`,
+  logo: `${SITE.url}/brand/pazkids-em-acao-horizontal-800.webp`,
   image: `${SITE.url}/og-home.jpg`,
   description: SITE.descricao,
   slogan: SITE.lema,

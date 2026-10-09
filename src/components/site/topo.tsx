@@ -70,7 +70,7 @@ export function Topo({
           {variante === "campanha" ? (
             <Image src="/natal/logo/paz-kids-horizontal-colorida.svg" alt="Paz Kids em Ação · Campanha de Natal" width={180} height={60} priority className="h-12 w-auto" />
           ) : (
-            <Image src="/brand/pazkids-em-acao-200.webp" alt="Paz Kids em Ação" width={200} height={238} priority className="h-14 w-auto" />
+            <Image src="/brand/pazkids-em-acao-horizontal-400.webp" alt="Paz Kids em Ação" width={400} height={163} priority className="h-12 w-auto sm:h-14" />
           )}
         </Link>
         <nav className="ml-auto hidden items-center gap-1 md:flex">
