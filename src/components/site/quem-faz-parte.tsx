@@ -8,11 +8,11 @@ const MIN_FAIXA = 4;
 function Logo({ e, oculto = false }: { e: Parceiro; oculto?: boolean }) {
   const conteudo = e.logoKey ? (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={`/parceiros/${e.id}/logo?v=${encodeURIComponent(e.logoKey)}`} alt={oculto ? "" : e.nome} className="max-h-14 max-w-[170px] object-contain" />
+    <img src={`/parceiros/${e.id}/logo?v=${encodeURIComponent(e.logoKey)}`} alt={oculto ? "" : e.nome} className="max-h-20 max-w-[180px] object-contain" />
   ) : (
     <span className="font-titulo text-xl font-semibold text-verde">{e.nome}</span>
   );
-  const classe = "grid h-24 w-56 place-items-center rounded-[20px] bg-white px-6 transition-transform hover:-translate-y-0.5";
+  const classe = "grid h-28 w-56 place-items-center rounded-[20px] bg-white px-6 transition-transform hover:-translate-y-0.5";
   return e.link ? (
     <a href={e.link} target="_blank" rel="noopener" title={e.nome} tabIndex={oculto ? -1 : undefined} className={classe}>
       {conteudo}
