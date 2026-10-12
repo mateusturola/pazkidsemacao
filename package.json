@@ -8,12 +8,13 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "npm run db:migrate:remote && opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "deploy": "npm run db:migrate:remote && opennextjs-cloudflare build && opennextjs-cloudflare deploy && npm run indexnow",
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "wrangler d1 migrations apply pazkidsemacao --local",
     "db:migrate:remote": "wrangler d1 migrations apply pazkidsemacao --remote",
     "db:backup": "wrangler d1 export pazkidsemacao --remote --output=backups/pazkidsemacao-$(date +%Y%m%d-%H%M).sql",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv --strict-vars false cloudflare-env.d.ts"
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv --strict-vars false cloudflare-env.d.ts",
+    "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {
     "@dicebear/collection": "^9.4.2",

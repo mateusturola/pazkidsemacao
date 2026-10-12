@@ -8,6 +8,7 @@ import { auditar } from "@/lib/auditoria";
 import { requireAdmin, requireUsuario } from "@/lib/auth";
 import { SLUGS_RESERVADOS, slugify } from "@/lib/campanhas";
 import { getDb, schema } from "@/lib/db";
+import { avisarBuscadores } from "@/lib/indexnow";
 import { parseBRL } from "@/lib/money";
 
 const { campanhas, participacoes, criancas } = schema;
@@ -24,6 +25,7 @@ function revalidar(id?: number, slug?: string) {
   revalidatePath("/painel");
   revalidatePath("/");
   if (slug) revalidatePath(`/${slug}`);
+  avisarBuscadores(slug ? ["/", `/${slug}`, "/llms.txt"] : ["/", "/llms.txt"]);
 }
 
 async function dadosCampanha(form: FormData, id: number | null) {

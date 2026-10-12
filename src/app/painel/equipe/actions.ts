@@ -6,6 +6,7 @@ import { apagar, bucket, extensaoFoto, FOTO_MAX_BYTES } from "@/lib/arquivos";
 import { auditar } from "@/lib/auditoria";
 import { requireAdmin } from "@/lib/auth";
 import { getDb, schema } from "@/lib/db";
+import { avisarBuscadores } from "@/lib/indexnow";
 import { usuarioInstagram } from "@/lib/equipe";
 import { novoToken } from "@/lib/token";
 
@@ -25,6 +26,7 @@ function dados(form: FormData) {
 function revalidar() {
   revalidatePath("/painel/equipe");
   revalidatePath("/");
+  avisarBuscadores(["/"]);
 }
 
 export async function criarMembro(_: string | null, form: FormData) {

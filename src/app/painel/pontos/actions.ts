@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { auditar } from "@/lib/auditoria";
 import { requireAdmin } from "@/lib/auth";
 import { getDb, schema } from "@/lib/db";
+import { avisarBuscadores } from "@/lib/indexnow";
 
 function dados(form: FormData) {
   const t = (k: string) => String(form.get(k) ?? "").trim() || null;
@@ -15,6 +16,7 @@ function revalidar() {
   revalidatePath("/painel/pontos");
   // Os pontos aparecem na página de cada campanha e na finalização.
   revalidatePath("/", "layout");
+  avisarBuscadores(["/"]);
 }
 
 export async function criarPonto(_: string | null, form: FormData) {

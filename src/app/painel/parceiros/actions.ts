@@ -6,6 +6,7 @@ import { apagar, bucket, extensaoFoto, FOTO_MAX_BYTES } from "@/lib/arquivos";
 import { auditar } from "@/lib/auditoria";
 import { requireAdmin } from "@/lib/auth";
 import { getDb, schema } from "@/lib/db";
+import { avisarBuscadores } from "@/lib/indexnow";
 import { linkSeguro } from "@/lib/parceiros";
 import { novoToken } from "@/lib/token";
 
@@ -19,6 +20,7 @@ function dados(form: FormData) {
 function revalidar() {
   revalidatePath("/painel/parceiros");
   revalidatePath("/");
+  avisarBuscadores(["/"]);
 }
 
 export async function criarParceiro(_: string | null, form: FormData) {

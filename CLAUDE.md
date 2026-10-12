@@ -92,6 +92,12 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
   está, `lerAlcance`): pintam o mapa e entram nos textos ("em 7 estados"), no FAQ, no SEO e no llms.txt.
   Contorno dos estados: malha do IBGE (`src/content/mapa-brasil.ts`).
 
+## Buscadores
+
+- IndexNow (`src/lib/indexnow.ts`, chave em `public/<chave>.txt`): o painel avisa o Bing quando agenda,
+  equipe, parceiros, pontos ou campanhas mudam; `npm run indexnow` avisa todas as páginas do sitemap
+  depois de um deploy. O ChatGPT busca no índice do Bing.
+
 ## Demonstração
 
 - `PAGAMENTO_MODO=demo` simula o pagamento; só `"asaas"` cobra. A rota de simulação recusa tudo fora do demo.

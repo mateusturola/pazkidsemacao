@@ -6,6 +6,7 @@ import { ESTADOS } from "@/content/mapa-brasil";
 import { auditar } from "@/lib/auditoria";
 import { requireAdmin, requireUsuario } from "@/lib/auth";
 import { getDb, schema } from "@/lib/db";
+import { avisarBuscadores } from "@/lib/indexnow";
 
 const { agenda } = schema;
 
@@ -49,6 +50,7 @@ function revalidar() {
   revalidatePath("/painel/agenda");
   // A agenda aparece na página inicial, em /agenda e no llms.txt.
   revalidatePath("/", "layout");
+  avisarBuscadores(["/", "/agenda", "/llms.txt"]);
 }
 
 export async function criarEncontro(_: string | null, form: FormData) {
