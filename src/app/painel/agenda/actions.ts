@@ -25,13 +25,14 @@ function dados(form: FormData) {
   const hora = horaPadrao(t("hora"));
   return {
     horaInvalida: Boolean(t("hora")) && !hora,
-    diaSemana: Number.isInteger(dia) && dia >= 0 && dia <= 6 ? dia : -1,
+    diaSemana: Number.isInteger(dia) && dia >= 0 && dia <= 7 ? dia : -1,
     hora,
     nome: t("nome").replace(/\s+/g, " "),
     endereco: t("endereco").replace(/\s+/g, " "),
     complemento: t("complemento") || null,
     estado: t("estado") in ESTADOS ? t("estado") : "",
     cidade: t("cidade").replace(/\s+/g, " ") || null,
+    frequencia: t("frequencia") || null,
   };
 }
 
@@ -55,7 +56,7 @@ export async function criarEncontro(_: string | null, form: FormData) {
   const d = dados(form);
   const erro = invalido(d);
   if (erro) return erro;
-  const campos = { diaSemana: d.diaSemana, hora: d.hora, nome: d.nome, endereco: d.endereco, complemento: d.complemento, estado: d.estado, cidade: d.cidade };
+  const campos = { diaSemana: d.diaSemana, hora: d.hora, nome: d.nome, endereco: d.endereco, complemento: d.complemento, estado: d.estado, cidade: d.cidade, frequencia: d.frequencia };
   const [novo] = await getDb().insert(agenda).values(campos).returning({ id: agenda.id });
   await auditar(u.email, "criou", "agenda", novo.id, campos);
   revalidar();
@@ -70,7 +71,7 @@ export async function salvarEncontro(id: number, _: string | null, form: FormDat
   const db = getDb();
   const [atual] = await db.select().from(agenda).where(eq(agenda.id, id)).limit(1);
   if (!atual) return "Esse encontro não existe mais.";
-  const campos = { diaSemana: d.diaSemana, hora: d.hora, nome: d.nome, endereco: d.endereco, complemento: d.complemento, estado: d.estado, cidade: d.cidade };
+  const campos = { diaSemana: d.diaSemana, hora: d.hora, nome: d.nome, endereco: d.endereco, complemento: d.complemento, estado: d.estado, cidade: d.cidade, frequencia: d.frequencia };
   await db
     .update(agenda)
     .set({ ...campos, ativo: form.get("ativo") === "1" })

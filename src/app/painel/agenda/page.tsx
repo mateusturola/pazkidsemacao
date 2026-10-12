@@ -14,8 +14,10 @@ import { criarEncontro, excluirEncontro, salvarAlcance, salvarEncontro } from ".
 
 export const metadata: Metadata = { title: "Agenda semanal" };
 
-// Segunda primeiro, domingo por último, como na arte dos stories.
-const ORDEM = [1, 2, 3, 4, 5, 6, 0];
+const FREQUENCIAS = ["A cada 15 dias", "Uma vez por mês"];
+
+// Segunda primeiro, domingo por último, como na arte dos stories; sem dia fixo no fim.
+const ORDEM = [1, 2, 3, 4, 5, 6, 0, 7];
 
 function Campos({ e }: { e?: EncontroAgenda }) {
   return (
@@ -50,6 +52,18 @@ function Campos({ e }: { e?: EncontroAgenda }) {
       <label className="block">
         <span className="rotulo">Complemento (opcional)</span>
         <input name="complemento" defaultValue={e?.complemento ?? ""} placeholder="Ex.: Casa do Amor em Ação" className="campo" />
+      </label>
+      <label className="block">
+        <span className="rotulo">Frequência</span>
+        <select name="frequencia" defaultValue={e?.frequencia ?? ""} className="campo">
+          <option value="">Toda semana</option>
+          {FREQUENCIAS.map((f) => (
+            <option key={f} value={f}>
+              {f}
+            </option>
+          ))}
+          {e?.frequencia && !FREQUENCIAS.includes(e.frequencia) && <option value={e.frequencia}>{e.frequencia}</option>}
+        </select>
       </label>
       <div className="grid gap-3 sm:grid-cols-[14rem_1fr]">
         <label className="block">
@@ -137,6 +151,7 @@ export default async function AgendaPainel() {
                     <span className="min-w-0">
                       <span className="font-semibold">
                         {e.hora && <span className="tabular-nums">{e.hora} · </span>}
+                        {e.frequencia && <span className="text-tinta-2">({e.frequencia.toLowerCase()}) </span>}
                         {e.nome}
                       </span>
                       {!e.ativo && <span className="ml-2 rounded-md bg-tinta/10 px-2 py-0.5 text-xs">Fora do site</span>}

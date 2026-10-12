@@ -249,7 +249,7 @@ export const configuracoes = sqliteTable("configuracoes", {
 });
 
 /**
- * Agenda semanal dos encontros (a mesma da arte dos stories). Dia da semana 0 = domingo. A
+ * Agenda semanal dos encontros (a mesma da arte dos stories). Dia da semana 0 = domingo; 7 = sem dia fixo. A
  * coordenada vem do endereço ou de um link do Google Maps; sem ela, o encontro aparece só na lista.
  */
 export const agenda = sqliteTable(
@@ -263,6 +263,8 @@ export const agenda = sqliteTable(
     complemento: text("complemento"),
     // O projeto está em vários estados: a agenda do site se separa por estado (sigla da UF).
     estado: text("estado").notNull().default("SP"),
+    // Vazio é semanal; senão, como a equipe escreve ("A cada 15 dias", "Uma vez por mês").
+    frequencia: text("frequencia"),
     cidade: text("cidade"),
     lat: real("lat"),
     lng: real("lng"),

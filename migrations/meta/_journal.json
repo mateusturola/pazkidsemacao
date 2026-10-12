@@ -78,6 +78,13 @@
       "when": 1791484198486,
       "tag": "0010_agenda_por_estado",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "6",
+      "when": 1791824604535,
+      "tag": "0011_agenda_frequencia",
+      "breakpoints": true
     }
   ]
 }

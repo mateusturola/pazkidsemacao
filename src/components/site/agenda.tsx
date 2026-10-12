@@ -206,6 +206,7 @@ export function AgendaBrasil({
                               </span>
                             )}
                             <span className="text-tinta">{p.nome}</span>
+                            {p.frequencia && <span className="ml-1.5 text-sm text-tinta-2">· {p.frequencia.toLowerCase()}</span>}
                             {completo && (
                               <span className="mt-0.5 flex flex-wrap items-baseline justify-between gap-x-4 text-[15px] text-tinta-2">
                                 <span>

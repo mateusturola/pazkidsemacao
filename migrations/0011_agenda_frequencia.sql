@@ -1,0 +1,1 @@
+ALTER TABLE `agenda` ADD `frequencia` text;

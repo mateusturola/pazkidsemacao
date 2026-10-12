@@ -57,7 +57,7 @@ ${SOBRE.valores.map((v) => `- ${v}`).join("\n")}
 ${alcance.estados.length ? `${alcance.estados.length} estados do Brasil: ${listaEstados(alcance.estados)}.` : ""}${alcance.criancasPorSemana ? ` ${numero(alcance.criancasPorSemana)} crianças alcançadas por semana.` : ""}
 
 ## Agenda semanal (encontros nas ruas e praças)
-${agenda.map((a) => `- ${ESTADOS[a.estado as keyof typeof ESTADOS]?.nome ?? a.estado}${a.cidade ? `, ${a.cidade}` : ""} · ${a.dia}${a.hora ? `, ${a.hora}` : ""}: ${a.nome} · ${a.endereco}${a.complemento ? ` · ${a.complemento}` : ""}`).join("\n")}
+${agenda.map((a) => `- ${ESTADOS[a.estado as keyof typeof ESTADOS]?.nome ?? a.estado}${a.cidade ? `, ${a.cidade}` : ""} · ${a.dia}${a.hora ? `, ${a.hora}` : ""}${a.frequencia ? ` (${a.frequencia.toLowerCase()})` : ""}: ${a.nome} · ${a.endereco}${a.complemento ? ` · ${a.complemento}` : ""}`).join("\n")}
 
 ## Nossa história (Paz Church, 50 anos, e o Paz Kids em Ação)
 ${LEGADO.marcos.map((m) => `- ${m.quando}: ${m.titulo}. ${m.texto}`).join("\n")}
