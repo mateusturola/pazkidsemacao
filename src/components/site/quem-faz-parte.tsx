@@ -8,7 +8,12 @@ const MIN_FAIXA = 4;
 function Logo({ e, oculto = false }: { e: Parceiro; oculto?: boolean }) {
   const conteudo = e.logoKey ? (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={`/parceiros/${e.id}/logo?v=${encodeURIComponent(e.logoKey)}`} alt={oculto ? "" : e.nome} className="max-h-20 max-w-[180px] object-contain" />
+    <img
+      src={`/parceiros/${e.id}/logo?v=${encodeURIComponent(e.logoKey)}`}
+      alt={e.nome}
+      loading="lazy"
+      className="max-h-20 max-w-[180px] object-contain"
+    />
   ) : (
     <span className="font-titulo text-xl font-semibold text-verde">{e.nome}</span>
   );

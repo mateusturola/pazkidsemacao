@@ -3,7 +3,7 @@ import { servir } from "@/lib/arquivos";
 import { getDb, schema } from "@/lib/db";
 
 // Logo de empresa parceira no site. Só de quem está ativo na seção.
-export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const id = Number((await params).id);
   if (!Number.isInteger(id)) return new Response("Não encontrado.", { status: 404 });
   const [p] = await getDb()
@@ -12,5 +12,5 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
     .where(and(eq(schema.parceiros.id, id), eq(schema.parceiros.ativo, true)))
     .limit(1);
   if (!p?.logoKey) return new Response("Não encontrado.", { status: 404 });
-  return servir(p.logoKey, false);
+  return servir(p.logoKey, false, new URL(req.url).searchParams.get("v") === p.logoKey);
 }

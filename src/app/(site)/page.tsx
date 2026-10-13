@@ -16,6 +16,7 @@ import { lerAlcance, numero, perguntasDoSite } from "@/lib/alcance";
 import { campanhasAtivas, progressoCampanhas } from "@/lib/campanhas";
 import { formatIsoDate } from "@/lib/dates";
 import { ldInicio } from "@/lib/seo";
+import { Simbolo } from "@/components/site/simbolo";
 
 export const dynamic = "force-dynamic";
 
@@ -53,8 +54,7 @@ export default async function Inicio() {
       {/* Campanha aberta, já na marca dela. */}
       {principal && p && (
         <section className="tema-natal relative overflow-clip bg-verde-escuro text-creme">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/natal/simbolos/forma-amarela-2.svg" alt="" className="forma -right-36 -bottom-40 w-[420px]" />
+          <Simbolo nome="forma-amarela-2" className="forma -right-36 -bottom-40 w-[420px]" />
           <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 sm:px-8 lg:grid-cols-[1fr_1.1fr]">
             <div data-revelar>
               <Image src="/natal/logo/paz-kids-horizontal-negativa-colorida-sem-fundo.svg" alt="Paz Kids em Ação · Campanha de Natal" width={260} height={86} className="h-16 w-auto" />
@@ -80,7 +80,7 @@ export default async function Inicio() {
               </Link>
             </div>
             <div data-revelar style={atraso(120)}>
-              <Image src="/img/acampa-danca.webp" alt="Menina de jaqueta rosa dançando com outras crianças e voluntários no AcampaKids" width={1600} height={1067} className="rounded-[28px] object-cover" />
+              <Image src="/img/acampa-danca.webp" alt="Menina de jaqueta rosa dançando com outras crianças e voluntários no AcampaKids" width={1600} height={1067} sizes="(min-width: 1024px) 50vw, 100vw" className="rounded-[28px] object-cover" />
             </div>
           </div>
         </section>
@@ -90,7 +90,7 @@ export default async function Inicio() {
       <section id="quem-somos" className="scroll-mt-16 bg-papel py-24 sm:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-8">
           <div className="max-w-3xl" data-revelar>
-            <p className="chamada text-vermelho">Quem somos</p>
+            <p className="chamada text-vermelho-escuro">Quem somos</p>
             <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">
               A igreja onde as crianças <span className="pincelada">estão</span>
             </h2>
@@ -122,7 +122,7 @@ export default async function Inicio() {
               agenda={agenda}
               cabecalho={
                 <div data-revelar>
-                  <p className="chamada text-vermelho">Onde a gente está</p>
+                  <p className="chamada text-vermelho-escuro">Onde a gente está</p>
                   <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">
                     {nEstados > 1 ? `Em ${nEstados} estados,` : "Toda semana,"} <span className="pincelada">{nEstados > 1 ? "toda semana" : "nas ruas"}</span>
                   </h2>
@@ -158,7 +158,7 @@ export default async function Inicio() {
           </div>
           <div className="grid grid-cols-2 gap-3" data-revelar style={atraso(120)}>
             {LEGADO.marcos.slice(0, 4).map((c) => (
-              <Image key={c.foto.src} src={c.foto.src} alt={c.foto.alt} width={c.foto.w} height={c.foto.h} className="aspect-[4/3] w-full rounded-[20px] object-cover" />
+              <Image key={c.foto.src} src={c.foto.src} alt={c.foto.alt} width={c.foto.w} height={c.foto.h} sizes="(min-width: 1024px) 25vw, 50vw" className="aspect-[4/3] w-full rounded-[20px] object-cover" />
             ))}
           </div>
         </div>
@@ -168,7 +168,7 @@ export default async function Inicio() {
       <section id="como-ajudar" className="scroll-mt-16 bg-creme py-24 sm:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-8">
           <div className="max-w-2xl" data-revelar>
-            <p className="chamada text-vermelho">Como ajudar</p>
+            <p className="chamada text-vermelho-escuro">Como ajudar</p>
             <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">Tem um jeito para você fazer parte</h2>
           </div>
           <div className="mt-12 grid gap-5 lg:grid-cols-3">
@@ -214,7 +214,7 @@ export default async function Inicio() {
       <section id="perguntas" className="scroll-mt-16 bg-creme py-24 sm:py-28">
         <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-8 lg:grid-cols-[1fr_1.6fr]">
           <div data-revelar>
-            <p className="chamada text-vermelho">Perguntas frequentes</p>
+            <p className="chamada text-vermelho-escuro">Perguntas frequentes</p>
             <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">Quer saber mais?</h2>
             <p className="mt-4 text-lg text-tinta-2">
               Chame a gente no WhatsApp{" "}

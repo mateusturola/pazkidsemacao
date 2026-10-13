@@ -14,7 +14,8 @@
     "db:migrate:remote": "wrangler d1 migrations apply pazkidsemacao --remote",
     "db:backup": "wrangler d1 export pazkidsemacao --remote --output=backups/pazkidsemacao-$(date +%Y%m%d-%H%M).sql",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv --strict-vars false cloudflare-env.d.ts",
-    "indexnow": "node scripts/indexnow.mjs"
+    "indexnow": "node scripts/indexnow.mjs",
+    "imagens": "node scripts/imagens.mjs"
   },
   "dependencies": {
     "@dicebear/collection": "^9.4.2",
@@ -41,6 +42,7 @@
     "drizzle-kit": "^0.31.11",
     "eslint": "^9",
     "eslint-config-next": "15.5.27",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4",
     "typescript": "^5",
     "wrangler": "^4.145.0"

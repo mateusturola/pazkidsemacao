@@ -15,6 +15,7 @@ export function Hero({ criancas, nEstados, cta }: { criancas: number | null; nEs
         alt="Crianças sentadas na quadra, rindo e erguendo os braços durante uma ação do Paz Kids em Ação em Heliópolis"
         fill
         priority
+        fetchPriority="high"
         sizes="100vw"
         className="-z-10 object-cover object-[65%_30%]"
       />

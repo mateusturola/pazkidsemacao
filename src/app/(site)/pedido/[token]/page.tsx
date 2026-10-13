@@ -14,6 +14,7 @@ import { getDb, schema } from "@/lib/db";
 import { imagemPublica } from "@/lib/imagem-publica";
 import { formatBRL } from "@/lib/money";
 import { liberarExpiradas } from "@/lib/reservas";
+import { Simbolo } from "@/components/site/simbolo";
 
 // O token é a única proteção desta página: fora dos buscadores e sem vazar o endereço por Referer.
 export const metadata: Metadata = { title: "Seu apadrinhamento", robots: { index: false, follow: false }, referrer: "no-referrer" };
@@ -81,10 +82,8 @@ export default async function PedidoPage({ params }: { params: Promise<{ token: 
     <>
       <Topo variante="campanha" links={[{ href: `/${campanha.slug}`, label: campanha.nome }, { href: "/", label: "Sobre o projeto" }]} />
       <div className="relative overflow-clip bg-creme pt-[72px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/natal/simbolos/forma-vermelha.svg" alt="" className="forma -top-28 -right-36 w-[380px]" />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/natal/simbolos/confete.svg" alt="" className="forma top-28 left-[8%] hidden w-28 lg:block" />
+        <Simbolo nome="forma-vermelha" className="forma -top-28 -right-36 w-[380px]" />
+        <Simbolo nome="confete" className="forma top-28 left-[8%] hidden w-28 lg:block" />
         <div className="relative mx-auto max-w-3xl px-4 pt-14 pb-24 sm:px-6">
           {!fechado && <LimparCarrinho slug={campanha.slug} />}
           <p className="chamada text-verde">

@@ -5,11 +5,12 @@ import { Rodape } from "@/components/site/rodape";
 import { Topo } from "@/components/site/topo";
 import { LEGADO, SITE, SOBRE } from "@/content/site";
 import { campanhasAtivas } from "@/lib/campanhas";
+import { Simbolo } from "@/components/site/simbolo";
 
 export const dynamic = "force-dynamic";
 
 const descricao =
-  "O legado do Pastor Lucas Huber, os 50 anos da Paz Church e como nasceu o Paz Kids em Ação, o projeto que leva o amor de Cristo às crianças de Heliópolis, em São Paulo, e de comunidades de vários estados do Brasil.";
+  "O legado do Pastor Lucas Huber, os 50 anos da Paz Church e como nasceu o Paz Kids em Ação, projeto com crianças de Heliópolis e de outros estados.";
 
 export const metadata: Metadata = {
   title: "Nossa história",
@@ -46,7 +47,7 @@ export default async function HistoriaPage() {
               <p className="mt-1 text-tinta-2">1976 · 2026</p>
             </div>
             <div className="max-w-2xl pb-2">
-              <p className="chamada text-vermelho">Um legado de amor</p>
+              <p className="chamada text-vermelho-escuro">Um legado de amor</p>
               <h1 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">{LEGADO.titulo}</h1>
             </div>
           </div>
@@ -62,7 +63,7 @@ export default async function HistoriaPage() {
                   <p className="mt-3 text-lg leading-relaxed text-tinta sm:text-xl">{m.texto}</p>
                 </div>
                 <figure>
-                  <Image src={m.foto.src} alt={m.foto.alt} width={m.foto.w} height={m.foto.h} priority={i === 0} className="aspect-[3/2] w-full rounded-[24px] object-cover" />
+                  <Image src={m.foto.src} alt={m.foto.alt} width={m.foto.w} height={m.foto.h} priority={i === 0} sizes="(min-width: 768px) 50vw, 100vw" className="aspect-[3/2] w-full rounded-[24px] object-cover" />
                   <figcaption className="mt-3 text-sm text-tinta-2">{m.foto.legenda}</figcaption>
                 </figure>
               </li>
@@ -94,8 +95,7 @@ export default async function HistoriaPage() {
               <ul className="mt-3 space-y-2 text-lg leading-relaxed">
                 {SOBRE.valores.map((v) => (
                   <li key={v} className="flex gap-2.5">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/natal/simbolos/estrela.svg" alt="" className="mt-1.5 size-4 shrink-0" />
+                    <Simbolo nome="estrela" className="mt-1.5 size-4 shrink-0" />
                     {v}
                   </li>
                 ))}

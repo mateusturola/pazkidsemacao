@@ -20,7 +20,7 @@ export async function Instagram() {
       <div className="mx-auto max-w-7xl px-4 sm:px-8">
         <div className="flex flex-wrap items-end justify-between gap-6" data-revelar>
           <div>
-            <p className="chamada text-vermelho">No Instagram</p>
+            <p className="chamada text-vermelho-escuro">No Instagram</p>
             <h2 className="mt-3 text-4xl font-bold text-verde sm:text-5xl">
               Acompanhe cada <span className="pincelada">ação</span>
             </h2>

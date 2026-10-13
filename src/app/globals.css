@@ -11,6 +11,9 @@
   --color-papel: #fbf8f1;
   --color-amarelo: #f5b629;
   --color-vermelho: #d64a2b;
+  /* O vermelho do manual dá 3,8:1 no creme e 4,3:1 com texto branco: serve para forma e título grande.
+     Rótulo pequeno e botão usam este, um pouco mais fundo, que passa de 4,5:1. */
+  --color-vermelho-escuro: #c03f22;
   --color-kraft: #dcc29a;
   --color-tinta: #1f2a24;
   --color-tinta-2: #56635c;
@@ -56,7 +59,7 @@ body {
   }
   /* Ação principal: o vermelho do laço. */
   .btn-acao {
-    @apply bg-vermelho text-white hover:bg-[#c03f22];
+    @apply bg-vermelho-escuro text-white hover:bg-[#a8361c];
   }
   .btn-primario {
     @apply bg-verde text-creme hover:bg-verde-2;
@@ -120,6 +123,7 @@ body {
   --color-creme: #fff4cc;
   --color-papel: #fffbef;
   --color-vermelho: #e3262f;
+  --color-vermelho-escuro: #d01f28;
   --color-tinta: #1b1633;
   --color-tinta-2: #4f4a66;
   --color-linha: #efe3bd;
@@ -139,13 +143,17 @@ body {
   --color-creme: #f4efe3;
   --color-papel: #fbf8f1;
   --color-vermelho: #d64a2b;
+  --color-vermelho-escuro: #c03f22;
   --color-tinta: #1f2a24;
   --color-tinta-2: #56635c;
   --color-linha: #e2dac8;
 }
 .tema-natal .btn-acao {
-  background: var(--color-vermelho);
+  background: var(--color-vermelho-escuro);
   color: #fff;
+}
+.tema-natal .btn-acao:hover {
+  background: #a8361c;
 }
 
 /* Formas orgânicas: sempre grandes e cortadas pela borda da seção. */

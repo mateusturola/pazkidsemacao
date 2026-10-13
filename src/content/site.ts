@@ -7,6 +7,9 @@ export const SITE = {
   url: "https://pazkidsemacao.com",
   descricao:
     "Projeto social e missionário do Paz Kids, da Paz Church, que leva o amor de Cristo, educação, apoio emocional e recursos básicos para crianças de Heliópolis, em São Paulo, e de comunidades em outros estados do Brasil.",
+  // A descrição que aparece no Google e no Bing: eles cortam (e o Bing acusa erro) acima de 160 caracteres.
+  resumo:
+    "Projeto social e missionário da Paz Church que leva o amor de Cristo, educação e cuidado a crianças de Heliópolis (SP) e de outros estados do Brasil.",
   // O projeto está em Heliópolis e em outros estados, mas a igreja é a Paz Church São Paulo (não há Paz Church em Heliópolis).
   igreja: "Paz Church São Paulo",
   // O e-mail heliopolis@paz.church é só a chave Pix; contato e voluntariado são por este WhatsApp.

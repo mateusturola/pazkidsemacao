@@ -45,7 +45,7 @@ export default async function AgendaPage({ searchParams }: { searchParams: Promi
             completo
             cabecalho={
               <>
-                <p className="chamada text-vermelho">Agenda semanal</p>
+                <p className="chamada text-vermelho-escuro">Agenda semanal</p>
                 <h1 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-6xl">
                   Onde a gente está <span className="pincelada">toda semana</span>
                 </h1>
@@ -65,7 +65,8 @@ export default async function AgendaPage({ searchParams }: { searchParams: Promi
               Quero ser voluntário
             </a>
             {principal && (
-              <Link href={`/${principal.slug}`} className="btn btn-claro">
+              // O nome da campanha vem do painel e pode ser longo: o botão quebra a linha em vez de vazar no celular.
+              <Link href={`/${principal.slug}`} className="btn btn-claro h-auto min-h-12 py-2.5 text-center whitespace-normal">
                 {principal.nome}: apadrinhe uma criança
               </Link>
             )}

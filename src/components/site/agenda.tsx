@@ -11,7 +11,7 @@ import {
 } from "@/content/mapa-brasil";
 import { SITE } from "@/content/site";
 import type { PontoAgenda } from "@/lib/agenda";
-import { corDoDia } from "@/lib/agenda-pontos";
+import { corDoDia, paraTexto, textoSobre } from "@/lib/agenda-pontos";
 
 // Uma cor de balão do logo por estado atendido; amarelo fica de fora, porque some no fundo creme.
 const CORES = [
@@ -151,10 +151,10 @@ export function AgendaBrasil({
               aria-pressed={u === escolhido}
               className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm font-bold transition-colors ${
                 u === escolhido
-                  ? "border-transparent text-white"
+                  ? "border-transparent"
                   : "border-linha bg-white text-tinta hover:border-tinta/30"
               }`}
-              style={u === escolhido ? { background: cor[u] } : undefined}
+              style={u === escolhido ? { background: cor[u], color: textoSobre(cor[u]) } : undefined}
             >
               {u !== escolhido && (
                 <span
@@ -189,7 +189,7 @@ export function AgendaBrasil({
                     className="border-t-4 pt-3"
                     style={{ borderColor: corDoDia(dia) }}
                   >
-                    <p className="chamada" style={{ color: corDoDia(dia) }}>
+                    <p className="chamada" style={{ color: paraTexto(corDoDia(dia)) }}>
                       {dia}
                     </p>
                     <ul className="mt-2 space-y-2.5">

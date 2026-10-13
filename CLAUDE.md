@@ -57,6 +57,9 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
 - Sem glow, sem degradê em texto, sem dado inventado no site. Imagem de IA só como clima da campanha;
   foto de criança atendida é real e com autorização.
 - Data se escolhe no `DatePicker`, nunca em `<input type="date">`.
+- Rótulo pequeno e botão em vermelho usam `vermelho-escuro` (o vermelho do manual não dá 4,5:1 de contraste).
+  Forma, estrela e brilho da marca vão pelo `Simbolo` (fundo), não por `<img alt="">`.
+- Foto nova em `public/img`: rode `npm run imagens` (gera as cópias menores que o `next/image` serve ao celular).
 - Rodapé: "Desenvolvido por" com o logo da The Kingdom Digital, na versão branca (o fundo é escuro).
 
 ## Padrinho e criança

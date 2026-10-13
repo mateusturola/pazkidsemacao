@@ -16,6 +16,7 @@ import { pagamentoOnlineDisponivel } from "@/lib/pagamento";
 import { MAX_POR_PEDIDO } from "@/lib/regras";
 import { liberarExpiradas } from "@/lib/reservas";
 import { finalizarPedido } from "./actions";
+import { Simbolo } from "@/components/site/simbolo";
 
 export const metadata: Metadata = { title: "Finalizar", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -54,8 +55,7 @@ export default async function FinalizarPage({ params, searchParams }: { params: 
     <>
     <Topo variante="campanha" links={[{ href: `/${slug}#criancas`, label: "Voltar para as crianças" }]} />
     <div className="relative overflow-clip bg-creme pt-[72px]">
-    {/* eslint-disable-next-line @next/next/no-img-element */}
-    <img src="/natal/simbolos/forma-amarela.svg" alt="" className="forma -top-28 -right-40 w-[420px]" />
+    <Simbolo nome="forma-amarela" className="forma -top-28 -right-40 w-[420px]" />
     <div className="relative mx-auto max-w-3xl px-4 pt-12 pb-24 sm:px-6">
       <Link href={`/${slug}#criancas`} className="text-sm font-bold text-tinta-2 hover:text-verde">
         ← Voltar para as crianças

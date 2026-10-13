@@ -68,6 +68,7 @@ export async function Equipe() {
             alt="A família Vasconcelos de camiseta amarela do Paz Kids em Ação: os pastores Moisés e Mary com os filhos, familiares e as crianças da família"
             width={1179}
             height={710}
+            sizes="(min-width: 1280px) 1216px, 100vw"
             className="w-full rounded-[28px] object-cover"
           />
           <figcaption className="mt-5 max-w-3xl">

@@ -10,8 +10,8 @@ const caveatBrush = Caveat_Brush({ subsets: ["latin"], weight: "400", variable: 
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
-  title: { default: `${SITE.nome} · Projeto social com crianças em comunidades do Brasil`, template: `%s · ${SITE.nome}` },
-  description: SITE.descricao,
+  title: { default: `${SITE.nome} · Projeto social com crianças pelo Brasil`, template: `%s · ${SITE.nome}` },
+  description: SITE.resumo,
   keywords: TERMOS,
   applicationName: SITE.nome,
   category: "Projeto social",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     type: "website",
     title: `${SITE.nome} · ${SITE.lema}`,
-    description: SITE.descricao,
+    description: SITE.resumo,
     images: [{ url: "/og-home.jpg", width: 1200, height: 630, alt: "Crianças numa ação do Paz Kids em Ação em Heliópolis" }],
   },
   twitter: { card: "summary_large_image", images: ["/og-home.jpg"] },

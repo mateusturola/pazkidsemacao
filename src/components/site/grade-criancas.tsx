@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MAX_POR_PEDIDO } from "@/lib/regras";
 import { IconeCheck, IconeSacola, IconeSeta } from "./icones";
+import { Simbolo } from "@/components/site/simbolo";
 
 export type CriancaCard = {
   id: number;
@@ -222,7 +223,7 @@ export function GradeCriancas({ slug, criancas, aberta }: { slug: string; crianc
                 >
                   <span className="absolute top-1/2 left-3 size-3 -translate-y-1/2 rounded-full bg-papel shadow-[inset_0_1px_2px_rgba(0,0,0,.25)]" />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={c.imagem} alt="" loading="lazy" className="size-14 shrink-0 rounded-full border-[3px] border-papel object-cover sm:size-16" />
+                  <img src={c.imagem} alt={c.nome} loading="lazy" className="size-14 shrink-0 rounded-full border-[3px] border-papel object-cover sm:size-16" />
                   <div className="min-w-0 flex-1">
                     <h3 className="truncate font-mao text-[1.75rem] leading-none text-verde">{c.nome}</h3>
                     <p className="text-xs font-bold text-verde/80 sm:text-sm">
@@ -257,8 +258,7 @@ export function GradeCriancas({ slug, criancas, aberta }: { slug: string; crianc
                 </div>
                 {/* O laço vermelho marca quem já está na sacolinha do doador. */}
                 {escolhida && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src="/natal/simbolos/coracao.svg" alt="" className="absolute -top-2 -right-1 size-8 rotate-12 drop-shadow-sm" />
+                  <Simbolo nome="coracao" className="absolute -top-2 -right-1 size-8 rotate-12 drop-shadow-sm" />
                 )}
               </li>
             );
@@ -287,7 +287,7 @@ export function GradeCriancas({ slug, criancas, aberta }: { slug: string; crianc
           <div className="p-6 sm:p-8">
             <div className="flex items-center gap-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={conhecendo.imagem} alt="" className="size-20 shrink-0 rounded-full border-4 border-white object-cover sm:size-24" />
+              <img src={conhecendo.imagem} alt={conhecendo.nome} className="size-20 shrink-0 rounded-full border-4 border-white object-cover sm:size-24" />
               <div>
                 <h3 className="font-mao text-[2.6rem] leading-none text-verde">{conhecendo.nome}</h3>
                 <p className="mt-1 font-bold text-verde/80">
@@ -370,7 +370,7 @@ export function GradeCriancas({ slug, criancas, aberta }: { slug: string; crianc
                 {naSacolinha.map((c) => (
                   <li key={c.id} className="flex items-center gap-3 py-2.5">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={c.imagem} alt="" className="size-10 shrink-0 rounded-full border-2 border-creme/30 object-cover" />
+                    <img src={c.imagem} alt={c.nome} className="size-10 shrink-0 rounded-full border-2 border-creme/30 object-cover" />
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-mao text-2xl leading-none">{c.nome}</p>
                       <p className="text-xs text-creme/70">{[c.sexo === "F" ? "Menina" : c.sexo === "M" ? "Menino" : null, c.idadeTexto].filter(Boolean).join(" · ")}</p>

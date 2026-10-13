@@ -6,8 +6,9 @@ const nextConfig: NextConfig = {
   // Para testar o build sem derrubar o dev: NEXT_DIST_DIR=.next-build npx next build
   distDir: process.env.NEXT_DIST_DIR || ".next",
   poweredByHeader: false,
-  // As imagens já vão otimizadas (webp no tamanho certo) e o Worker não tem o otimizador do Next.
-  images: { unoptimized: true },
+  // O Worker não tem o otimizador do Next: as fotos de public/img têm cópias menores prontas
+  // (npm run imagens) e o carregador escolhe a cópia pela largura que o navegador pede.
+  images: { loader: "custom", loaderFile: "./src/lib/imagem.ts", deviceSizes: [640, 828, 1080, 1440, 1920] },
   experimental: {
     // Foto de criança sobe por server action; o padrão de 1 MB barra foto de celular.
     serverActions: { bodySizeLimit: "10mb" },

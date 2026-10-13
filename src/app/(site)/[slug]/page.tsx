@@ -19,6 +19,7 @@ import { formatBRL } from "@/lib/money";
 import { pagamentoOnlineDisponivel } from "@/lib/pagamento";
 import { liberarExpiradas } from "@/lib/reservas";
 import { ldCampanha } from "@/lib/seo";
+import { Simbolo } from "@/components/site/simbolo";
 
 export const dynamic = "force-dynamic";
 
@@ -89,10 +90,8 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
 
       {/* Topo da campanha: fundo creme, formas saindo das bordas, uma palavra com pincelada. */}
       <section className="relative overflow-clip bg-creme pt-[72px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/natal/simbolos/forma-vermelha.svg" alt="" className="forma -top-24 -right-32 w-[360px] sm:w-[520px]" />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/natal/simbolos/forma-amarela-2.svg" alt="" className="forma -bottom-40 -left-40 w-[380px] sm:w-[480px]" />
+        <Simbolo nome="forma-vermelha" className="forma -top-24 -right-32 w-[360px] sm:w-[520px]" />
+        <Simbolo nome="forma-amarela-2" className="forma -bottom-40 -left-40 w-[380px] sm:w-[480px]" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-14 sm:px-8 sm:py-20 lg:grid-cols-[1.05fr_1fr]">
           <div>
             {/* A marca em destaque: o logo do cabeçalho só aparece quando este sai da tela. */}
@@ -162,14 +161,13 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
               width={1400}
               height={1750}
               priority
+              sizes="(min-width: 1024px) 40vw, 100vw"
               className="aspect-[4/5] w-full rounded-[32px] object-cover object-[center_35%] sm:aspect-[5/5]"
             />
             {/* Foto de verdade de uma criança do projeto: a legenda evita que pareça uma das crianças da lista. */}
             <p className="mt-3 text-sm text-tinta-2">AcampaKids Amor em Ação, outubro de 2025.</p>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/natal/simbolos/estrela.svg" alt="" className="absolute -top-6 -left-4 size-14" />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/natal/simbolos/brilho.svg" alt="" className="absolute top-10 -left-9 size-8" />
+            <Simbolo nome="estrela" className="absolute -top-6 -left-4 size-14" />
+            <Simbolo nome="brilho" className="absolute top-10 -left-9 size-8" />
           </div>
         </div>
       </section>
@@ -179,7 +177,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
         <section id="como-funciona" className="scroll-mt-20 bg-papel py-20 sm:py-28">
           <div className="mx-auto max-w-7xl px-4 sm:px-8">
             <div className="max-w-2xl" data-revelar>
-              <p className="chamada text-vermelho">Como funciona</p>
+              <p className="chamada text-vermelho-escuro">Como funciona</p>
               <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">Três passos para mudar o Natal de alguém</h2>
             </div>
             <ol className="mt-12 grid gap-5 md:grid-cols-3">
@@ -206,11 +204,10 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
       {/* A sacolinha. */}
       {itens.length > 0 && aberta && (
         <section className="relative overflow-clip bg-verde text-creme">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/natal/simbolos/forma-amarela.svg" alt="" className="forma -top-48 -right-40 w-[440px]" />
+          <Simbolo nome="forma-amarela" className="forma -top-48 -right-40 w-[440px]" />
           <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 sm:px-8 sm:py-24 lg:grid-cols-2">
             <div data-revelar>
-              <Image src="/img/ia-itens-sacolinha.webp" alt="Itens da sacolinha sobre a mesa: camiseta, calça jeans, tênis, presente com laço e sacola kraft" width={1400} height={933} className="rounded-[28px] object-cover" />
+              <Image src="/img/ia-itens-sacolinha.webp" alt="Itens da sacolinha sobre a mesa: camiseta, calça jeans, tênis, presente com laço e sacola kraft" width={1400} height={933} sizes="(min-width: 1024px) 50vw, 100vw" className="rounded-[28px] object-cover" />
             </div>
             <div data-revelar style={atraso(120)}>
               <p className="chamada text-amarelo">A sacolinha</p>
@@ -218,8 +215,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
               <ul className="mt-8 grid gap-3 sm:grid-cols-2">
                 {itens.map((i) => (
                   <li key={i} className="flex items-center gap-3 rounded-2xl bg-creme/10 px-5 py-4 font-titulo text-xl font-semibold">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/natal/simbolos/estrela.svg" alt="" className="size-5 shrink-0" />
+                    <Simbolo nome="estrela" className="size-5 shrink-0" />
                     {i}
                   </li>
                 ))}
@@ -235,7 +231,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
         <section className="bg-papel py-20 sm:py-28">
           <div className="mx-auto max-w-7xl px-4 sm:px-8">
             <div className="max-w-2xl" data-revelar>
-              <p className="chamada text-vermelho">Do seu jeito</p>
+              <p className="chamada text-vermelho-escuro">Do seu jeito</p>
               <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">
                 Você sabia que, mesmo da sua casa, pode fazer parte <span className="pincelada">dessa missão</span>?
               </h2>
@@ -269,7 +265,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
       <section id="criancas" className="relative scroll-mt-20 overflow-clip bg-creme py-20 pb-36 sm:py-28 sm:pb-40">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-8">
           <div className="max-w-2xl">
-            <p className="chamada text-vermelho">Esperando um padrinho</p>
+            <p className="chamada text-vermelho-escuro">Esperando um padrinho</p>
             <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">
               Escolha quem você vai <span className="pincelada">presentear</span>
             </h2>
@@ -296,7 +292,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
         <section id="onde-entregar" className="scroll-mt-20 bg-creme py-20 sm:py-28">
           <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-8 lg:grid-cols-[1fr_1.4fr]">
             <div data-revelar>
-              <p className="chamada text-vermelho">Pontos de coleta</p>
+              <p className="chamada text-vermelho-escuro">Pontos de coleta</p>
               <h2 className="mt-3 text-4xl leading-tight font-bold text-verde sm:text-5xl">Onde entregar</h2>
               <p className="mt-5 flex items-center gap-3 text-lg">
                 <span className="grid size-11 place-items-center rounded-xl bg-white text-verde">
@@ -349,7 +345,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
             <p className="mt-1 text-lg text-verde">
               Chave Pix <strong className="font-titulo text-2xl">{SITE.pix.chave}</strong>
             </p>
-            <p className="mt-1 text-sm text-verde/80">Favorecido: {SITE.pix.favorecido}</p>
+            <p className="mt-1 text-sm text-verde">Favorecido: {SITE.pix.favorecido}</p>
           </div>
           <CopyButton value={SITE.pix.copiar} label="Copiar chave Pix" className="btn btn-primario h-14 px-7 text-lg" />
         </div>

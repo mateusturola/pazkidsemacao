@@ -1,0 +1,12 @@
+# Cache dos arquivos estáticos (lido pelo Cloudflare, não vai para o site).
+# O que o Next gera leva um código no nome: muda o arquivo, muda o endereço.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fotos, logos e símbolos mudam raramente; uma semana poupa o celular de baixar tudo de novo.
+/img/*
+  Cache-Control: public, max-age=604800
+/brand/*
+  Cache-Control: public, max-age=604800
+/natal/*
+  Cache-Control: public, max-age=604800

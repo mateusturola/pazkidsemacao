@@ -25,13 +25,13 @@ export function Rodape({ variante }: { variante: "institucional" | "campanha" })
             {SITE.redes.map((r) => (
               <li key={r.nome}>
                 <a href={r.url} target="_blank" rel="noopener" className="hover:text-white">
-                  {r.nome} <span className="text-creme/50">{r.usuario}</span>
+                  {r.nome} <span className="text-creme/70">{r.usuario}</span>
                 </a>
               </li>
             ))}
             <li>
               <a href={SITE.whatsapp.link} target="_blank" rel="noopener" className="hover:text-white">
-                WhatsApp <span className="text-creme/50">{SITE.whatsapp.numero}</span>
+                WhatsApp <span className="text-creme/70">{SITE.whatsapp.numero}</span>
               </a>
             </li>
           </ul>
@@ -40,7 +40,7 @@ export function Rodape({ variante }: { variante: "institucional" | "campanha" })
           <p className="chamada text-amarelo">Doe por Pix</p>
           <p className="mt-4">Chave Pix ({SITE.pix.tipo})</p>
           <p className="font-titulo text-xl font-semibold text-white">{SITE.pix.chave}</p>
-          <p className="mt-1 text-sm text-creme/60">Favorecido: {SITE.pix.favorecido}</p>
+          <p className="mt-1 text-sm text-creme/70">Favorecido: {SITE.pix.favorecido}</p>
           <p className="mt-6">
             <Link href="/" className="hover:text-white">
               Paz Kids em Ação
@@ -50,11 +50,11 @@ export function Rodape({ variante }: { variante: "institucional" | "campanha" })
         </div>
       </div>
       <div className="border-t border-creme/10">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-6 text-sm text-creme/55 sm:px-8">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-6 text-sm text-creme/70 sm:px-8">
           <p>
             © {new Date().getFullYear()} {SITE.nome} · Paz Kids · Paz Church
           </p>
-          <a href={CREDITO_URL} target="_blank" rel="noopener" className="flex items-center gap-3 opacity-80 transition-opacity hover:opacity-100">
+          <a href={CREDITO_URL} target="_blank" rel="noopener" className="flex items-center gap-3 transition-colors hover:text-white">
             <span>Desenvolvido por</span>
             <Image src="/brand/thekingdomdigital-branco.webp" alt="The Kingdom Digital" width={440} height={160} className="h-8 w-auto" />
           </a>
