@@ -6,7 +6,8 @@ import "./globals.css";
 
 const fredoka = Fredoka({ subsets: ["latin"], variable: "--font-fredoka", display: "swap" });
 const nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito", display: "swap" });
-const caveatBrush = Caveat_Brush({ subsets: ["latin"], weight: "400", variable: "--font-caveat-brush", display: "swap" });
+// A letra de mão só aparece em frase de destaque: não entra na frente da foto do topo e das fontes do texto.
+const caveatBrush = Caveat_Brush({ subsets: ["latin"], weight: "400", variable: "--font-caveat-brush", display: "swap", preload: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),

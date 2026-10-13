@@ -37,6 +37,9 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
 ## Dados
 
 - Cloudflare Workers (OpenNext) + D1. Use `getDb()` dentro da requisição; variáveis com `env()`.
+- As páginas públicas de um nível (/, /agenda, /historia, a campanha) ficam guardadas prontas por 1 minuto
+  (`worker.ts`): mudança no painel aparece no site em até 1 minuto. Página pública não pode depender de cookie
+  nem de quem está vendo.
 - Dinheiro em **centavos**. Data pura em texto `YYYY-MM-DD`; instante em `timestamp_ms`.
 - O D1 aceita no máximo 100 parâmetros por consulta: insert em lote vai em pedaços (`db.batch`).
 - Migration aditiva, gerada com `drizzle-kit generate` e aplicada com `wrangler d1 migrations apply`.
