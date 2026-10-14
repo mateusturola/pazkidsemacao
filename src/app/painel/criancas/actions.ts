@@ -111,7 +111,8 @@ export async function enviarFoto(id: number, _: string | null, form: FormData) {
   const arquivo = form.get("foto");
   if (!(arquivo instanceof File) || !arquivo.size) return "Escolha uma foto.";
   const ext = extensaoFoto(arquivo.type);
-  if (!ext) return "Use uma foto JPG, PNG ou WebP.";
+  // O navegador já reduz e converte para JPG; chega outro formato só quando ele não conseguiu abrir a foto (HEIC, por exemplo).
+  if (!ext) return "Não consegui abrir essa foto. Tire um print dela e envie o print, ou mande em JPG.";
   if (arquivo.size > FOTO_MAX_BYTES) return "A foto passa de 8 MB.";
   const db = getDb();
   const [c] = await db.select({ fotoKey: criancas.fotoKey }).from(criancas).where(eq(criancas.id, id)).limit(1);
