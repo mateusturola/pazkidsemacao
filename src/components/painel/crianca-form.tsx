@@ -29,7 +29,7 @@ export function CriancaForm({ action, crianca, botao }: { action: Action; crianc
         </Campo>
         <div>
           <span className="rotulo">Data de nascimento</span>
-          <DatePicker name="dataNascimento" defaultValue={c?.dataNascimento ?? ""} />
+          <DatePicker name="dataNascimento" defaultValue={c?.dataNascimento ?? ""} nascimento />
         </div>
         <Campo label="Sexo">
           <select name="sexo" defaultValue={c?.sexo ?? ""} className="campo">

@@ -59,7 +59,8 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
   (`public/brand/pazkids-em-acao-horizontal-*`, do time de design) no menu, rodapé e painel; o vertical só no story.
 - Sem glow, sem degradê em texto, sem dado inventado no site. Imagem de IA só como clima da campanha;
   foto de criança atendida é real e com autorização.
-- Data se escolhe no `DatePicker`, nunca em `<input type="date">`.
+- Data se escolhe no `DatePicker` (digita dd/mm/aaaa ou abre o calendário com lista de mês e ano), nunca em
+  `<input type="date">`. Data de nascimento usa `nascimento`: anos de criança e nada no futuro.
 - Rótulo pequeno e botão em vermelho usam `vermelho-escuro` (o vermelho do manual não dá 4,5:1 de contraste).
   Forma, estrela e brilho da marca vão pelo `Simbolo` (fundo), não por `<img alt="">`.
 - Foto nova em `public/img`: rode `npm run imagens` (gera as cópias menores que o `next/image` serve ao celular).

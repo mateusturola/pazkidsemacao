@@ -183,6 +183,18 @@ body {
   font-weight: 600;
   text-transform: capitalize;
 }
+/* Lista de mês e de ano no topo do calendário: com cara de botão, para a equipe ver que dá para clicar. */
+.tkd-calendar .rdp-dropdowns {
+  gap: 0.375rem;
+}
+.tkd-calendar .rdp-dropdown_root {
+  border: 1px solid var(--color-linha);
+  border-radius: 0.5rem;
+  padding: 0.125rem 0.5rem;
+}
+.tkd-calendar .rdp-dropdown_root:hover {
+  border-color: color-mix(in srgb, var(--color-verde) 40%, transparent);
+}
 
 /* Aparecer ao rolar. Sem JS, tudo já aparece: a classe .js só entra quando o script roda. */
 .js [data-revelar] {
