@@ -96,9 +96,11 @@ export default async function ConfiguracoesPage() {
       <section className="cartao p-5">
         <h2 className="text-lg font-semibold">Pagamento online</h2>
         <p className="mt-1 text-sm text-tinta-2">
-          {modoPagamento() === "demo"
-            ? "Modo demonstração (PAGAMENTO_MODO=demo): o fluxo funciona inteiro com uma tela de pagamento simulada, e ninguém é cobrado."
-            : "Cobrança de verdade pelo Asaas (PAGAMENTO_MODO=asaas)."}
+          {modoPagamento() === "pix"
+            ? "Pix direto (PAGAMENTO_MODO=pix): o doador faz o Pix na chave do projeto e manda o comprovante pelo WhatsApp. A equipe confere e confirma no pedido (botão \"Pix recebido\")."
+            : modoPagamento() === "demo"
+              ? "Modo demonstração (PAGAMENTO_MODO=demo): o fluxo funciona inteiro com uma tela de pagamento simulada, e ninguém é cobrado."
+              : "Cobrança de verdade pelo Asaas (PAGAMENTO_MODO=asaas)."}
         </p>
       </section>
 

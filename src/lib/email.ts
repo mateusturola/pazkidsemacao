@@ -8,6 +8,7 @@ import { formatIsoDate } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
 import { env } from "@/lib/env";
 import { formatBRL } from "@/lib/money";
+import { pixDoPedido, whatsComprovante } from "@/lib/pix";
 
 type Tipo = (typeof TIPOS_EMAIL)[number];
 
@@ -151,6 +152,21 @@ ${blocoCriancas(d)}
 ${blocoCriancas(d)}
 <p style="margin:20px 0 0">A gente manda notícias quando ${n > 1 ? "elas forem entregues" : "ela for entregue"}.</p>`;
     }
+  } else if (tipo === "pix") {
+    assunto = `Falta só o Pix: ${formatBRL(d.p.valor)}`;
+    frase = "Apadrinhe uma criança!";
+    const ate = d.p.reservadoAte?.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+    corpo = `<p>Oi, ${primeiro}! ${n > 1 ? `${lista} estão reservados` : `${lista} está reservada`} para você${ate ? ` até <strong>${ate}</strong>` : ""}. Para confirmar, faça o Pix e mande o comprovante pelo WhatsApp.</p>
+<table role="presentation" width="100%" style="margin:20px 0;background:${CREME};border-radius:12px"><tr><td style="padding:18px 20px">
+<p style="margin:0 0 4px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:${VERDE};font-weight:800">Pix</p>
+<p style="margin:0;font-size:22px;font-weight:700;color:${VERDE}">${formatBRL(d.p.valor)}</p>
+<p style="margin:8px 0 0">Chave (${esc(SITE.pix.tipo)}): <strong>${esc(SITE.pix.chave)}</strong><br>Favorecido: ${esc(SITE.pix.favorecido)}</p>
+<p style="margin:12px 0 4px;font-size:13px;color:#5b6b62">Ou use o Pix copia e cola, já com o valor:</p>
+<p style="margin:0;font-family:monospace;font-size:12px;word-break:break-all">${esc(pixDoPedido(d.p))}</p>
+</td></tr></table>
+<p style="margin:0"><a href="${whatsComprovante(d.p, d.campanha.nome, d.padrinho.nome)}" style="color:${VERDE};font-weight:700">Mandar o comprovante pelo WhatsApp</a> (${SITE.whatsapp.numero}). Assim que a equipe conferir, você recebe a confirmação.</p>
+${blocoCriancas(d)}`;
+    botao = "Ver o Pix e o QR Code";
   } else if (tipo === "lembrete" || tipo === "lembrete_final") {
     const amanha = tipo === "lembrete_final";
     assunto = amanha ? `Amanhã é o último dia para entregar a sacolinha` : `Faltam poucos dias para entregar a sacolinha`;

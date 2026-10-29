@@ -5,6 +5,7 @@ export const TIPO_EMAIL: Record<string, string> = {
   lembrete: "Lembrete (3 dias)",
   lembrete_final: "Lembrete (véspera)",
   entregue: "Sacolinha recebida",
+  pix: "Instruções do Pix",
 };
 export const STATUS_EMAIL: Record<string, { label: string; cor: string }> = {
   enviado: { label: "Enviado", cor: "text-verde" },

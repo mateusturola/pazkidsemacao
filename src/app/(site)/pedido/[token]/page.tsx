@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { and, eq } from "drizzle-orm";
+import QRCode from "qrcode";
 import { AguardandoPagamento, LimparCarrinho } from "@/components/site/pedido-vivo";
 import { Rodape } from "@/components/site/rodape";
 import { Topo } from "@/components/site/topo";
@@ -13,6 +14,8 @@ import { formatIsoDate } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
 import { imagemPublica } from "@/lib/imagem-publica";
 import { formatBRL } from "@/lib/money";
+import { pixDireto } from "@/lib/pagamento";
+import { pixDoPedido, whatsComprovante } from "@/lib/pix";
 import { liberarExpiradas } from "@/lib/reservas";
 import { Simbolo } from "@/components/site/simbolo";
 
@@ -65,7 +68,9 @@ export default async function PedidoPage({ params }: { params: Promise<{ token: 
 
   const titulo =
     p.status === "pendente"
-      ? "Falta só o pagamento"
+      ? pixDireto(p)
+        ? "Falta só o Pix"
+        : "Falta só o pagamento"
       : p.status === "pago"
         ? `Obrigado, ${primeiroNome}!`
         : p.status === "aguardando_entrega"
@@ -77,6 +82,10 @@ export default async function PedidoPage({ params }: { params: Promise<{ token: 
               : "Pedido cancelado";
 
   const demo = p.asaasInvoiceUrl?.startsWith("/");
+  // Pix direto na chave do projeto: QR Code e copia e cola com o valor, e o comprovante vai pelo WhatsApp.
+  const pix = p.status === "pendente" && pixDireto(p) ? pixDoPedido(p) : null;
+  const qr = pix ? await QRCode.toString(pix, { type: "svg", margin: 0, color: { dark: "#1e4b36", light: "#00000000" } }) : null;
+  const reservaAte = p.reservadoAte?.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
 
   return (
     <>
@@ -99,7 +108,50 @@ export default async function PedidoPage({ params }: { params: Promise<{ token: 
             </p>
           )}
 
-          {p.status === "pendente" && (
+          {pix && qr && (
+            <div className="mt-8 space-y-4">
+              <div className="rounded-[24px] bg-white p-6 sm:p-8">
+                <p className="chamada text-vermelho-escuro">1 · Faça o Pix</p>
+                <p className="mt-2 font-titulo text-4xl font-bold text-verde">{formatBRL(p.valor)}</p>
+                <div className="mt-5 grid items-center gap-6 sm:grid-cols-[180px_1fr]">
+                  {/* O QR Code serve para quem está no computador; no celular, o copia e cola. */}
+                  <div className="mx-auto hidden size-[180px] sm:block [&_svg]:size-full" dangerouslySetInnerHTML={{ __html: qr }} aria-label="QR Code do Pix" role="img" />
+                  <div className="min-w-0 space-y-4">
+                    <div>
+                      <p className="text-sm text-tinta-2">Pix copia e cola, já com o valor:</p>
+                      <div className="mt-2">
+                        <CopyButton value={pix} label="Copiar o código do Pix" className="btn btn-acao w-full sm:w-auto" />
+                      </div>
+                    </div>
+                    <div className="text-sm">
+                      <p className="text-tinta-2">Ou pela chave ({SITE.pix.tipo}):</p>
+                      <p className="mt-1 flex flex-wrap items-center gap-2">
+                        <strong className="text-base break-all">{SITE.pix.chave}</strong>
+                        <CopyButton value={SITE.pix.copiar} label="Copiar chave" />
+                      </p>
+                      <p className="mt-1 text-tinta-2">Favorecido: {SITE.pix.favorecido}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-[24px] bg-white p-6 sm:p-8">
+                <p className="chamada text-vermelho-escuro">2 · Mande o comprovante</p>
+                <p className="mt-2 text-lg">Pelo WhatsApp do projeto. A mensagem já vai com o número do seu pedido.</p>
+                <a href={whatsComprovante(p, campanha.nome, linha.padrinho)} target="_blank" rel="noopener" className="btn btn-primario mt-5 h-14 w-full px-7 text-lg sm:w-auto">
+                  Enviar comprovante no WhatsApp
+                </a>
+              </div>
+              <p className="px-1 text-tinta-2">
+                <strong className="text-tinta">3 · Pronto.</strong> A equipe confere o Pix e você recebe a confirmação por e-mail.{" "}
+                {reservaAte && (
+                  <>
+                    {itens.length > 1 ? "As crianças ficam reservadas" : "A criança fica reservada"} para você até <strong className="text-tinta">{reservaAte}</strong>.
+                  </>
+                )}
+              </p>
+            </div>
+          )}
+          {p.status === "pendente" && !pix && (
             <div className="mt-8 rounded-[24px] bg-white p-6 sm:p-8">
               <p className="text-lg">
                 Total: <strong className="font-titulo text-3xl text-verde">{formatBRL(p.valor)}</strong>{" "}

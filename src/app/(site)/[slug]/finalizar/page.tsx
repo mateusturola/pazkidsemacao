@@ -12,7 +12,7 @@ import { formatIsoDate, todayIso } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
 import { imagemPublica } from "@/lib/imagem-publica";
 import { formatBRL } from "@/lib/money";
-import { pagamentoOnlineDisponivel } from "@/lib/pagamento";
+import { modoPagamento, pagamentoOnlineDisponivel } from "@/lib/pagamento";
 import { MAX_POR_PEDIDO } from "@/lib/regras";
 import { liberarExpiradas } from "@/lib/reservas";
 import { finalizarPedido } from "./actions";
@@ -104,6 +104,7 @@ export default async function FinalizarPage({ params, searchParams }: { params: 
               slug={slug}
               acao={finalizarPedido.bind(null, slug, escolhidas.map((c) => c.id))}
               online={online}
+              pixDireto={modoPagamento() === "pix"}
               balcao={balcao}
               valorTotal={campanha.valorSacolinha ? formatBRL(campanha.valorSacolinha * escolhidas.length) : null}
               maxParcelas={campanha.maxParcelas}

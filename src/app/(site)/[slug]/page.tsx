@@ -16,7 +16,7 @@ import { formatIsoDate } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
 import { imagemPublica } from "@/lib/imagem-publica";
 import { formatBRL } from "@/lib/money";
-import { pagamentoOnlineDisponivel } from "@/lib/pagamento";
+import { modoPagamento, pagamentoOnlineDisponivel } from "@/lib/pagamento";
 import { liberarExpiradas } from "@/lib/reservas";
 import { ldCampanha } from "@/lib/seo";
 import { Simbolo } from "@/components/site/simbolo";
@@ -52,6 +52,8 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
   const p = progresso.get(campanha.id) ?? { total: 0, comPadrinho: 0 };
   const itens = itensSacolinha(campanha.itensSacolinha);
   const online = Boolean(campanha.valorSacolinha && pagamentoOnlineDisponivel());
+  // Pix direto na chave do projeto: sem cartão e sem parcelas.
+  const comoPagar = modoPagamento() === "pix" ? "no Pix" : `no Pix ou no cartão${campanha.maxParcelas > 1 ? ` em até ${campanha.maxParcelas}x` : ""}`;
   const balcao = Boolean(campanha.prazoEntrega && pontos.length);
   const prazo = campanha.prazoEntrega ? formatIsoDate(campanha.prazoEntrega) : null;
   const pct = p.total ? Math.round((p.comPadrinho / p.total) * 100) : 0;
@@ -188,7 +190,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
                 {online && balcao
                   ? `Monte você mesmo, ou doe ${formatBRL(campanha.valorSacolinha)} por criança e a gente monta pra você.`
                   : online
-                    ? `Doe ${formatBRL(campanha.valorSacolinha)} por criança, no Pix ou no cartão. A gente monta pra você.`
+                    ? `Doe ${formatBRL(campanha.valorSacolinha)} por criança, ${comoPagar}. A gente monta pra você.`
                     : "Compre os itens da lista pensando na criança que você escolheu."}
               </Passo>
               <Passo n={3} icone={<IconePresente className="size-8" />} titulo={balcao ? "Entregue no Paz Kids" : "Pronto, é Natal!"} atrasoMs={180}>
@@ -249,7 +251,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
                 <Forma
                   icone={<IconeCartao className="size-8" />}
                   titulo={`Doar online · ${formatBRL(campanha.valorSacolinha)}`}
-                  texto={`Pix ou cartão${campanha.maxParcelas > 1 ? ` em até ${campanha.maxParcelas}x` : ""}. A gente compra e monta a sacolinha da criança que você escolheu, com o mesmo carinho que você teria.`}
+                  texto={`${comoPagar[0].toUpperCase()}${comoPagar.slice(1)}. A gente compra e monta a sacolinha da criança que você escolheu, com o mesmo carinho que você teria.`}
                 />
               )}
             </div>

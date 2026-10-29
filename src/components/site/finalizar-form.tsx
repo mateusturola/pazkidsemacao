@@ -11,6 +11,7 @@ export function FinalizarForm({
   slug,
   acao,
   online,
+  pixDireto,
   balcao,
   valorTotal,
   maxParcelas,
@@ -21,6 +22,8 @@ export function FinalizarForm({
   slug: string;
   acao: (prev: Estado, form: FormData) => Promise<Estado>;
   online: boolean;
+  /** Sem gateway: o Pix vai direto na chave do projeto e o comprovante, pelo WhatsApp. */
+  pixDireto: boolean;
   balcao: boolean;
   valorTotal: string | null;
   maxParcelas: number;
@@ -49,7 +52,7 @@ export function FinalizarForm({
           <legend className="font-titulo text-2xl font-semibold text-verde">Como você vai ajudar?</legend>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <Opcao nome="modalidade" valor="pagamento_online" atual={modalidade} onChange={setModalidade} titulo={`Pagar online · ${valorTotal}`}>
-              Pix ou cartão. A gente compra e monta a sacolinha pra você.
+              {pixDireto ? "No Pix." : "Pix ou cartão."} A gente compra e monta a sacolinha pra você.
             </Opcao>
             <Opcao nome="modalidade" valor="entrega_balcao" atual={modalidade} onChange={setModalidade} titulo="Montar e entregar">
               Você compra os itens e entrega num ponto de coleta até {prazo}.
@@ -98,7 +101,7 @@ export function FinalizarForm({
           <span className="rotulo">WhatsApp</span>
           <input name="telefone" type="tel" required autoComplete="tel" placeholder="(11) 90000-0000" className="campo" />
         </label>
-        {modalidade === "pagamento_online" && (
+        {modalidade === "pagamento_online" && !pixDireto && (
           <label className="block">
             <span className="rotulo">CPF</span>
             <input name="cpf" required inputMode="numeric" placeholder="000.000.000-00" className="campo" />
@@ -107,7 +110,17 @@ export function FinalizarForm({
         )}
       </fieldset>
 
-      {modalidade === "pagamento_online" ? (
+      {modalidade === "pagamento_online" && pixDireto ? (
+        <fieldset>
+          <legend className="font-titulo text-2xl font-semibold text-verde">Pagamento · {valorTotal} no Pix</legend>
+          <ol className="mt-3 space-y-1.5 text-tinta-2">
+            <li>1. Na próxima tela aparece o Pix, com QR Code e copia e cola já com o valor.</li>
+            <li>2. Você faz o Pix e manda o comprovante pelo WhatsApp do projeto.</li>
+            <li>3. A equipe confere e você recebe a confirmação por e-mail.</li>
+          </ol>
+          <p className="mt-3 text-sm text-tinta-2">As crianças ficam reservadas para você por 2 dias enquanto a gente confere o Pix.</p>
+        </fieldset>
+      ) : modalidade === "pagamento_online" ? (
         <fieldset>
           <legend className="font-titulo text-2xl font-semibold text-verde">Pagamento · {valorTotal}</legend>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -177,7 +190,7 @@ export function FinalizarForm({
       )}
 
       <button className="btn btn-acao h-14 w-full px-8 text-lg sm:w-auto" disabled={pending}>
-        {pending ? "Um instante…" : modalidade === "pagamento_online" ? "Ir para o pagamento" : "Confirmar apadrinhamento"}
+        {pending ? "Um instante…" : modalidade === "pagamento_online" ? (pixDireto ? "Ir para o Pix" : "Ir para o pagamento") : "Confirmar apadrinhamento"}
       </button>
     </form>
   );

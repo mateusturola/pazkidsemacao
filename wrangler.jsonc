@@ -36,9 +36,10 @@
     "ACCESS_AUD": "944dd94e9f681caf159ca82337323f7a5531ddf587169d3ca45214d83ba0be0d",
     // "sandbox" ou "production". Trocar para produção exige trocar junto o secret ASAAS_API_KEY.
     "ASAAS_ENV": "sandbox",
-    // "demo": o pagamento online funciona de ponta a ponta com uma tela de pagamento simulada, sem
-    // cobrar ninguém. "asaas": cobrança de verdade. Trocar para "asaas" exige a chave do Asaas.
-    "PAGAMENTO_MODO": "demo",
+    // "pix": Pix direto na chave do projeto, com comprovante pelo WhatsApp e confirmação da equipe no painel.
+    // "demo": o fluxo do Asaas com uma tela de pagamento simulada, sem cobrar ninguém.
+    // "asaas": cobrança de verdade. Trocar para "asaas" exige a chave do Asaas.
+    "PAGAMENTO_MODO": "pix",
     // Remetente dos e-mails. O domínio precisa estar verificado no Resend; sem RESEND_API_KEY, os
     // e-mails ficam só no painel (modo demonstração).
     "EMAIL_REMETENTE": "Paz Kids em Ação <natal@pazkidsemacao.com>"

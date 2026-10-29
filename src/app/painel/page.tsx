@@ -4,9 +4,10 @@ import { StatusBadge } from "@/components/painel/status-badge";
 import { usuarioAtual } from "@/lib/auth";
 import { campanhaAberta, entregasAtrasadas, MODALIDADE_LABEL, progressoCampanhas, STATUS_CAMPANHA_LABEL, STATUS_PEDIDO_LABEL } from "@/lib/campanhas";
 import { formatDateTime, formatIsoDate } from "@/lib/dates";
+import { formatBRL } from "@/lib/money";
 import { getDb, schema } from "@/lib/db";
 import { contarDemonstracao } from "@/lib/demonstracao";
-import { modoPagamento } from "@/lib/pagamento";
+import { modoPagamento, pixDireto } from "@/lib/pagamento";
 
 const { campanhas, pedidos, padrinhos, criancas, pontosColeta, participacoes } = schema;
 
@@ -27,7 +28,7 @@ export default async function PainelInicio() {
   const usuario = await usuarioAtual();
   const admin = usuario?.papel === "admin";
 
-  const [lista, pendencias, atrasados, [semHistoria], pontos, demo, recentes] = await Promise.all([
+  const [lista, pendencias, atrasados, [semHistoria], pontos, demo, recentes, aguardando] = await Promise.all([
     db.select().from(campanhas).where(ne(campanhas.status, "encerrada")).orderBy(desc(campanhas.criadoEm)),
     db.select({ id: pedidos.id, pendencia: pedidos.pendencia }).from(pedidos).where(isNotNull(pedidos.pendencia)),
     entregasAtrasadas(),
@@ -44,6 +45,12 @@ export default async function PainelInicio() {
       .where(inArray(pedidos.status, ["pendente", "pago", "aguardando_entrega", "entregue"]))
       .orderBy(desc(pedidos.criadoEm))
       .limit(6),
+    db
+      .select({ id: pedidos.id, modalidade: pedidos.modalidade, asaasPaymentId: pedidos.asaasPaymentId, valor: pedidos.valor, padrinho: padrinhos.nome })
+      .from(pedidos)
+      .innerJoin(padrinhos, eq(padrinhos.id, pedidos.padrinhoId))
+      .where(eq(pedidos.status, "pendente"))
+      .orderBy(pedidos.criadoEm),
   ]);
   const progresso = await progressoCampanhas(lista.map((c) => c.id));
   const abertas = lista.filter(campanhaAberta);
@@ -81,6 +88,20 @@ export default async function PainelInicio() {
         .concat(atrasados.length > 3 ? " e outros." : ". Fale com o padrinho ou libere as crianças."),
       href: atrasados.length === 1 ? `/pedidos/${atrasados[0].id}` : "/pedidos",
       acao: atrasados.length === 1 ? "Abrir o pedido" : "Ver os pedidos",
+    });
+  }
+  // Pix direto: ninguém confirma sozinho. Quem chegou com comprovante no WhatsApp espera por este aviso.
+  const pixes = aguardando.filter(pixDireto);
+  if (pixes.length) {
+    avisos.push({
+      tom: "urgente",
+      titulo: `${pixes.length} Pix para conferir`,
+      texto: `${pixes
+        .slice(0, 3)
+        .map((x) => `#${x.id} ${x.padrinho.split(" ")[0]} (${formatBRL(x.valor)})`)
+        .join(", ")}${pixes.length > 3 ? " e outros" : ""}. Achou o comprovante no WhatsApp e o Pix no extrato? Confirme no pedido.`,
+      href: pixes.length === 1 ? `/pedidos/${pixes[0].id}` : "/pedidos?f=pendente",
+      acao: pixes.length === 1 ? "Abrir o pedido" : "Ver os pedidos",
     });
   }
   if (demo.criancas > 0) {

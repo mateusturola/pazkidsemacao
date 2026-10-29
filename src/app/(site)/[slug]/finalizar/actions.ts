@@ -12,7 +12,7 @@ import { todayIso } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
 import { cancelarPedido, liberarExpiradas, reservar } from "@/lib/reservas";
 import { inscrever } from "@/lib/novidades";
-import { modoPagamento, pagamentoOnlineDisponivel } from "@/lib/pagamento";
+import { modoPagamento, pagamentoOnlineDisponivel, RESERVA_PIX_HORAS } from "@/lib/pagamento";
 import { MAX_POR_PEDIDO } from "@/lib/regras";
 import { novoToken } from "@/lib/token";
 
@@ -70,7 +70,12 @@ export async function finalizarPedido(slug: string, ids: number[], _: Estado, fo
   let parcelas = 1;
   let pontoColetaId: number | null = null;
 
-  if (modalidade === "pagamento_online") {
+  // Pix direto na chave do projeto: sem cobrança no gateway, então sem CPF e sem cartão.
+  const pix = modoPagamento() === "pix";
+  if (modalidade === "pagamento_online" && pix) {
+    if (!campanha.valorSacolinha) return { erro: "O pagamento online não está disponível nesta campanha." };
+    forma = "pix";
+  } else if (modalidade === "pagamento_online") {
     if (!campanha.valorSacolinha || !pagamentoOnlineDisponivel()) return { erro: "O pagamento online não está disponível nesta campanha." };
     cpf = t("cpf").replace(/\D/g, "");
     if (!cpfValido(cpf)) return { erro: "CPF inválido. Ele é exigido para gerar a cobrança." };
@@ -116,7 +121,8 @@ export async function finalizarPedido(slug: string, ids: number[], _: Estado, fo
       parcelas,
       forma,
       status: modalidade === "pagamento_online" ? "pendente" : "aguardando_entrega",
-      reservadoAte: modalidade === "pagamento_online" ? new Date(Date.now() + RESERVA_MINUTOS * 60_000) : null,
+      reservadoAte:
+        modalidade !== "pagamento_online" ? null : new Date(Date.now() + (pix ? RESERVA_PIX_HORAS * 60 : RESERVA_MINUTOS) * 60_000),
       prazoEntrega: modalidade === "entrega_balcao" ? campanha.prazoEntrega : null,
       exibirNome: form.get("exibir_nome") === "1",
     })
@@ -142,7 +148,9 @@ export async function finalizarPedido(slug: string, ids: number[], _: Estado, fo
 
   // Para onde o doador vai depois de confirmar: no online, direto para a tela de pagamento.
   let destino = `/pedido/${token}`;
-  if (modalidade === "pagamento_online") {
+  // Pix direto: a página do pedido mostra o Pix e o botão do comprovante, e o e-mail leva o mesmo.
+  if (modalidade === "pagamento_online" && pix) enviarDepois(pedido.id, "pix");
+  else if (modalidade === "pagamento_online") {
     destino = `/pedido/${token}/pagar`;
     if (modoPagamento() === "demo") {
       // Mesmo caminho do Asaas, com a tela de pagamento simulada do próprio site no lugar da fatura.

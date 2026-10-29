@@ -11,6 +11,7 @@ import { MODALIDADE_LABEL, STATUS_LABEL, STATUS_PEDIDO_LABEL } from "@/lib/campa
 import { formatDateTime, formatIsoDate, todayIso } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
 import { formatBRL } from "@/lib/money";
+import { pixDireto } from "@/lib/pagamento";
 import { STATUS_EMAIL, TIPO_EMAIL } from "@/lib/email-labels";
 import { nomeNoMural } from "@/lib/parceiros";
 import { alternarNomeNoMural, cancelar, entregue, pagamentoManual, salvarObservacoes } from "../actions";
@@ -188,10 +189,17 @@ export default async function PedidoPage({ params }: { params: Promise<{ id: str
           </form>
         )}
         {p.status === "pendente" && (
+          // No Pix direto, é este botão que confirma: a equipe confere o comprovante e o valor no extrato.
           <form action={pagamentoManual.bind(null, p.id)}>
-            <ConfirmButton message="Confirmar que o pagamento foi recebido por fora do Asaas?" className="btn btn-claro">
-              Recebido por fora
-            </ConfirmButton>
+            {pixDireto(p) ? (
+              <ConfirmButton message={`Confirmar que o Pix de ${formatBRL(p.valor)} do pedido ${p.id} caiu na conta?`} className="btn btn-primario">
+                Pix recebido
+              </ConfirmButton>
+            ) : (
+              <ConfirmButton message="Confirmar que o pagamento foi recebido por fora do Asaas?" className="btn btn-claro">
+                Recebido por fora
+              </ConfirmButton>
+            )}
           </form>
         )}
         {aberto && (

@@ -201,7 +201,8 @@ export type UsuarioPainel = typeof usuariosPainel.$inferSelect;
 export type StatusParticipacao = (typeof STATUS_PARTICIPACAO)[number];
 export type Canal = (typeof CANAIS)[number];
 
-export const TIPOS_EMAIL = ["agradecimento", "lembrete", "lembrete_final", "entregue"] as const;
+// "pix": instruções do Pix direto (chave, valor, comprovante pelo WhatsApp), logo depois do pedido.
+export const TIPOS_EMAIL = ["agradecimento", "lembrete", "lembrete_final", "entregue", "pix"] as const;
 
 export const emailsEnviados = sqliteTable(
   "emails_enviados",
