@@ -20,10 +20,3 @@ export function pagamentoOnlineDisponivel() {
 
 /** Pedido pago por Pix direto na chave (sem cobrança no gateway): quem confirma é a equipe. */
 export const pixDireto = (p: { modalidade: string; asaasPaymentId: string | null }) => p.modalidade === "pagamento_online" && !p.asaasPaymentId;
-
-/**
- * No Pix direto, a criança fica reservada até a equipe conferir o comprovante. Dois dias cobrem um fim de
- * semana sem prender a criança por muito tempo se a pessoa desistir; o Pix que chegar depois ainda é
- * confirmado (confirmarPagamento tenta reservar de novo ou deixa a pendência para a equipe).
- */
-export const RESERVA_PIX_HORAS = 48;

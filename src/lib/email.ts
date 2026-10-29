@@ -155,8 +155,7 @@ ${blocoCriancas(d)}
   } else if (tipo === "pix") {
     assunto = `Falta só o Pix: ${formatBRL(d.p.valor)}`;
     frase = "Apadrinhe uma criança!";
-    const ate = d.p.reservadoAte?.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
-    corpo = `<p>Oi, ${primeiro}! ${n > 1 ? `${lista} estão reservados` : `${lista} está reservada`} para você${ate ? ` até <strong>${ate}</strong>` : ""}. Para confirmar, faça o Pix e mande o comprovante pelo WhatsApp.</p>
+    corpo = `<p>Oi, ${primeiro}! ${n > 1 ? `${lista} já estão reservados` : `${lista} já está reservada`} para você. Para confirmar, faça o Pix e mande o comprovante pelo WhatsApp.</p>
 <table role="presentation" width="100%" style="margin:20px 0;background:${CREME};border-radius:12px"><tr><td style="padding:18px 20px">
 <p style="margin:0 0 4px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:${VERDE};font-weight:800">Pix</p>
 <p style="margin:0;font-size:22px;font-weight:700;color:${VERDE}">${formatBRL(d.p.valor)}</p>

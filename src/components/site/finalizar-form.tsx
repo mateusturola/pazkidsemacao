@@ -118,7 +118,7 @@ export function FinalizarForm({
             <li>2. Você faz o Pix e manda o comprovante pelo WhatsApp do projeto.</li>
             <li>3. A equipe confere e você recebe a confirmação por e-mail.</li>
           </ol>
-          <p className="mt-3 text-sm text-tinta-2">As crianças ficam reservadas para você por 2 dias enquanto a gente confere o Pix.</p>
+          <p className="mt-3 text-sm text-tinta-2">As crianças já ficam reservadas para você enquanto a gente confere o Pix.</p>
         </fieldset>
       ) : modalidade === "pagamento_online" ? (
         <fieldset>

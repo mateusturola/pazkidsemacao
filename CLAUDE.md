@@ -20,8 +20,8 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
   só troca `disponivel` por `reservada`. Não troque por "lê e depois grava".
 - `liberarExpiradas()` roda antes de mostrar ou reservar crianças (o cron diário é só para e-mails e Instagram).
 - Campanha aberta = ativa e dentro da data de fim (`campanhaAberta`). Use sempre a função, nunca só o status.
-- Pagamento online reserva por 30 minutos (Asaas) ou 48 horas (Pix direto); balcão reserva até o prazo da
-  campanha e só a equipe libera.
+- Pagamento online pelo Asaas reserva por 30 minutos. Pix direto e balcão não vencem sozinhos: o Pix fica
+  reservado até a equipe confirmar ou cancelar; o balcão, até o prazo da campanha, e só a equipe libera.
 - Pix direto (`PAGAMENTO_MODO=pix`, o modo atual, sem gateway): o pedido mostra o QR Code e o copia e cola com o
   valor e o número do pedido (`src/lib/pix.ts`, BR Code com CRC16) e o botão do comprovante no WhatsApp. Quem
   confirma é a equipe, no pedido ("Pix recebido"), depois de ver o Pix no extrato; o Início do painel avisa.

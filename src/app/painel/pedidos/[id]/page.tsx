@@ -123,6 +123,7 @@ export default async function PedidoPage({ params }: { params: Promise<{ id: str
                 <Item k="Valor" v={p.valor ? formatBRL(p.valor) : null} />
                 <Item k="Forma" v={p.forma === "cartao" ? `Cartão${p.parcelas > 1 ? ` em ${p.parcelas}x` : ""}` : "Pix"} />
                 {p.status === "pendente" && p.reservadoAte && <Item k="Reserva até" v={formatDateTime(p.reservadoAte)} />}
+                {p.status === "pendente" && pixDireto(p) && <Item k="Reserva" v="Até a equipe confirmar o Pix ou cancelar o pedido" />}
                 {p.pagoEm && <Item k="Pago em" v={formatDateTime(p.pagoEm)} />}
                 {p.asaasPaymentId && (
                   <div className="flex gap-2">

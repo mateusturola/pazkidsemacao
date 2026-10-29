@@ -85,7 +85,6 @@ export default async function PedidoPage({ params }: { params: Promise<{ token: 
   // Pix direto na chave do projeto: QR Code e copia e cola com o valor, e o comprovante vai pelo WhatsApp.
   const pix = p.status === "pendente" && pixDireto(p) ? pixDoPedido(p) : null;
   const qr = pix ? await QRCode.toString(pix, { type: "svg", margin: 0, color: { dark: "#1e4b36", light: "#00000000" } }) : null;
-  const reservaAte = p.reservadoAte?.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
 
   return (
     <>
@@ -143,11 +142,7 @@ export default async function PedidoPage({ params }: { params: Promise<{ token: 
               </div>
               <p className="px-1 text-tinta-2">
                 <strong className="text-tinta">3 · Pronto.</strong> A equipe confere o Pix e você recebe a confirmação por e-mail.{" "}
-                {reservaAte && (
-                  <>
-                    {itens.length > 1 ? "As crianças ficam reservadas" : "A criança fica reservada"} para você até <strong className="text-tinta">{reservaAte}</strong>.
-                  </>
-                )}
+                {itens.length > 1 ? "As crianças já estão reservadas" : "A criança já está reservada"} para você.
               </p>
             </div>
           )}

@@ -12,7 +12,7 @@ import { todayIso } from "@/lib/dates";
 import { getDb, schema } from "@/lib/db";
 import { cancelarPedido, liberarExpiradas, reservar } from "@/lib/reservas";
 import { inscrever } from "@/lib/novidades";
-import { modoPagamento, pagamentoOnlineDisponivel, RESERVA_PIX_HORAS } from "@/lib/pagamento";
+import { modoPagamento, pagamentoOnlineDisponivel } from "@/lib/pagamento";
 import { MAX_POR_PEDIDO } from "@/lib/regras";
 import { novoToken } from "@/lib/token";
 
@@ -121,8 +121,9 @@ export async function finalizarPedido(slug: string, ids: number[], _: Estado, fo
       parcelas,
       forma,
       status: modalidade === "pagamento_online" ? "pendente" : "aguardando_entrega",
-      reservadoAte:
-        modalidade !== "pagamento_online" ? null : new Date(Date.now() + (pix ? RESERVA_PIX_HORAS * 60 : RESERVA_MINUTOS) * 60_000),
+      // Pix direto não vence sozinho: conferir o extrato leva tempo, e a criança só volta para a lista
+      // quando a equipe cancela o pedido. Sem data, liberarExpiradas não toca nele.
+      reservadoAte: modalidade === "pagamento_online" && !pix ? new Date(Date.now() + RESERVA_MINUTOS * 60_000) : null,
       prazoEntrega: modalidade === "entrega_balcao" ? campanha.prazoEntrega : null,
       exibirNome: form.get("exibir_nome") === "1",
     })

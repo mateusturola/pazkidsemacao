@@ -46,7 +46,7 @@ export default async function PainelInicio() {
       .orderBy(desc(pedidos.criadoEm))
       .limit(6),
     db
-      .select({ id: pedidos.id, modalidade: pedidos.modalidade, asaasPaymentId: pedidos.asaasPaymentId, valor: pedidos.valor, padrinho: padrinhos.nome })
+      .select({ id: pedidos.id, modalidade: pedidos.modalidade, asaasPaymentId: pedidos.asaasPaymentId, valor: pedidos.valor, criadoEm: pedidos.criadoEm, padrinho: padrinhos.nome })
       .from(pedidos)
       .innerJoin(padrinhos, eq(padrinhos.id, pedidos.padrinhoId))
       .where(eq(pedidos.status, "pendente"))
@@ -90,16 +90,21 @@ export default async function PainelInicio() {
       acao: atrasados.length === 1 ? "Abrir o pedido" : "Ver os pedidos",
     });
   }
-  // Pix direto: ninguém confirma sozinho. Quem chegou com comprovante no WhatsApp espera por este aviso.
+  // Pix direto: ninguém confirma sozinho e a reserva não vence. Quem chegou com comprovante no WhatsApp
+  // espera por este aviso; o tempo de espera mostra o pedido esquecido, que a equipe cancela para liberar a criança.
   const pixes = aguardando.filter(pixDireto);
+  const espera = (d: Date) => {
+    const dias = Math.floor((Date.now() - d.getTime()) / 86_400_000);
+    return dias < 1 ? "hoje" : dias === 1 ? "há 1 dia" : `há ${dias} dias`;
+  };
   if (pixes.length) {
     avisos.push({
       tom: "urgente",
       titulo: `${pixes.length} Pix para conferir`,
       texto: `${pixes
         .slice(0, 3)
-        .map((x) => `#${x.id} ${x.padrinho.split(" ")[0]} (${formatBRL(x.valor)})`)
-        .join(", ")}${pixes.length > 3 ? " e outros" : ""}. Achou o comprovante no WhatsApp e o Pix no extrato? Confirme no pedido.`,
+        .map((x) => `#${x.id} ${x.padrinho.split(" ")[0]} (${formatBRL(x.valor)}, ${espera(x.criadoEm)})`)
+        .join(", ")}${pixes.length > 3 ? " e outros" : ""}. Achou o comprovante no WhatsApp e o Pix no extrato? Confirme no pedido. Se a pessoa desistiu, cancele para a criança voltar ao site.`,
       href: pixes.length === 1 ? `/pedidos/${pixes[0].id}` : "/pedidos?f=pendente",
       acao: pixes.length === 1 ? "Abrir o pedido" : "Ver os pedidos",
     });
