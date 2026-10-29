@@ -148,7 +148,7 @@ export function PainelNav({ admin, nome }: { admin: boolean; nome: string }) {
 
   const marca = (
     <Link href="/" className="flex items-center gap-2.5">
-      <Image src="/brand/pazkids-em-acao-horizontal-400.webp" alt="Paz Kids em Ação" width={400} height={163} priority className="h-9 w-auto" />
+      <Image src="/brand/pazkids-em-acao-horizontal-400.webp" alt="Paz Kids em Ação" width={400} height={163} preload className="h-9 w-auto" />
       <span className="font-titulo text-sm font-semibold text-tinta-2">Painel</span>
     </Link>
   );

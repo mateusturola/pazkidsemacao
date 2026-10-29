@@ -63,7 +63,7 @@ export default async function HistoriaPage() {
                   <p className="mt-3 text-lg leading-relaxed text-tinta sm:text-xl">{m.texto}</p>
                 </div>
                 <figure>
-                  <Image src={m.foto.src} alt={m.foto.alt} width={m.foto.w} height={m.foto.h} priority={i === 0} sizes="(min-width: 768px) 50vw, 100vw" className="aspect-[3/2] w-full rounded-[24px] object-cover" />
+                  <Image src={m.foto.src} alt={m.foto.alt} width={m.foto.w} height={m.foto.h} preload={i === 0} sizes="(min-width: 768px) 50vw, 100vw" className="aspect-[3/2] w-full rounded-[24px] object-cover" />
                   <figcaption className="mt-3 text-sm text-tinta-2">{m.foto.legenda}</figcaption>
                 </figure>
               </li>

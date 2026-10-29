@@ -68,9 +68,9 @@ export function Topo({
           className={`shrink-0 transition-[opacity,transform] duration-300 ${mostrarLogo ? "opacity-100" : "pointer-events-none -translate-y-2 opacity-0"}`}
         >
           {variante === "campanha" ? (
-            <Image src="/natal/logo/paz-kids-horizontal-colorida.svg" alt="Paz Kids em Ação · Campanha de Natal" width={180} height={60} priority className="h-12 w-auto" />
+            <Image src="/natal/logo/paz-kids-horizontal-colorida.svg" alt="Paz Kids em Ação · Campanha de Natal" width={180} height={60} preload className="h-12 w-auto" />
           ) : (
-            <Image src="/brand/pazkids-em-acao-horizontal-400.webp" alt="Paz Kids em Ação" width={400} height={163} priority className="h-12 w-auto sm:h-14" />
+            <Image src="/brand/pazkids-em-acao-horizontal-400.webp" alt="Paz Kids em Ação" width={400} height={163} preload className="h-12 w-auto sm:h-14" />
           )}
         </Link>
         <nav className="ml-auto hidden items-center gap-1 md:flex">

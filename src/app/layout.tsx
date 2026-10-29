@@ -31,7 +31,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${fredoka.variable} ${nunito.variable} ${caveatBrush.variable}`}>
+    // O globals.css rola suave (âncoras como "#criancas"). Desde o Next 16, sem este atributo a troca de
+    // página também rolaria devagar até o topo; com ele, a navegação salta direto, como antes.
+    <html lang="pt-BR" data-scroll-behavior="smooth" className={`${fredoka.variable} ${nunito.variable} ${caveatBrush.variable}`}>
       <body>{children}</body>
     </html>
   );

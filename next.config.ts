@@ -2,9 +2,6 @@ import type { NextConfig } from "next";
 import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 const nextConfig: NextConfig = {
-  // `next dev` e `next build` dividem a pasta .next, e buildar com o dev no ar corrompe o cache.
-  // Para testar o build sem derrubar o dev: NEXT_DIST_DIR=.next-build npx next build
-  distDir: process.env.NEXT_DIST_DIR || ".next",
   poweredByHeader: false,
   // O Worker não tem o otimizador do Next: as fotos de public/img têm cópias menores prontas
   // (npm run imagens) e o carregador escolhe a cópia pela largura que o navegador pede.

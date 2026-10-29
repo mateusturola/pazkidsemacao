@@ -14,7 +14,7 @@ Cloudflare com D1 e R2.
 - **`painel.pazkidsemacao.com`**: painel (crianças, campanhas, pedidos, pontos de coleta, usuários,
   importação de planilha, avatar, relatórios e auditoria).
 
-Next.js 15 (App Router, server actions) · Tailwind 4 · Drizzle · Cloudflare D1 + R2 · OpenNext · Asaas · Resend.
+Next.js 16 (App Router, server actions) · Tailwind 4 · Drizzle · Cloudflare D1 + R2 · OpenNext · Asaas · Resend.
 
 A página do Natal segue o manual da marca da campanha (verde, creme, amarelo e vermelho; Fredoka,
 Nunito e Caveat Brush; formas orgânicas e pincelada). Logos e símbolos de apoio estão em
@@ -78,7 +78,9 @@ No `next dev` o painel abre sem login, como o admin do `ADMIN_EMAIL`. Para testa
 copie `.dev.vars.example` para `.dev.vars` com a chave do **sandbox** do Asaas.
 
 `npm run preview` roda o build de produção no runtime da Cloudflare (`http://localhost:8787`). Lá o
-painel já exige o Access; para simular o subdomínio: `npx wrangler dev --host painel.pazkidsemacao.com`.
+painel já exige o Access. Para simular o subdomínio, rode `npx wrangler dev --local --infer-origin-from-routes=false`
+e abra `http://painel.localhost:8787` (sem a opção, o wrangler troca o endereço pelo da primeira rota, o
+pazkidsemacao.com, e o Worker nunca vê o "painel.").
 
 ## Publicar (primeira vez)
 

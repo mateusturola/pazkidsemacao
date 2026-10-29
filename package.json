@@ -20,20 +20,19 @@
   "dependencies": {
     "@dicebear/collection": "^9.4.2",
     "@dicebear/core": "^9.4.2",
-    "@opennextjs/cloudflare": "^1.20.7",
+    "@opennextjs/cloudflare": "^1.20.14",
     "date-fns": "^4.4.0",
     "drizzle-orm": "^0.45.3",
     "jose": "^6.2.12",
-    "next": "15.5.27",
+    "next": "^16.4.3",
     "qrcode": "^1.5.4",
-    "react": "19.1.0",
+    "react": "^19.3.1",
     "react-day-picker": "^10.0.2",
-    "react-dom": "19.1.0",
+    "react-dom": "^19.3.1",
     "read-excel-file": "^9.3.10",
     "server-only": "^0.0.1"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/qrcode": "^1.5.6",
@@ -41,10 +40,10 @@
     "@types/react-dom": "^19",
     "drizzle-kit": "^0.31.11",
     "eslint": "^9",
-    "eslint-config-next": "15.5.27",
+    "eslint-config-next": "^16.4.3",
     "sharp": "^0.35.5",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "wrangler": "^4.145.0"
+    "wrangler": "^4.156.0"
   }
 }

@@ -103,7 +103,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
               alt="Paz Kids em Ação · Campanha de Natal"
               width={367}
               height={456}
-              priority
+              preload
               className="h-48 w-auto sm:h-60"
             />
             <h1 className="mt-8 text-[clamp(2.4rem,5.2vw,4.4rem)] leading-[0.98] font-bold text-verde">
@@ -162,7 +162,7 @@ export default async function CampanhaPage({ params }: { params: Promise<{ slug:
               alt="Menina de óculos sorrindo no AcampaKids Amor em Ação"
               width={1400}
               height={1750}
-              priority
+              preload
               sizes="(min-width: 1024px) 40vw, 100vw"
               className="aspect-[4/5] w-full rounded-[32px] object-cover object-[center_35%] sm:aspect-[5/5]"
             />

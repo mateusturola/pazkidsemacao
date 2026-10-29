@@ -4,6 +4,11 @@ import { verifyAccess } from "@/lib/access";
 // Um Worker, dois endereços. pazkidsemacao.com é o site; painel.pazkidsemacao.com é o painel, e o
 // Cloudflare Access fica na frente dele inteiro. Internamente o painel vive em /painel; no
 // subdomínio, "/criancas" vira "/painel/criancas". No `next dev`, abra http://painel.localhost:3000.
+//
+// Continua "middleware" no Next 16 de propósito (o Next avisa que o nome está obsoleto). O "proxy" que o
+// substitui só roda no runtime Node, e no OpenNext o middleware em Node é experimental e sem manutenção
+// oficial ("use at your own risk", diz o próprio build). Este arquivo é a porta do painel: fica no
+// middleware de edge, que é o caminho suportado, até o OpenNext suportar o proxy.
 
 function painelOrigin(req: NextRequest) {
   if (process.env.NODE_ENV === "development") return `${req.nextUrl.protocol}//painel.${req.headers.get("host")}`;
