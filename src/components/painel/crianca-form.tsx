@@ -15,7 +15,8 @@ function Campo({ label, children, dica, className = "" }: { label: string; child
   );
 }
 
-export function CriancaForm({ action, crianca, botao }: { action: Action; crianca?: Crianca; botao: string }) {
+/** `campanhas`: só no cadastro novo. A criança já entra na campanha aberta; antes, a equipe cadastrava e ela não aparecia no site. */
+export function CriancaForm({ action, crianca, botao, campanhas = [] }: { action: Action; crianca?: Crianca; botao: string; campanhas?: { id: number; nome: string }[] }) {
   const c = crianca;
   return (
     <ActionForm action={action} className="space-y-8">
@@ -24,7 +25,7 @@ export function CriancaForm({ action, crianca, botao }: { action: Action; crianc
         <Campo label="Nome completo" className="sm:col-span-2">
           <input name="nome" required defaultValue={c?.nome} className="campo" />
         </Campo>
-        <Campo label="Nome no site" dica="Vazio, o site mostra só o primeiro nome. Sobrenome nunca aparece.">
+        <Campo label="Nome no site" dica="Só o primeiro nome ou um apelido (ex.: Duda). Para separar duas crianças com o mesmo nome, uma inicial: Lucas G. O site ignora qualquer sobrenome escrito aqui.">
           <input name="apelidoPublico" defaultValue={c?.apelidoPublico ?? ""} className="campo" />
         </Campo>
         <div>
@@ -106,6 +107,18 @@ export function CriancaForm({ action, crianca, botao }: { action: Action; crianc
           <textarea name="observacoes" rows={3} defaultValue={c?.observacoes ?? ""} className="campo" />
         </Campo>
       </fieldset>
+
+      {campanhas.length > 0 && (
+        <fieldset>
+          <legend className="chamada mb-2">Campanha</legend>
+          {campanhas.map((cp) => (
+            <label key={cp.id} className="flex items-center gap-2.5 text-sm">
+              <input type="checkbox" name="campanha" value={cp.id} defaultChecked className="size-4 accent-verde" />
+              Colocar na campanha <strong>{cp.nome}</strong> (aparece no site para ser apadrinhada)
+            </label>
+          ))}
+        </fieldset>
+      )}
 
       <SubmitButton className="btn btn-primario">{botao}</SubmitButton>
     </ActionForm>

@@ -130,9 +130,23 @@ export default async function PainelInicio() {
       acao: admin ? "Preencher" : "Ver os pontos",
     });
   }
+  // Criança cadastrada fora da campanha não aparece no site: foi assim que 226 ficaram de fora em 2026.
+  const [foraDaCampanha] = abertas[0]
+    ? await db
+        .select({ n: sql<number>`count(*)` })
+        .from(criancas)
+        .where(and(eq(criancas.ativo, true), sql`${criancas.id} not in (select ${participacoes.criancaId} from ${participacoes} where ${participacoes.campanhaId} = ${abertas[0].id})`))
+    : [];
   for (const c of abertas) {
-    if (!(progresso.get(c.id)?.total ?? 0)) {
-      avisos.push({ tom: "atencao", titulo: `${c.nome} está aberta sem crianças`, texto: "A página da campanha mostra a lista vazia.", href: `/campanhas/${c.id}`, acao: "Abrir a campanha" });
+    const fora = c.id === abertas[0].id ? Number(foraDaCampanha?.n ?? 0) : 0;
+    if (!(progresso.get(c.id)?.total ?? 0) || fora) {
+      avisos.push({
+        tom: "urgente",
+        titulo: fora ? `${fora} criança(s) cadastrada(s) fora da ${c.nome}` : `${c.nome} está aberta sem crianças`,
+        texto: fora ? "Elas não aparecem no site enquanto não entrarem na campanha. Na campanha, use \"Adicionar crianças\"." : "A página da campanha mostra a lista vazia.",
+        href: `/campanhas/${c.id}`,
+        acao: "Abrir a campanha",
+      });
     }
   }
   if (admin && abertas.length && modoPagamento() === "demo") {

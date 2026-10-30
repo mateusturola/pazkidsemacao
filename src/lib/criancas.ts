@@ -17,14 +17,25 @@ export function idadeTexto(dataNascimento: string | null | undefined) {
   return a === 1 ? "1 ano" : `${a} anos`;
 }
 
+/** "MAITÊ" e "maitê" viram "Maitê"; nome já escrito com maiúscula e minúscula fica como está. */
+function capitalizar(palavra: string) {
+  if (palavra !== palavra.toLocaleUpperCase("pt-BR") && palavra !== palavra.toLocaleLowerCase("pt-BR")) return palavra;
+  const minuscula = palavra.toLocaleLowerCase("pt-BR");
+  return minuscula.charAt(0).toLocaleUpperCase("pt-BR") + minuscula.slice(1);
+}
+
 /**
- * Nome que pode aparecer no site: o apelido público, ou só o primeiro nome. Sobrenome nunca sai do
- * painel (LGPD e ECA: o site mostra o mínimo para o doador escolher).
+ * Nome que pode aparecer no site: a primeira palavra do apelido público (ou do nome) e, no máximo, uma
+ * inicial ("Brenda C."), que a equipe usa para separar duas crianças com o mesmo nome. Sobrenome nunca
+ * sai do painel (LGPD e ECA: o site mostra o mínimo para o doador escolher).
+ * O apelido não é confiável sozinho: a equipe chegou a preencher "Alice Garcia", "Maitê de Souza" e até o
+ * sobrenome com erro de digitação, que nenhuma comparação com o nome pega. Por isso a regra é pela forma,
+ * não pelo conteúdo. Nome composto ("Ana Júlia") vira o primeiro ("Ana"): melhor que vazar sobrenome.
  */
 export function nomePublico(c: { nome: string; apelidoPublico: string | null }) {
-  const apelido = c.apelidoPublico?.trim();
-  if (apelido) return apelido;
-  return c.nome.trim().split(/\s+/)[0] ?? "";
+  const [primeira = "", ...resto] = (c.apelidoPublico?.trim() || c.nome.trim()).split(/\s+/);
+  const inicial = resto.find((p) => /^\p{L}\.?$/u.test(p));
+  return capitalizar(primeira) + (inicial ? ` ${inicial[0].toLocaleUpperCase("pt-BR")}.` : "");
 }
 
 export const SEXO_LABEL: Record<string, string> = { F: "Menina", M: "Menino" };

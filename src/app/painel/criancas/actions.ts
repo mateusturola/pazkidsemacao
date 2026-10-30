@@ -56,8 +56,19 @@ export async function criarCrianca(_: string | null, form: FormData) {
   const u = await requireUsuario();
   const dados = dadosDoFormulario(form);
   if (!dados.nome) return "Informe o nome.";
-  const [nova] = await getDb().insert(criancas).values(dados).returning({ id: criancas.id });
-  await auditar(u.email, "criou", "crianca", nova.id, { nome: dados.nome });
+  const db = getDb();
+  const [nova] = await db.insert(criancas).values(dados).returning({ id: criancas.id });
+  const campanhaIds = form
+    .getAll("campanha")
+    .map(Number)
+    .filter((n) => Number.isInteger(n) && n > 0);
+  if (campanhaIds.length) {
+    await db
+      .insert(participacoes)
+      .values(campanhaIds.map((campanhaId) => ({ criancaId: nova.id, campanhaId })))
+      .onConflictDoNothing();
+  }
+  await auditar(u.email, "criou", "crianca", nova.id, { nome: dados.nome, campanhas: campanhaIds });
   revalidar(nova.id);
   redirect(`/criancas/${nova.id}`);
 }

@@ -8,6 +8,11 @@ Site das campanhas (pazkidsemacao.com) e painel da equipe (painel.pazkidsemacao.
   gostos, sonho e "sobre" (o texto da família; sem ele, `historiaCrianca` monta um com o cadastro).
   **Nunca** sobrenome, responsável, contato ou observações. Toda consulta pública passa por
   `criancasDaCampanha` (`src/lib/campanhas.ts`), que só seleciona esses campos.
+- O nome que sai no site é sempre `nomePublico` (`src/lib/criancas.ts`): a primeira palavra do "Nome no site"
+  (ou do nome) e no máximo uma inicial ("Lucas G."). A regra é pela forma porque a equipe já escreveu
+  sobrenome no apelido. Nunca mostre `apelidoPublico` ou `nome` direto.
+- Só aparece no site a criança que está na campanha (`participacoes`). O "Nova criança" já coloca na campanha
+  aberta; o Início do painel avisa quem ficou de fora.
 - Bucket R2 privado. Foto sai pelo site (`/fotos/[id]`) só com `autorizacao_imagem` e só de criança
   numa campanha publicada; sem autorização, o avatar. No painel, pela rota protegida da criança.
 - Avatar é DiceBear (estilo lorelei, CC0). O navegador mostra a prévia; o servidor gera de novo a
